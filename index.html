@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SB Notes | Academic Semester Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="max-w-7xl flex justify-between items-center w-full">
+            <h1 class="text-3xl font-extrabold text-white tracking-widest">
+                <a href="#" class="text-white hover:text-primary-color transition-colors duration-300">SB Notes</a>
+            </h1>
+            <a href="#" class="bg-primary-color text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 shadow-lg">
+                Login
+            </a>
+        </div>
+    </header>
+
+    <main>
+        
+        <section class="semister-section">
+            <div class="semister-heading">
+                <h2 class="semister-title">Semister 1 Courses (Foundation)</h2>
+                <a href="https://www.makautexam.net/aicte_details/Syllabus4/BCA/sem123.pdf" target="_blank" class="view-syllabus">View All Syllabus</a>
+            </div>
+            <div class="subject-grid" id="semister-1-container"></div>
+        </section>
+
+        <section class="semister-section">
+            <div class="semister-heading">
+                <h2 class="semister-title">Semister 2 Courses (Core I)</h2>
+                <a href="https://makautexam.net/aicte_details/Syllabus4/BCA/sem223.pdf" target="_blank" class="view-syllabus">View All Syllabus</a>
+            </div>
+            <div class="subject-grid" id="semister-2-container"></div>
+        </section>
+
+        <section class="semister-section">
+            <div class="semister-heading">
+                <h2 class="semister-title">Semister 3 Courses (Data & Logic)</h2>
+                <a href="https://makautexam.net/aicte_details/Syllabus4/BCA/sem323.pdf" target="_blank" class="view-syllabus">View All Syllabus</a>
+            </div>
+            <div class="subject-grid" id="semister-3-container"></div>
+        </section>
+
+        <section class="semister-section">
+            <div class="semister-heading">
+                <h2 class="semister-title">Semister 4 Courses (Systems)</h2>
+                <a href="https://makautexam.net/aicte_details/Syllabus4/BCA/sem423.pdf" target="_blank" class="view-syllabus">View All Syllabus</a>
+            </div>
+            <div class="subject-grid" id="semister-4-container"></div>
+        </section>
+
+        <section class="semister-section">
+            <div class="semister-heading">
+                <h2 class="semister-title">Semister 5 Courses (Engineering)</h2>
+                <a href="sem5_syllabus.pdf" target="_blank" class="view-syllabus">View All Syllabus</a>
+            </div>
+            <div class="subject-grid" id="semister-5-container"></div>
+        </section>
+
+        <section class="semister-section">
+            <div class="semister-heading">
+                <h2 class="semister-title">Semister 6 Courses (Advanced Core)</h2>
+                <a href="sem6_syllabus.pdf" target="_blank" class="view-syllabus">View All Syllabus</a>
+            </div>
+            <div class="subject-grid" id="semister-6-container"></div>
+        </section>
+
+        <section class="semister-section">
+            <div class="semister-heading">
+                <h2 class="semister-title">Semister 7 Courses (Electives)</h2>
+                <a href="#" class="view-syllabus">View All Syllabus</a>
+            </div>
+            <div class="subject-grid" id="semister-7-container"></div>
+        </section>
+
+        <section class="semister-section">
+            <div class="semister-heading">
+                <h2 class="semister-title">Semister 8 Courses (Graduation)</h2>
+                <a href="#" class="view-syllabus">View All Syllabus</a>
+            </div>
+            <div class="subject-grid" id="semister-8-container"></div>
+        </section>
+
+    </main>
+
+    <div id="moduleModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModuleModal()">&times;</span>
+            <h3 id="modalSubjectTitle" class="text-xl font-bold mb-4 text-white">Modules for [Subject Name]</h3>
+            <div id="modulesList" class="mb-4">
+                </div>
+            <button class="bg-[#555] hover:bg-[#777]" onclick="closeModuleModal()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="watermarkModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeWatermarkModal()">&times;</span>
+            <h3 class="text-xl font-bold mb-4 text-white">Access Notes: Watermark Required</h3>
+            <p class="text-sm mb-4 text-[#aaa]">Please enter your details to view the PDF. Your name and phone number will be watermarked onto the document for security and tracking.</p>
+            
+            <label for="userName" class="text-sm font-semibold text-[#aaa]">Full Name</label>
+            <input type="text" id="userName" placeholder="Enter your full name" required>
+
+            <label for="userPhone" class="text-sm font-semibold text-[#aaa]">Phone Number</label>
+            <input type="tel" id="userPhone" placeholder="Enter your phone number" required>
+
+            <button onclick="accessDocument()">View Notes</button>
+            <button class="bg-[#555] hover:bg-[#777] mt-2" onclick="closeWatermarkModal()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="notesUnavailableModal" class="modal">
+        <div class="modal-content text-center">
+            <span class="modal-close" onclick="closeNotesUnavailableModal()">&times;</span>
+            <i class="fa-solid fa-face-frown text-6xl text-red-500 mb-4"></i>
+            <h3 class="text-2xl font-bold mb-2 text-white">Notes Not Available Yet 😔</h3>
+            <p class="text-md mb-4 text-[#aaa]">Sorry, the notes for this subject are currently not available for viewing.</p>
+            <p class="text-sm mb-6 text-[#aaa]">We are constantly working to upload new content. Please check back later!</p>
+            <button class="bg-red-500 hover:bg-red-600" onclick="closeNotesUnavailableModal()">Close</button>
+        </div>
+    </div>
+
+
+    <footer>
+        <p>
+            &copy; 2024 <span class="font-semibold text-white">SB Notes</span>. All rights reserved.
+            <span class="mx-3 text-[#555]">|</span>
+            Copyright Reserved to <span class="font-semibold text-white">Srinjoy Biswas</span>.
+            <span class="mx-3 text-[#555]">|</span>
+            <span class="text-primary-color font-semibold">Free for 1 Year!</span>
+        </p>
+    </footer>
+
+    <script src="script.js">
+      
+    </script>
+</body>
+</html>
+```

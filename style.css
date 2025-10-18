@@ -1,0 +1,282 @@
+  /* Define Variables for a Dark Theme */
+        :root {
+            --primary-color: #007bff;        /* Blue for highlights */
+            --secondary-color: #28a745;      /* Green for 'View' links */
+            --background-color: #1a1a2e;     /* Deep navy background */
+            --card-background: #2c2c47;      /* Slightly lighter card background */
+            --text-color: #ffffff;           /* White text */
+            --rating-color: #ffc107;         /* Yellow for ratings */
+            --pdf-icon-color: #e63946;       /* Red for the PDF icon */
+            --border-color: #4a4a6e;
+            --header-bg: #111122; /* Darker background for header/footer */
+        }
+        /* Style the logo image directly */
+
+        /* Base Styles */
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header > div {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer {
+            background-color: var(--header-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        /* --- Layout Container --- */
+        main {
+            flex-grow: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            width: 100%;
+        }
+        
+        /* --- Section Heading Styles --- */
+        .semister-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .semister-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .view-syllabus {
+             color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 12px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .subject-grid {
+            display: flex;
+            gap: 20px;
+            padding-bottom: 30px;
+            overflow-x: auto; 
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Hide scrollbar for a cleaner look */
+        .subject-grid::-webkit-scrollbar { display: none; }
+        .subject-grid { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- Subject Card Styles (The Clickable PDF) --- */
+        .subject-card { 
+            display: block; 
+            text-decoration: none;
+            flex: 0 0 240px;
+            background-color: var(--card-background);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+            border-color: var(--primary-color);
+        }
+        
+        .subject-poster { 
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 140px; 
+            background: linear-gradient(135deg, #3a3a5c, #2c2c47);
+        }
+
+        .subject-poster .fa-file-pdf { 
+            font-size: 70px;
+            color: var(--pdf-icon-color); 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s ease;
+        }
+
+        /* --- FIX: Improved Rating Styling --- */
+        .subject-rating {
+            position: absolute;
+            top: 10px; /* Offset from top */
+            right: 10px; /* Offset from right */
+            background-color: var(--rating-color); /* Use a distinct color (Yellow) */
+            color: var(--header-bg); /* Dark text on light background */
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700; /* Bold font */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            border: 1px solid white;
+        }
+
+        .subject-info {
+            padding: 15px;
+        }
+
+        .subject-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 5px;
+            height: 44px; /* Fix height for 2 lines */
+            overflow: hidden;
+        }
+
+        .subject-meta {
+            font-size: 0.85rem;
+            color: #aaaaaa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--card-background);
+            margin: auto;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .modal-list-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background-color: #3a3a5c;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .modal-list-item:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .modal-close:hover,
+        .modal-close:focus {
+            color: var(--pdf-icon-color);
+            text-decoration: none;
+        }
+
+        .modal input[type="text"], .modal input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 20px 0;
+            display: inline-block;
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            border-radius: 8px;
+        }
+        
+        .modal button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 640px) {
+            main {
+                padding: 1rem;
+            }
+            .semister-title {
+                font-size: 1.5rem;
+            }
+            .subject-card {
+                flex: 0 0 80%;
+            }
+        }
