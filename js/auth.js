@@ -1,6 +1,6 @@
 /**
- * SB NOTES - Authentication Controller
- * Handles Login and Signup actions with Google Apps Script backend
+ * SB NOTES - Master Authentication Controller
+ * Handles Login, Signup, and Payment Redirect logic.
  */
 app.controller('AuthController', function($scope, $http, $window, CONFIG) {
     // 1. Initialize variables
@@ -8,38 +8,47 @@ app.controller('AuthController', function($scope, $http, $window, CONFIG) {
     $scope.loading = false;
     $scope.errorMessage = "";
 
-    // --- LOGIN FUNCTION ---
+    /**
+     * --- LOGIN HANDLER ---
+     * Validates input and executes the login action.
+     */
     $scope.handleLogin = function() {
         if (!$scope.user.email || !$scope.user.password) {
             $scope.errorMessage = "Please enter both email and password.";
             return;
         }
-
-        $scope.prepareAndSend("login");
+        $scope.executeAuth("login");
     };
 
-    // --- SIGNUP FUNCTION ---
+    /**
+     * --- SIGNUP HANDLER ---
+     * Validates passwords and executes the signup action.
+     */
     $scope.handleSignup = function() {
         if ($scope.user.password !== $scope.user.confirmPassword) {
             $scope.errorMessage = "Passwords do not match.";
             return;
         }
-
-        $scope.prepareAndSend("signup");
+        $scope.executeAuth("signup");
     };
 
-    // --- SHARED BACKEND ENGINE ---
-    $scope.prepareAndSend = function(actionType) {
+    /**
+     * --- CORE AUTH ENGINE ---
+     * Handles the HTTP communication with Google Apps Script.
+     */
+    $scope.executeAuth = function(actionType) {
         $scope.loading = true;
         $scope.errorMessage = "";
 
-        // Normalize data for Google Sheets consistency
+        // Prepare Payload
+        // .trim().toLowerCase() is critical to avoid "Invalid Login" errors 
+        // caused by accidental spaces or capital letters.
         const payload = {
             action: actionType,
             name: $scope.user.name || "",
             email: $scope.user.email.trim().toLowerCase(),
             password: $scope.user.password.trim(),
-            fingerprint: navigator.userAgent // Basic security tracking
+            fingerprint: navigator.userAgent // Optional: Helps track devices
         };
 
         $http.post(CONFIG.API_URL, JSON.stringify(payload))
@@ -48,29 +57,44 @@ app.controller('AuthController', function($scope, $http, $window, CONFIG) {
 
             if (res.status === "success") {
                 if (actionType === "login") {
-                    // Logic for verified users (Handles CAPS TRUE from sheet)
+                    // Check if Admin has verified the user (Column D in Sheet)
                     if (res.verified) {
+                        // Create Session
                         localStorage.setItem('userEmail', payload.email);
                         localStorage.setItem('isLoggedIn', 'true');
+                        
+                        // Redirect to Study Deck
                         $window.location.href = 'dashboard.html';
                     } else {
-                        $scope.errorMessage = "Payment pending or verification in progress.";
+                        $scope.errorMessage = "Access Pending: Please ensure payment proof is uploaded and verified.";
                     }
-                } else {
-                    // Success for Signup: Redirect to login or payment proof page
-                    alert("Account created successfully! Please Log In.");
-                    $window.location.href = 'login.html';
+                } else if (actionType === "signup") {
+                    // NEW: Redirect to Payment Page after Signup
+                    // Store email so the payment page knows which user is uploading proof
+                    localStorage.setItem('pendingEmail', payload.email);
+                    
+                    alert("Registration successful! Redirecting to payment...");
+                    $window.location.href = 'payment.html';
                 }
             } else {
-                $scope.errorMessage = res.message || "Action failed. Please try again.";
+                // Display error message from Google Script (e.g., "Email already registered")
+                $scope.errorMessage = res.message || "An error occurred. Please try again.";
             }
         })
         .catch(function(error) {
             console.error("Auth Error:", error);
-            $scope.errorMessage = "Connection error. Check your internet or API deployment.";
+            $scope.errorMessage = "Connection failed. Check your internet or API link.";
         })
         .finally(function() {
             $scope.loading = false;
         });
+    };
+
+    /**
+     * --- LOGOUT ---
+     */
+    $scope.logout = function() {
+        localStorage.clear();
+        $window.location.href = 'index.html';
     };
 });
