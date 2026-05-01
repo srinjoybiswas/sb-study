@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="sbNotesApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | SB Notes</title>
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- JS -->
+     <!-- 2. Your Custom Logic File -->
+     <script src="js/app.js"></script>
+     <script src="js/auth.js"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!-- Place this in the <head> of your HTML -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        body { background-color: #f4f7f6; }
+        .admin-header { background: #343a40; color: white; padding: 20px 0; margin-bottom: 30px; }
+        .stat-card { border: none; border-radius: 10px; }
+        .table-container { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .btn-approve { background-color: #28a745; color: white; }
+        .btn-reject { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body ng-controller="AdminController">
+
+<div class="admin-header shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h3 class="fw-bold mb-0"><i class="fas fa-user-shield me-2"></i> SB NOTES ADMIN</h3>
+        <button class="btn btn-outline-light btn-sm" ng-click="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Stats Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card stat-card p-3 shadow-sm border-start border-primary border-4">
+                <small class="text-muted text-uppercase fw-bold">Pending Approvals</small>
+                <h2 class="fw-bold">{{(pendingUsers | filter:{status:'pending'}).length}}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card p-3 shadow-sm border-start border-success border-4">
+                <small class="text-muted text-uppercase fw-bold">Total Verified</small>
+                <h2 class="fw-bold">{{(pendingUsers | filter:{status:'verified'}).length}}</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card p-3 shadow-sm border-start border-warning border-4">
+                <small class="text-uppercase fw-bold text-muted">Quick Actions</small>
+                <div class="mt-2">
+                    <button class="btn btn-sm btn-dark" ng-click="addDept()">Add Dept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Table -->
+    <div class="table-container shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Payment Verification Queue</h5>
+            <input type="text" class="form-control form-control-sm w-25" placeholder="Search email..." ng-model="searchEmail">
+        </div>
+
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Student Name</th>
+                    <th>Email ID</th>
+                    <th>Payment Proof</th>
+                    <th>Registration Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in pendingUsers | filter:searchEmail">
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>
+                        <button class="btn btn-sm btn-link" ng-click="viewProof(user.proofUrl)">View Screenshot</button>
+                    </td>
+                    <td>{{user.date}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-approve" ng-click="verifyUser(user.email, true)" ng-disabled="user.status == 'verified'">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn btn-sm btn-reject" ng-click="verifyUser(user.email, false)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal for Screenshot View -->
+<div class="w3-modal" id="proofModal" style="display:none;">
+    <div class="w3-modal-content w3-animate-top w3-card-4 rounded">
+        <header class="w3-container w3-light-grey"> 
+            <span ng-click="closeModal()" class="w3-button w3-display-topright">&times;</span>
+            <h4 class="py-2">Payment Verification</h4>
+        </header>
+        <div class="w3-container p-4 text-center">
+            <img ng-src="{{currentProof}}" class="img-fluid border shadow-sm" style="max-height: 500px;">
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('sbNotesApp', []);
+
+    app.controller('AdminController', function($scope, $http, $window) {
+        // REPLACE WITH YOUR APPS SCRIPT URL
+        const SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_URL_HERE";
+
+        // Mock Data
+        $scope.pendingUsers = [
+            { name: "Rahul Sharma", email: "rahul.bca28@heritage.edu", status: "pending", date: "2026-04-29", proofUrl: "https://via.placeholder.com/300x500?text=Payment+Screenshot" },
+            { name: "Anjali Das", email: "anjali.phy@caluniv.in", status: "verified", date: "2026-04-28", proofUrl: "https://via.placeholder.com/300x500?text=Payment+Screenshot" }
+        ];
+
+        $scope.viewProof = function(url) {
+            $scope.currentProof = url;
+            document.getElementById('proofModal').style.display = 'block';
+        };
+
+        $scope.closeModal = function() {
+            document.getElementById('proofModal').style.display = 'none';
+        };
+
+        $scope.verifyUser = function(email, isApproved) {
+            if(confirm("Are you sure you want to " + (isApproved ? "APPROVE" : "REJECT") + " this user?")) {
+                // Post to Google Apps Script
+                $http.post(SCRIPT_URL, {
+                    action: "adminVerify",
+                    targetEmail: email,
+                    approved: isApproved
+                }).then(function(res) {
+                    alert("User status updated successfully.");
+                    // Refresh data logic here
+                });
+            }
+        };
+
+        $scope.addDept = function() {
+            let name = prompt("Enter Department Name (e.g., ECE):");
+            if(name) {
+                // Logic to add to Google Sheet 'departments' tab
+                alert(name + " added to database.");
+            }
+        };
+
+        $scope.logout = function() {
+            $window.location.href = 'index.html';
+        };
+    });
+</script>
+
+</body>
+</html>

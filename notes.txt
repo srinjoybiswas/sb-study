@@ -1,0 +1,26 @@
+sb-notes/
+│
+├── index.html               # Landing Page
+├── login.html               # Login Page
+├── signup.html              # Signup Page
+├── dashboard.html           # Department + Search UI
+├── notes-viewer.html        # Notes display with anti-screenshot
+├── admin.html               # Add department + publish notes (manual)
+├── payment.html             # QR scanner / upload payment proof
+│
+├── css/
+│   ├── w3.css (local or CDN)
+│   ├── bootstrap.min.css
+│   └── custom.css
+│
+├── js/
+│   ├── angular.min.js
+│   ├── app.js               # AngularJS module & controllers
+│   ├── auth.js              # Signup/Login via Google Sheets
+│   ├── payment.js           # QR upload & verification
+│   └── anti-screenshot.js   # Disable copy/right-click/prtsc
+│
+├── assets/
+│   └── qr-code.png          # Static payment QR
+│
+└── README.md                # Git instructions for publishing notes

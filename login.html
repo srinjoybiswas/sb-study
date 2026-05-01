@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="sbNotesApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | SB Notes</title>
+    
+    <!-- 1. Load AngularJS ONLY ONCE -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- 2. CSS Frameworks -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- 3. Load Your Logic Files IN ORDER -->
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+
+    <style>
+        body { background-color: #f8f9fa; height: 100vh; display: flex; align-items: center; }
+        .login-card { max-width: 400px; width: 100%; border-radius: 15px; border: none; }
+        .btn-primary { background-color: #007bff; border: none; padding: 12px; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 20px; height: 20px; animation: spin 2s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+
+<!-- Uses LoginController from your js/auth.js -->
+<body ng-controller="LoginController">
+
+<div class="container d-flex justify-content-center">
+    <div class="card login-card shadow-lg p-4">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary">SB NOTES</h2>
+            <p class="text-muted">Sign in to access your dashboard</p>
+        </div>
+
+        <!-- Alert Box -->
+        <div class="alert alert-danger p-2 small" ng-show="errorMessage">
+            <i class="fas fa-exclamation-circle me-2"></i> {{errorMessage}}
+        </div>
+
+        <form ng-submit="handleLogin()">
+            <div class="mb-3">
+                <label class="form-label small fw-bold">College Email ID</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="fas fa-envelope text-muted"></i></span>
+                    <input type="email" class="form-control" ng-model="user.email" placeholder="name@college.edu" required>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label small fw-bold">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="fas fa-lock text-muted"></i></span>
+                    <input type="password" class="form-control" ng-model="user.password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 rounded-pill mb-3" ng-disabled="loading">
+                <span ng-hide="loading">Login</span>
+                <span ng-show="loading" class="loader"></span>
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p class="small mb-0">Don't have an account? <a href="signup.html" class="text-decoration-none">Sign Up</a></p>
+            <p class="small"><a href="#" class="text-muted">Forgot Password?</a></p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
