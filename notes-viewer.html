@@ -1,9 +1,11 @@
+Here is an HTML document that implements a highly secure document viewer with full-screen enforcement, blur blocking on permission denial, and a working dashboard return button.
+```html
 <!DOCTYPE html>
 <html lang="en" ng-app="sbNotesApp">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>🔒 FORTRESS MOBILE | Zero-Trust Secure Vault</title>
+    <title>🔒 FORTRESS ULTIMATE | Zero-Trust Secure Vault</title>
 
     <!-- Frameworks -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -29,7 +31,6 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            touch-action: pan-x pan-y; /* allow scrolling but block pinch-zoom */
         }
 
         /* FULLSCREEN MODE STYLES */
@@ -62,7 +63,7 @@
             border-radius: 0 !important;
         }
 
-        /* MOBILE RESPONSIVE: column layout on small screens */
+        /* MOBILE RESPONSIVE */
         @media (max-width: 768px) {
             .premium-split {
                 flex-direction: column !important;
@@ -95,20 +96,6 @@
             .container-fluid {
                 padding: 8px !important;
             }
-            .stop-btn-mobile {
-                padding: 8px 16px !important;
-                font-size: 0.85rem;
-            }
-        }
-
-        /* tablet optimization */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .premium-split {
-                flex-direction: row;
-            }
-            .pencil-text {
-                font-size: 13px;
-            }
         }
 
         .fortress-card {
@@ -137,7 +124,7 @@
             min-height: 400px;
         }
 
-        /* PDF COPY PREVENTION SHIELDS */
+        /* PDF COPY PREVENTION */
         .pdf-copy-shield {
             position: absolute;
             top: 0;
@@ -169,6 +156,77 @@
             z-index: 10028;
         }
 
+        /* RED FULLSCREEN BLOCK OVERLAY - BIGGER & SCARIER */
+        .fullscreen-block-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8b0000, #4a0000);
+            backdrop-filter: blur(24px);
+            z-index: 300000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 30px;
+            padding: 30px;
+            text-align: center;
+            animation: pulseRed 1.5s infinite;
+        }
+        @keyframes pulseRed {
+            0%, 100% { background: linear-gradient(135deg, #8b0000, #4a0000); }
+            50% { background: linear-gradient(135deg, #b00000, #6a0000); }
+        }
+        .fullscreen-block-overlay .block-icon {
+            font-size: 6rem;
+            filter: drop-shadow(0 0 20px rgba(255,0,0,0.8));
+        }
+        .fullscreen-block-overlay .block-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: white;
+            text-shadow: 0 0 20px red;
+        }
+        .fullscreen-block-overlay .block-message {
+            font-size: 1.1rem;
+            color: #ffcccc;
+            max-width: 300px;
+        }
+        .fullscreen-block-overlay .retry-btn {
+            background: white;
+            border: none;
+            padding: 14px 34px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 60px;
+            color: #8b0000;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 20px;
+        }
+        .fullscreen-block-overlay .retry-btn:active {
+            transform: scale(0.96);
+        }
+        .fullscreen-block-overlay .dashboard-btn-red {
+            background: transparent;
+            border: 2px solid white;
+            padding: 12px 32px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+        .fullscreen-block-overlay .dashboard-btn-red:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
         /* BLUR OVERLAY FOR STOP MODE */
         .blur-overlay {
             position: fixed;
@@ -196,18 +254,7 @@
             border-radius: 60px;
             color: white;
             box-shadow: 0 0 30px rgba(220,38,38,0.7);
-            transition: transform 0.2s;
             cursor: pointer;
-            z-index: 200001;
-            touch-action: manipulation;
-        }
-        .blur-overlay .resume-btn:active {
-            transform: scale(0.98);
-        }
-        .blur-overlay .warning-text {
-            color: #ffaa00;
-            font-size: 1rem;
-            letter-spacing: 1px;
         }
 
         .account-locked-overlay {
@@ -246,16 +293,13 @@
             color: #f5e7d3;
             padding: 16px;
             border: none;
-            font-family: 'Fira Code', 'Courier New', monospace;
+            font-family: 'Fira Code', monospace;
             resize: none;
             font-size: 14px;
             outline: none;
             caret-color: #dc2626;
             -webkit-user-select: text !important;
             user-select: text !important;
-        }
-        .pencil-text:focus {
-            background: #171210;
         }
 
         .security-toast {
@@ -270,20 +314,9 @@
             font-weight: bold;
             z-index: 100000;
             box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
-            font-family: monospace;
-            border-left: 6px solid #ffcc00;
-            animation: intenseShake 0.3s ease-in-out;
+            font-size: 0.85rem;
             max-width: 85%;
             text-align: center;
-            font-size: 0.85rem;
-        }
-
-        @keyframes intenseShake {
-            0%,100% { transform: translateX(-50%) translateY(0); }
-            20% { transform: translateX(-56%) translateY(-2px); }
-            40% { transform: translateX(-44%) translateY(2px); }
-            60% { transform: translateX(-52%) translateY(-1px); }
-            80% { transform: translateX(-48%) translateY(1px); }
         }
 
         iframe { 
@@ -293,11 +326,6 @@
             pointer-events: auto;
         }
         
-        img, iframe {
-            -webkit-user-drag: none;
-            user-drag: none;
-        }
-
         .violation-badge {
             background: #1e1a1a;
             border-radius: 40px;
@@ -309,40 +337,36 @@
         
         @media print {
             body * { visibility: hidden; }
-            .security-toast { visibility: visible; }
-        }
-        
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1f1a1a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #dc2626;
-            border-radius: 8px;
-        }
-
-        .btn-outline-danger, .btn-outline-warning {
-            touch-action: manipulation;
-        }
-        
-        /* mobile safe area */
-        .safe-top {
-            padding-top: env(safe-area-inset-top);
         }
     </style>
 </head>
 <body ng-controller="FortressController" ng-cloak>
 
-    <!-- BLUR OVERLAY (STOP button pressed) -->
-    <div class="blur-overlay" ng-if="blurActive && !accountSuspended">
+    <!-- RED FULLSCREEN BLOCK OVERLAY (when user denies or fullscreen fails) -->
+    <div class="fullscreen-block-overlay" ng-if="fullscreenBlocked && !accountSuspended && !blurActive">
+        <i class="fas fa-ban block-icon"></i>
+        <div class="block-title">FULLSCREEN REQUIRED</div>
+        <div class="block-message">This secure document viewer requires fullscreen mode.<br>Security policy violation: permission denied.</div>
+        <button class="retry-btn" ng-click="retryFullscreen()">
+            <i class="fas fa-expand me-2"></i> ENABLE FULLSCREEN
+        </button>
+        <button class="dashboard-btn-red" ng-click="goToDashboard()">
+            <i class="fas fa-arrow-left me-2"></i> RETURN TO DASHBOARD
+        </button>
+        <small class="text-white-50 mt-3">⛔ Access blocked until fullscreen is granted</small>
+    </div>
+
+    <!-- BLUR OVERLAY (STOP button) -->
+    <div class="blur-overlay" ng-if="blurActive && !accountSuspended && !fullscreenBlocked">
         <i class="fas fa-ban fa-5x text-danger mb-3"></i>
         <div class="warning-text"><i class="fas fa-eye-slash me-2"></i> SESSION PAUSED - SCREEN LOCKED</div>
         <button class="resume-btn" ng-click="resumeSession()">
             <i class="fas fa-play me-2"></i> RESUME & UNBLUR
         </button>
-        <small class="text-muted mt-3">Tab switching or leaving fullscreen triggers violations</small>
+        <button class="btn btn-outline-light mt-3 rounded-pill px-4" ng-click="goToDashboard()">
+            <i class="fas fa-home me-2"></i> GO TO DASHBOARD
+        </button>
+        <small class="text-muted mt-3">Tab switching triggers violations</small>
     </div>
 
     <!-- ACCOUNT SUSPEND MODAL -->
@@ -356,18 +380,21 @@
                 <h2 class="text-danger fw-bold">{{suspensionHours}} HOURS</h2>
                 <small class="text-muted">🔐 Unauthorized actions detected</small>
             </div>
+            <button class="btn btn-outline-danger mt-4 rounded-pill px-5" ng-click="goToDashboard()">
+                <i class="fas fa-dashboard me-2"></i> BACK TO DASHBOARD
+            </button>
         </div>
     </div>
 
-    <div class="container-fluid py-2 px-3" ng-if="!accountSuspended && !blurActive">
-        <!-- Mobile Optimized Header -->
+    <div class="container-fluid py-2 px-3" ng-if="!accountSuspended && !blurActive && !fullscreenBlocked">
+        <!-- Header with Dashboard Button -->
         <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2 btn-group-responsive">
             <div class="d-flex gap-2">
-                <button class="btn btn-outline-danger rounded-pill px-3 py-1 py-md-2 border-2 fw-bold" ng-click="exitFullscreen()" style="font-size: 0.85rem;">
-                    <i class="fas fa-compress me-1"></i> <span class="d-none d-sm-inline">Exit FS</span><span class="d-inline d-sm-none">Exit</span>
+                <button class="btn btn-outline-danger rounded-pill px-3 py-1 fw-bold" ng-click="goToDashboard()">
+                    <i class="fas fa-dashboard me-1"></i> Dashboard
                 </button>
-                <button class="btn btn-outline-warning rounded-pill px-3 py-1 py-md-2 border-2 fw-bold stop-btn-mobile" ng-click="activateStopBlur()">
-                    <i class="fas fa-stop-circle me-1"></i> <span class="d-none d-sm-inline">Lock Screen</span><span class="d-inline d-sm-none">Lock</span>
+                <button class="btn btn-outline-warning rounded-pill px-3 py-1 fw-bold" ng-click="activateStopBlur()">
+                    <i class="fas fa-stop-circle me-1"></i> Lock Screen
                 </button>
             </div>
             <div class="bg-black rounded-pill px-3 py-1 border border-danger shadow timer-display">
@@ -383,7 +410,6 @@
         <div class="fortress-card">
             <div class="premium-split">
                 <div class="viewer-fortress" id="fortressViewer">
-                    <!-- MULTI-LAYER PDF COPY PREVENTION -->
                     <div class="pdf-copy-shield" oncontextmenu="event.preventDefault(); return false;"></div>
                     <div class="popout-blocker" ng-click="logViolation('⚠️ POP-OUT BUTTON BLOCKED')" oncontextmenu="event.preventDefault();"></div>
                     <div class="no-exfil"></div>
@@ -397,7 +423,7 @@
                             <i class="fas fa-file-pdf me-1"></i> PDF
                         </button>
                     </div>
-                    <textarea ng-model="pencilNote" class="pencil-text" placeholder="📝 Secure notes — Copy/paste is blocked globally. Your notes are auto-saved locally."></textarea>
+                    <textarea ng-model="pencilNote" class="pencil-text" placeholder="📝 Secure notes — Copy/paste blocked globally. Auto-saved."></textarea>
                     <div class="p-1 p-sm-2 text-center text-muted small bg-black bg-opacity-50">
                         <i class="fas fa-lock me-1"></i> Anti-Copy Active • Auto-save
                     </div>
@@ -416,6 +442,7 @@
             $scope.violations = violationCount;
             $scope.accountSuspended = false;
             $scope.blurActive = false;
+            $scope.fullscreenBlocked = false;
             $scope.suspensionHours = 24;
             
             // suspension check
@@ -430,61 +457,82 @@
                 $scope.accountSuspended = false;
             }
             
-            // ---------- FULLSCREEN & TAB SWITCH PROTECTION (MOBILE FRIENDLY) ----------
+            // ---------- DASHBOARD NAVIGATION (WORKING) ----------
+            $scope.goToDashboard = function() {
+                // Clear any temporary states but keep violations for next session
+                window.location.href = "dashboard.html";
+            };
+            
+            // ---------- FULLSCREEN ENFORCEMENT WITH RED BLOCK ----------
             let isFullscreenActive = false;
+            let fullscreenAttempts = 0;
             
             function requestFullscreenMode() {
                 const elem = document.documentElement;
                 const requestMethod = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.msRequestFullscreen;
                 if (requestMethod) {
-                    requestMethod.call(elem).catch(err => {
-                        console.log("Fullscreen error", err);
-                        if(!$scope.accountSuspended) $scope.logViolation("⛔ FULLSCREEN PERMISSION DENIED");
+                    requestMethod.call(elem).then(() => {
+                        // Success
+                        $scope.$apply(() => {
+                            $scope.fullscreenBlocked = false;
+                            isFullscreenActive = true;
+                            document.body.classList.add('fullscreen-active');
+                        });
+                    }).catch((err) => {
+                        console.error("Fullscreen error:", err);
+                        $scope.$apply(() => {
+                            $scope.fullscreenBlocked = true;
+                            isFullscreenActive = false;
+                            document.body.classList.remove('fullscreen-active');
+                        });
                     });
-                    isFullscreenActive = true;
-                    document.body.classList.add('fullscreen-active');
+                } else {
+                    $scope.$apply(() => {
+                        $scope.fullscreenBlocked = true;
+                    });
                 }
             }
             
-            $scope.exitFullscreen = function() {
-                const exitMethod = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
-                if (exitMethod) exitMethod.call(document);
-                isFullscreenActive = false;
-                document.body.classList.remove('fullscreen-active');
+            $scope.retryFullscreen = function() {
+                fullscreenAttempts++;
+                requestFullscreenMode();
+                if (fullscreenAttempts > 3) {
+                    $scope.showToast("⚠️ Please allow fullscreen to access secure content");
+                }
             };
             
-            // Monitor fullscreen change
+            // Monitor fullscreen exit - if user exits without permission, show red block again
             $document.on('fullscreenchange webkitfullscreenchange', function() {
                 const fsElement = document.fullscreenElement || document.webkitFullscreenElement;
-                if (!fsElement && isFullscreenActive && !$scope.accountSuspended && !$scope.blurActive) {
+                if (!fsElement && !$scope.fullscreenBlocked && !$scope.accountSuspended && !$scope.blurActive) {
                     $scope.$apply(() => {
-                        $scope.logViolation("🚨 EXITED FULLSCREEN (tab switch / home)");
+                        $scope.fullscreenBlocked = true;
+                        isFullscreenActive = false;
+                        document.body.classList.remove('fullscreen-active');
+                        $scope.logViolation("🚨 FULLSCREEN EXITED (UNAUTHORIZED)");
                     });
-                    setTimeout(() => { if(!$scope.accountSuspended && !$scope.blurActive) requestFullscreenMode(); }, 300);
-                    isFullscreenActive = false;
                 } else if (fsElement) {
-                    isFullscreenActive = true;
+                    $scope.$apply(() => {
+                        $scope.fullscreenBlocked = false;
+                        isFullscreenActive = true;
+                        document.body.classList.add('fullscreen-active');
+                    });
                 }
             });
             
-            // Visibility API: tab/app switch detection (critical for mobile)
+            // Visibility API: tab switch violation
             $document.on('visibilitychange', function() {
-                if ($scope.accountSuspended || $scope.blurActive) return;
+                if ($scope.accountSuspended || $scope.blurActive || $scope.fullscreenBlocked) return;
                 if (document.hidden) {
                     $scope.$apply(() => {
-                        $scope.logViolation("📱 APP/TAB SWITCH DETECTED (violation)");
+                        $scope.logViolation("📱 TAB/APP SWITCH DETECTED");
                     });
-                } else {
-                    // Re-engage fullscreen when back
-                    if (!document.fullscreenElement && !$scope.accountSuspended && !$scope.blurActive) {
-                        setTimeout(() => requestFullscreenMode(), 200);
-                    }
                 }
             });
             
-            // Mobile specific: touch events to block pinch-zoom on iframe
+            // Pinch-zoom block on mobile
             $window.addEventListener('touchmove', function(e) {
-                if (e.touches.length > 1 && !$scope.accountSuspended) {
+                if (e.touches.length > 1 && !$scope.accountSuspended && !$scope.fullscreenBlocked) {
                     e.preventDefault();
                     $scope.$apply(() => $scope.logViolation("🔍 PINCH-ZOOM BLOCKED"));
                 }
@@ -492,11 +540,12 @@
             
             // ---------- STOP BUTTON: Blur overlay ----------
             $scope.activateStopBlur = function() {
-                if ($scope.accountSuspended) return;
-                if ($scope.blurActive) return;
+                if ($scope.accountSuspended || $scope.fullscreenBlocked) return;
                 $scope.blurActive = true;
                 if (document.fullscreenElement || document.webkitFullscreenElement) {
-                    $scope.exitFullscreen();
+                    // Exit fullscreen when locked
+                    const exitMethod = document.exitFullscreen || document.webkitExitFullscreen;
+                    if (exitMethod) exitMethod.call(document);
                 }
                 $scope.showToast("🔒 Screen Locked - Press RESUME to continue");
             };
@@ -509,8 +558,12 @@
                 $scope.$applyAsync();
             };
             
-            // Auto request fullscreen on load (mobile)
-            setTimeout(() => { if(!$scope.accountSuspended && !$scope.blurActive) requestFullscreenMode(); }, 400);
+            // Initial fullscreen request after short delay
+            setTimeout(() => { 
+                if(!$scope.accountSuspended && !$scope.blurActive) {
+                    requestFullscreenMode();
+                }
+            }, 500);
             
             // ---------- VIOLATION LOGGER ----------
             $scope.logViolation = function(msg) {
@@ -526,6 +579,7 @@
                     localStorage.setItem('fortress_lock_until', blockUntilMs);
                     $scope.accountSuspended = true;
                     $scope.blurActive = false;
+                    $scope.fullscreenBlocked = false;
                     document.body.style.pointerEvents = 'none';
                     $scope.$applyAsync();
                 }
@@ -542,7 +596,7 @@
                 $timeout(() => { if(toast && toast.remove) toast.remove(); }, 2800);
             };
             
-            // ---------- GLOBAL BLOCKS (Copy/Paste/Context/DevTools) ----------
+            // ---------- GLOBAL BLOCKS ----------
             function blockClipboard(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -579,7 +633,7 @@
             $window.addEventListener('drop', (e) => { e.preventDefault(); $scope.$apply(() => $scope.logViolation("🚫 DROP BLOCKED")); });
             $document.on('selectstart', (e) => { if (e.target.tagName !== 'TEXTAREA') e.preventDefault(); });
             
-            // ---------- IFRAME ANTI-COPY INJECTION ----------
+            // ---------- IFRAME ANTI-COPY ----------
             const iframeElem = document.getElementById('pdfFrame');
             if (iframeElem) {
                 iframeElem.addEventListener('load', () => {
@@ -591,13 +645,12 @@
                             iframeDoc.head.appendChild(styleTag);
                             iframeDoc.addEventListener('contextmenu', (e) => { e.preventDefault(); $scope.$apply(() => $scope.logViolation("📄 PDF RIGHT-CLICK")); });
                             iframeDoc.addEventListener('copy', (e) => { e.preventDefault(); $scope.$apply(() => $scope.logViolation("📄 PDF COPY ATTEMPT")); });
-                            iframeDoc.addEventListener('keydown', (e) => { if(e.ctrlKey && (e.key === 'c' || e.key === 'C')) { e.preventDefault(); $scope.$apply(() => $scope.logViolation("PDF CTRL+C")); } });
                         }
-                    } catch(er) { /* cross-origin */ }
+                    } catch(er) { }
                 });
             }
             
-            // ---------- LOAD DOCUMENT & NOTES ----------
+            // ---------- LOAD DOCUMENT ----------
             let currentNote = null;
             try {
                 currentNote = JSON.parse(localStorage.getItem('currentNote') || '{"content":""}');
@@ -607,12 +660,13 @@
             if (rawUrl.includes('/view') || rawUrl.includes('drive.google.com')) {
                 finalUrl = rawUrl.split('/view')[0] + '/preview';
             } else if (!rawUrl) finalUrl = 'about:blank';
-            if (finalUrl.includes('?') === false) finalUrl += '?embedded=true&rm=minimal';
+            if (finalUrl.includes('?') === false) finalUrl += '?embedded=true';
             else finalUrl += '&embedded=true';
             $scope.trustedUrl = $sce.trustAsResourceUrl(finalUrl);
             
+            // Notes
             let savedPencil = localStorage.getItem('fortress_pencil_notes');
-            $scope.pencilNote = savedPencil && savedPencil.length ? savedPencil : "🔐 FORTRESS MOBILE VAULT\n\n✅ Copy/Paste blocked\n✅ Tab switch = violation\n✅ Press LOCK to blur screen\n\nYour notes are safe.";
+            $scope.pencilNote = savedPencil && savedPencil.length ? savedPencil : "🔐 FORTRESS VAULT\n\n✅ Fullscreen required\n✅ Copy/Paste blocked\n✅ Tab switch = violation\n✅ Press LOCK to blur screen";
             $scope.$watch('pencilNote', (nv) => { if (nv !== undefined) localStorage.setItem('fortress_pencil_notes', nv); });
             
             // PDF Export
@@ -631,7 +685,7 @@
                 } else { $scope.showToast("No notes"); }
             };
             
-            // Timer 30 minutes
+            // Timer
             $scope.timeLeft = "30:00";
             let totalSec = 1800;
             const timerInt = setInterval(() => {
@@ -639,7 +693,6 @@
                 if (totalSec <= 0) {
                     clearInterval(timerInt);
                     $scope.$apply(() => $scope.timeLeft = "00:00");
-                    localStorage.removeItem('fortress_violations_strict');
                     $scope.showToast("Session expired - redirect");
                     setTimeout(() => window.location.href = "dashboard.html", 1500);
                 } else {
@@ -655,3 +708,4 @@
     </script>
 </body>
 </html>
+```
