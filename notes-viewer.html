@@ -3,241 +3,233 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Viewer | SB Notes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🔒 Fortress Viewer | SB Notes Ultra Secure</title>
 
     <!-- Frameworks -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- Logic Files -->
-    <script src="js/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-        body { background-color: #121212; color: #e0e0e0; overflow-x: hidden; font-family: 'Segoe UI', sans-serif; }
-
-        .watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 5vw;
-            color: rgba(255, 255, 255, 0.05);
-            white-space: nowrap;
-            z-index: 10005;
-            pointer-events: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            user-select: none;
+        * {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
         }
 
-        .note-card {
-            background: #1e1e1e;
-            border: 1px solid #333;
-            border-radius: 15px;
-            min-height: 85vh;
+        body {
+            background: radial-gradient(circle at 20% 30%, #07090f, #030408);
+            color: #eef2ff;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        .fortress-card {
+            background: rgba(8, 10, 18, 0.9);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(220, 38, 38, 0.5);
+            border-radius: 36px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        .premium-split {
             display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            min-height: 80vh;
         }
 
-        .viewer-container {
-            flex-grow: 1;
-            width: 100%;
-            height: 750px;
-            background: #fff;
+        .viewer-fortress {
+            flex: 2.3;
+            background: #010102;
+            border-radius: 28px;
+            margin: 14px;
             position: relative;
             overflow: hidden;
+            border: 1px solid #dc262650;
         }
 
-        .button-blocker {
+        /* SHIELD: Blocks pop-out button from image_02759d.png */
+        .iframe-shield {
             position: absolute;
             top: 0;
             right: 0;
-            width: 150px; 
-            height: 60px;
-            z-index: 10010; 
+            width: 120px;
+            height: 70px;
+            z-index: 10025;
             background: transparent;
-            cursor: default;
         }
 
-        .protection-overlay {
-            position: absolute;
+        /* SUSPENSION OVERLAY */
+        .account-locked-overlay {
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10000;
-            pointer-events: none;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
-        #content-vault { transition: filter 0.3s ease; }
+        .pencil-panel {
+            flex: 1.1;
+            background: rgba(0, 0, 0, 0.7);
+            border-left: 2px solid #dc2626;
+            margin: 14px 14px 14px 0;
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+        }
 
-        @media print { body { display: none !important; } }
-        [ng-cloak] { display: none !important; }
+        .pencil-text {
+            width: 100%;
+            flex-grow: 1;
+            background: #1e1915;
+            color: #f0dbc0;
+            padding: 15px;
+            border: none;
+            font-family: monospace;
+            resize: none;
+        }
+
+        .security-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #dc2626;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            z-index: 100000;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(-50%); }
+            25% { transform: translateX(-55%); }
+            75% { transform: translateX(-45%); }
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+        [ng-cloak] { display: none; }
     </style>
 </head>
 
-<body ng-controller="ViewerController" oncontextmenu="return false;" ng-cloak>
+<body ng-controller="FortressController" ng-cloak>
 
-    <!-- Watermark -->
-    <div class="watermark">{{userEmail}} - SB NOTES</div>
+    <!-- ACCOUNT SUSPENDED SCREEN (Triggered after 10 violations) -->
+    <div class="account-locked-overlay" ng-if="accountSuspended">
+        <i class="fas fa-user-slash fa-5x text-danger mb-4"></i>
+        <h1 class="text-white fw-bold">ACCOUNT SUSPENDED</h1>
+        <p class="text-danger fs-4">Security Protocol Violated 10 Times</p>
+        <div class="bg-dark border border-danger p-4 rounded-4 mt-3">
+            <p class="text-white mb-1">Your access is blocked for:</p>
+            <h2 class="text-danger fw-bold">24 HOURS</h2>
+            <small class="text-muted">Reason: Multiple unauthorized Copy/Paste/Inspect attempts</small>
+        </div>
+    </div>
 
-    <div class="container-fluid py-4 px-md-5">
-
+    <div class="container-fluid py-3" ng-if="!accountSuspended">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <a href="dashboard.html" class="btn btn-outline-light rounded-pill px-4 shadow-sm">
-                <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
-            </a>
-
-            <!-- ✅ UPDATED RIGHT SIDE -->
-            <div class="text-end">
-
-                <div class="mb-2">
-                    <span class="badge bg-warning text-dark p-2 px-3 shadow-sm">
-                        ⏱️ {{timeLeft}}
-                    </span>
-                </div>
-
-                <div class="mb-2">
-                    <button class="btn btn-sm btn-outline-light me-1" ng-click="zoomIn()">
-                        <i class="fas fa-search-plus"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-light" ng-click="zoomOut()">
-                        <i class="fas fa-search-minus"></i>
-                    </button>
-                </div>
-
-                <span class="badge bg-danger p-2 px-3 shadow-sm border border-danger">
-                    <i class="fas fa-shield-alt me-1"></i> SECURE VIEWING MODE
-                </span>
+            <a href="dashboard.html" class="btn btn-outline-danger rounded-pill px-4">Dashboard</a>
+            <div class="bg-dark rounded-pill px-3 py-2 border border-danger">
+                <i class="far fa-clock text-danger me-2"></i><b>{{timeLeft}}</b>
             </div>
         </div>
 
-        <div class="note-card shadow-lg" id="content-vault">
-
-            <div class="p-4 border-bottom border-secondary bg-dark text-white">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="badge bg-primary mb-2">{{note.dept}}</span>
-                        <h2 class="fw-bold mb-0 text-white">{{note.title}}</h2>
-                    </div>
-                    <div class="text-end d-none d-md-block">
-                        <small class="text-muted d-block small">Authorized for:</small>
-                        <small class="text-info fw-bold">{{userEmail}}</small>
-                    </div>
+        <div class="fortress-card">
+            <div class="premium-split">
+                <div class="viewer-fortress">
+                    <div class="iframe-shield" ng-click="logViolation('🚫 Pop-out blocked')"></div>
+                    <iframe ng-src="{{trustedUrl}}" id="pdfFrame"></iframe>
                 </div>
-            </div>
 
-            <div ng-show="loading" class="text-center py-5 my-5">
-                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
-                <p class="mt-3 text-muted fw-bold">Verifying Credentials & Loading Content...</p>
-            </div>
-
-            <div ng-hide="loading" class="viewer-container">
-                <div class="button-blocker"></div>
-                <div class="protection-overlay"></div>
-
-                <iframe 
-                    ng-src="{{trustedUrl}}" 
-                    width="100%" 
-                    height="100%" 
-                    frameborder="0" 
-                    allow="autoplay"
-                    style="position: relative; z-index: 1;">
-                </iframe>
+                <div class="pencil-panel">
+                    <div class="p-3 border-bottom border-danger d-flex justify-content-between">
+                        <span class="text-white"><i class="fas fa-pencil-alt text-danger me-2"></i>Pencil</span>
+                        <button class="btn btn-sm btn-outline-danger" ng-click="downloadNotesPDF()"><i class="fas fa-download"></i></button>
+                    </div>
+                    <textarea ng-model="pencilNote" class="pencil-text" placeholder="📝 Secure notes..."></textarea>
+                    <div class="p-2 text-center text-muted small">Violations: {{violations}}/10</div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        app.controller('ViewerController', function ($scope, $sce, $window) {
+        const app = angular.module('sbNotesApp', []);
+        app.controller('FortressController', function ($scope, $sce, $window, $timeout) {
+            
+            // SECURITY TRACKER
+            $scope.violations = parseInt(localStorage.getItem('security_violations')) || 0;
+            $scope.accountSuspended = false;
 
-            $scope.userEmail = localStorage.getItem('userEmail') || "UNAUTHORIZED_ACCESS";
-            $scope.loading = true;
-
-            if (localStorage.getItem('isLoggedIn') !== 'true') {
-                $window.location.href = 'login.html';
+            // CHECK IF PREVIOUSLY SUSPENDED
+            const suspensionTime = localStorage.getItem('suspension_end');
+            if (suspensionTime && new Date().getTime() < suspensionTime) {
+                $scope.accountSuspended = true;
             }
 
-            const savedNote = localStorage.getItem('currentNote');
-            if (!savedNote) {
-                $window.location.href = 'dashboard.html';
-                return;
-            }
-
-            $scope.note = JSON.parse(savedNote);
-
-            let rawUrl = $scope.note.content; 
-            let cleanUrl = rawUrl.split('/view')[0] + '/preview';
-            $scope.trustedUrl = $sce.trustAsResourceUrl(cleanUrl);
-
-            setTimeout(() => {
-                $scope.loading = false;
-                $scope.$apply();
-            }, 1200);
-
-            // Blur protection
-            $window.onblur = () => document.getElementById('content-vault').style.filter = "blur(25px)";
-            $window.onfocus = () => document.getElementById('content-vault').style.filter = "blur(0px)";
-
-            // Keyboard protection
-            document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && (e.key === 'p' || e.key === 's' || e.key === 'u' || (e.shiftKey && e.key === 'I'))) {
-                    e.preventDefault();
-                    alert("Security Violation: This resource cannot be saved or printed.");
+            $scope.logViolation = function(msg) {
+                $scope.violations++;
+                localStorage.setItem('security_violations', $scope.violations);
+                
+                if ($scope.violations >= 10) {
+                    const blockUntil = new Date().getTime() + (24 * 60 * 60 * 1000);
+                    localStorage.setItem('suspension_end', blockUntil);
+                    $scope.accountSuspended = true;
+                } else {
+                    $scope.showToast(`${msg} (${$scope.violations}/10 warning)`);
                 }
-                if (e.key === "PrintScreen") {
-                    navigator.clipboard.writeText("Content Protected by SB Notes");
-                    alert("Screenshots are strictly prohibited.");
+            };
+
+            $scope.showToast = (msg) => {
+                const toast = document.createElement('div');
+                toast.className = 'security-toast';
+                toast.innerText = msg;
+                document.body.appendChild(toast);
+                $timeout(() => toast.remove(), 2500);
+            };
+
+            // BLOCK COPY, PASTE, CONTEXT MENU, INSPECT
+            $window.addEventListener('copy', (e) => { e.preventDefault(); $scope.$apply(() => $scope.logViolation('📋 COPY BLOCKED')); });
+            $window.addEventListener('paste', (e) => { e.preventDefault(); $scope.$apply(() => $scope.logViolation('📌 PASTE BLOCKED')); });
+            $window.addEventListener('contextmenu', (e) => { e.preventDefault(); $scope.$apply(() => $scope.logViolation('🖱️ RIGHT-CLICK BLOCKED')); });
+            
+            $window.addEventListener('keydown', (e) => {
+                if (e.key === "F12" || (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) || (e.ctrlKey && e.key === "U")) {
+                    e.preventDefault();
+                    $scope.$apply(() => $scope.logViolation('🛡️ DEVTOOLS BLOCKED'));
                 }
             });
 
-            // =====================
-            // 🔍 ZOOM
-            // =====================
-            $scope.zoomLevel = 1;
+            // DATA LOADING
+            const savedNote = JSON.parse(localStorage.getItem('currentNote') || '{"content":""}');
+            $scope.trustedUrl = $sce.trustAsResourceUrl(savedNote.content.split('/view')[0] + '/preview');
 
-            $scope.zoomIn = function () {
-                $scope.zoomLevel += 0.1;
-                document.querySelector("iframe").style.transform = "scale(" + $scope.zoomLevel + ")";
-                document.querySelector("iframe").style.transformOrigin = "0 0";
+            $scope.downloadNotesPDF = () => {
+                html2pdf().from(document.querySelector('.pencil-text')).save('Notes.pdf');
             };
 
-            $scope.zoomOut = function () {
-                if ($scope.zoomLevel > 0.5) {
-                    $scope.zoomLevel -= 0.1;
-                    document.querySelector("iframe").style.transform = "scale(" + $scope.zoomLevel + ")";
-                    document.querySelector("iframe").style.transformOrigin = "0 0";
-                }
-            };
-
-            // =====================
-            // ⏱️ TIMER (30 MIN)
-            // =====================
-            let totalTime = 30 * 60;
-
-            function updateTimer() {
-                let m = Math.floor(totalTime / 60);
-                let s = totalTime % 60;
-
-                $scope.$applyAsync(() => {
-                    $scope.timeLeft = m + ":" + (s < 10 ? "0" : "") + s;
-                });
-
-                if (totalTime <= 0) {
-                    alert("Session expired.");
-                    window.location.href = "dashboard.html";
-                }
-
-                totalTime--;
-            }
-
-            setInterval(updateTimer, 1000);
+            // TIMER
+            $scope.timeLeft = "30:00";
+            let totalSec = 1800;
+            setInterval(() => {
+                totalSec--;
+                let m = Math.floor(totalSec / 60);
+                let s = totalSec % 60;
+                $scope.$apply(() => { $scope.timeLeft = m + ":" + (s < 10 ? "0" : "") + s; });
+            }, 1000);
         });
     </script>
-
 </body>
 </html>
