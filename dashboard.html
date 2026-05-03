@@ -1,176 +1,307 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="sbNotesApp">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | SB Notes</title>
-    
-    <!-- 1. AngularJS Framework -->
+    <title>Dashboard | SB Notes</title> <!-- 1. AngularJS Framework -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    
     <!-- 2. CSS Frameworks -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <!-- 3. Modular Logic (CRITICAL: Load in this order) -->
     <script src="js/app.js"></script>
     <script src="js/dashboard.js"></script>
-
     <style>
-        :root { --sb-primary: #007bff; --sb-dark: #212529; }
-        body { background: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
+        :root {
+            --sb-primary: #007bff;
+            --sb-dark: #212529;
+        }
+
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         /* Sidebar Styling */
-        .sidebar { height: 100vh; background: var(--sb-dark); color: white; position: fixed; width: 260px; z-index: 1000; transition: 0.3s; }
-        .sidebar .nav-link { color: rgba(255,255,255,0.7); border-radius: 8px; margin: 5px 0; }
-        .sidebar .nav-link.active { background: var(--sb-primary); color: white; }
-        .sidebar .nav-link:hover:not(.active) { background: rgba(255,255,255,0.1); color: white; }
+        .sidebar {
+            height: 100vh;
+            background: var(--sb-dark);
+            color: white;
+            position: fixed;
+            width: 260px;
+            z-index: 1000;
+            transition: 0.3s;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .sidebar .nav-link.active {
+            background: var(--sb-primary);
+            color: white;
+        }
+
+        .sidebar .nav-link:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
 
         /* Main Area Styling */
-        .main-content { margin-left: 260px; padding: 40px; min-height: 100vh; }
-        
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
         /* Department Cards (Auto-Generated) */
-        .dept-card { cursor: pointer; transition: 0.3s; border: none; border-radius: 15px; background: white; border: 1px solid #eee; }
-        .dept-card.active { background: var(--sb-primary) !important; color: white !important; border-color: var(--sb-primary); }
-        .dept-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
+        .dept-card {
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            border-radius: 15px;
+            background: white;
+            border: 1px solid #eee;
+        }
+
+        .dept-card.active {
+            background: var(--sb-primary) !important;
+            color: white !important;
+            border-color: var(--sb-primary);
+        }
+
+        .dept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+        }
 
         /* Notes List Items */
-        .note-item { background: white; border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; padding: 20px; border-left: 6px solid var(--sb-primary); transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .note-item:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+        .note-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-left: 6px solid var(--sb-primary);
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .note-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
 
         /* Responsive Fixes */
         @media (max-width: 992px) {
-            .sidebar { width: 100%; height: auto; position: relative; }
-            .main-content { margin-left: 0; padding: 20px; }
-            .sidebar-brand { text-align: center; }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .sidebar-brand {
+                text-align: center;
+            }
         }
-        
-        [ng-cloak] { display: none !important; }
+
+        [ng-cloak] {
+            display: none !important;
+        }
+
+        /* Enhanced Visual Additions */
+        .dept-card i {
+            transition: transform 0.2s ease;
+            font-size: 1.75rem;
+        }
+
+        .dept-card:hover i {
+            transform: scale(1.05);
+        }
+
+        .test-btn-glow {
+            transition: all 0.2s ease;
+        }
+
+        .test-btn-glow:active {
+            transform: scale(0.96);
+        }
+
+        .toast-connection {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1100;
+            min-width: 280px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-left: 5px solid;
+            transition: 0.25s;
+        }
+
+        .search-enhanced:focus {
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            border-color: #007bff;
+        }
+
+        .badge.bg-soft-primary {
+            background-color: #e7f1ff !important;
+            color: #0056b3 !important;
+        }
+
+        .filter-clear-btn {
+            transition: all 0.2s;
+        }
+
+        .filter-clear-btn:hover {
+            background-color: #f0f2f5;
+            transform: translateX(3px);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast-connection {
+            animation: slideInRight 0.3s ease-out;
+        }
+
+        .test-btn-glow:focus {
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.4);
+        }
+
+        .filter-clear-btn i {
+            font-size: 0.85rem;
+        }
     </style>
 </head>
-<body ng-controller="DashboardController" ng-cloak>
 
-<!-- Sidebar -->
-<div class="sidebar d-flex flex-column p-3">
-    <div class="sidebar-brand mb-4 px-2">
-        <h3 class="fw-bold text-primary mb-0">SB NOTES</h3>
-        <small class="text-muted">Premium Study Portal</small>
-    </div>
-    
-    <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-            <a href="#" class="nav-link active"><i class="fas fa-th-large me-2"></i> Dashboard</a>
-        </li>
-        <li>
-            <a href="#" class="nav-link"><i class="fas fa-book me-2"></i> My Library</a>
-        </li>
-        <li>
-            <a href="#" class="nav-link" ng-click="logout()"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
-        </li>
-    </ul>
-
-    <hr class="text-secondary">
-    <div class="user-profile p-2">
-        <div class="d-flex align-items-center">
-            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
-                <i class="fas fa-user text-white"></i>
-            </div>
-            <div class="overflow-hidden">
-                <p class="mb-0 small fw-bold text-truncate">{{userEmail}}</p>
-                <span class="badge bg-success" style="font-size: 8px;">VERIFIED ACCESS</span>
-            </div>
+<body ng-controller="DashboardController" ng-cloak> <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-3">
+        <div class="sidebar-brand mb-4 px-2">
+            <h3 class="fw-bold text-primary mb-0">SB NOTES</h3> <small class="text-muted">Premium Study Portal</small>
         </div>
-    </div>
-</div>
-
-<!-- Main Content Area -->
-<div class="main-content">
-    <div class="container-fluid">
-        
-        <!-- Header & Search -->
-        <header class="row align-items-center mb-5">
-            <div class="col-lg-6 mb-3 mb-lg-0">
-                <h2 class="fw-bold">Welcome to your Study Deck</h2>
-                <p class="text-muted">Browse your departments to find specific resources.</p>
-            </div>
-            <div class="col-lg-6">
-                <div class="input-group shadow-sm rounded-pill overflow-hidden border">
-                    <span class="input-group-text bg-white border-0 ps-4"><i class="fas fa-search text-muted"></i></span>
-                    <input type="text" class="form-control border-0 py-3" 
-                           placeholder="Search by topic, unit, or department..." 
-                           ng-model="searchQuery">
-                </div>
-            </div>
-        </header>
-
-        <!-- DYNAMIC DEPARTMENT SECTION -->
-        <h5 class="mb-3 fw-bold"><i class="fas fa-layer-group me-2 text-primary"></i>Departments</h5>
-        <div class="row g-3 mb-5">
-            <!-- Static "All" Button -->
-            <div class="col-6 col-md-3 col-lg-2">
-                <div class="card dept-card p-3 text-center shadow-sm" 
-                     ng-class="{'active': selectedDept == ''}" 
-                     ng-click="selectDept('')">
-                    <i class="fas fa-border-all mb-2 fs-4"></i>
-                    <div class="small fw-bold">All Notes</div>
-                </div>
-            </div>
-
-            <!-- Dynamic Buttons: Extracted from Google Sheet Data -->
-            <div class="col-6 col-md-3 col-lg-2" ng-repeat="dept in departments">
-                <div class="card dept-card p-3 text-center shadow-sm" 
-                     ng-class="{'active': selectedDept == dept}" 
-                     ng-click="selectDept(dept)">
-                    <i class="fas fa-folder mb-2 fs-4"></i>
-                    <div class="small fw-bold">{{dept}}</div>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item"> <a href="#" class="nav-link active"><i class="fas fa-th-large me-2"></i> Dashboard</a>
+            </li>
+            <li> <a href="#" class="nav-link"><i class="fas fa-book me-2"></i> My Library</a> </li>
+            <li> <a href="#" class="nav-link" ng-click="logout()"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+            </li>
+        </ul>
+        <hr class="text-secondary">
+        <div class="user-profile p-2">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-2"
+                    style="width: 35px; height: 35px;"> <i class="fas fa-user text-white"></i> </div>
+                <div class="overflow-hidden">
+                    <p class="mb-0 small fw-bold text-truncate">{{userEmail}}</p> <span class="badge bg-success"
+                        style="font-size: 8px;">VERIFIED ACCESS</span>
                 </div>
             </div>
         </div>
-
-        <!-- NOTES LIST SECTION -->
-        <div class="d-flex justify-content-between align-items-end mb-3">
-            <h5 class="fw-bold mb-0">Available Resources</h5>
-            <span class="badge bg-light text-dark border">{{ (allNotes | filter:searchQuery | filter:{dept: selectedDept}).length }} Items found</span>
-        </div>
-
-        <!-- Loading State -->
-        <div ng-show="loading" class="text-center py-5">
-            <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
-            <p class="text-muted fw-bold">Syncing with Google Drive...</p>
-        </div>
-
-        <!-- Notes Loop -->
-        <div ng-hide="loading">
-            <div class="note-item" ng-repeat="note in allNotes | filter:searchQuery | filter:{dept: selectedDept}">
-                <div class="d-flex align-items-center">
-                    <div class="icon-box me-4 d-none d-md-block">
-                        <i class="far fa-file-pdf fa-2x text-danger"></i>
-                    </div>
-                    <div>
-                        <span class="badge bg-soft-primary text-primary border border-primary mb-1" style="font-size: 10px;">{{note.dept}}</span>
-                        <h6 class="mb-1 fw-bold text-dark">{{note.title}}</h6>
-                        <small class="text-muted"><i class="far fa-clock me-1"></i> Uploaded: {{note.date}}</small>
+    </div> <!-- Main Content Area -->
+    <div class="main-content">
+        <div class="container-fluid"> <!-- Header & Search with Test Button -->
+            <header class="row align-items-center mb-5">
+                <div class="col-lg-6 mb-3 mb-lg-0">
+                    <h2 class="fw-bold">Welcome to your Study Deck</h2>
+                    <p class="text-muted">Browse your departments to find specific resources.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="d-flex gap-2 align-items-center">
+                        <div class="flex-grow-1">
+                            <div class="input-group shadow-sm rounded-pill overflow-hidden border"> <span
+                                    class="input-group-text bg-white border-0 ps-4"><i
+                                        class="fas fa-search text-muted"></i></span> <input type="text"
+                                    class="form-control border-0 py-3 search-enhanced"
+                                    placeholder="Search by topic, unit, or department..." ng-model="searchQuery"> </div>
+                        </div> <!-- Test Connection Button - Simple Implementation --> <button
+                            class="btn btn-outline-primary rounded-pill px-4 test-btn-glow" ng-click="testConnection()"
+                            ng-disabled="testingConnection"> <i class="fas fa-plug me-2"
+                                ng-class="{'fa-spin fa-circle-notch': testingConnection}"></i> {{ testingConnection ?
+                            'Testing...' : 'Test Connection' }} </button>
                     </div>
                 </div>
-                <div class="action-btn">
-                    <button class="btn btn-primary rounded-pill px-4 shadow-sm" ng-click="viewNote(note)">
-                        Open Note <i class="fas fa-chevron-right ms-2 small"></i>
-                    </button>
+            </header> <!-- DYNAMIC DEPARTMENT SECTION -->
+            <h5 class="mb-3 fw-bold"><i class="fas fa-layer-group me-2 text-primary"></i>Departments</h5>
+            <div class="row g-3 mb-5"> <!-- Static "All" Button -->
+                <div class="col-6 col-md-3 col-lg-2">
+                    <div class="card dept-card p-3 text-center shadow-sm" ng-class="{'active': selectedDept == ''}"
+                        ng-click="selectDept('')"> <i class="fas fa-border-all mb-2 fs-4"></i>
+                        <div class="small fw-bold">All Notes</div>
+                    </div>
+                </div> <!-- Dynamic Buttons: Extracted from Google Sheet Data -->
+                <div class="col-6 col-md-3 col-lg-2" ng-repeat="dept in departments">
+                    <div class="card dept-card p-3 text-center shadow-sm" ng-class="{'active': selectedDept == dept}"
+                        ng-click="selectDept(dept)"> <i class="fas fa-folder mb-2 fs-4"></i>
+                        <div class="small fw-bold">{{dept}}</div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Empty State -->
-            <div class="card border-dashed text-center py-5 bg-transparent" 
-                 ng-if="(allNotes | filter:searchQuery | filter:{dept: selectedDept}).length == 0">
-                <div class="card-body">
-                    <i class="fas fa-search fa-3x text-light mb-3"></i>
-                    <h5 class="text-muted">No notes found matching that criteria</h5>
-                    <button class="btn btn-link text-primary" ng-click="searchQuery = ''; selectedDept = ''">Clear all filters</button>
+            </div> <!-- NOTES LIST SECTION -->
+            <div class="d-flex justify-content-between align-items-end mb-3">
+                <h5 class="fw-bold mb-0">Available Resources</h5>
+                <div class="d-flex align-items-center gap-2"> <span class="badge bg-light text-dark border">{{ (allNotes
+                        | filter:searchQuery | filter:{dept: selectedDept}).length }} Items found</span> <button
+                        class="btn btn-sm btn-link text-decoration-none filter-clear-btn"
+                        ng-click="searchQuery = ''; selectedDept = ''" ng-if="searchQuery || selectedDept"
+                        title="Clear all filters"> <i class="fas fa-eraser me-1"></i> Clear filters </button> </div>
+            </div> <!-- Loading State -->
+            <div ng-show="loading" class="text-center py-5">
+                <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
+                <p class="text-muted fw-bold">Syncing with Google Drive...</p>
+            </div> <!-- Notes Loop -->
+            <div ng-hide="loading">
+                <div class="note-item" ng-repeat="note in allNotes | filter:searchQuery | filter:{dept: selectedDept}">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-box me-4 d-none d-md-block"> <i class="far fa-file-pdf fa-2x text-danger"></i>
+                        </div>
+                        <div> <span class="badge bg-soft-primary text-primary border border-primary mb-1"
+                                style="font-size: 10px;">{{note.dept}}</span>
+                            <h6 class="mb-1 fw-bold text-dark">{{note.title}}</h6> <small class="text-muted"><i
+                                    class="far fa-clock me-1"></i> Uploaded: {{note.date}}</small>
+                        </div>
+                    </div>
+                    <div class="action-btn"> <button class="btn btn-primary rounded-pill px-4 shadow-sm"
+                            ng-click="viewNote(note)"> Open Note <i class="fas fa-chevron-right ms-2 small"></i>
+                        </button> </div>
+                </div> <!-- Empty State -->
+                <div class="card border-dashed text-center py-5 bg-transparent"
+                    ng-if="(allNotes | filter:searchQuery | filter:{dept: selectedDept}).length == 0">
+                    <div class="card-body"> <i class="fas fa-search fa-3x text-light mb-3"></i>
+                        <h5 class="text-muted">No notes found matching that criteria</h5> <button
+                            class="btn btn-link text-primary" ng-click="searchQuery = ''; selectedDept = ''">Clear all
+                            filters</button>
+                    </div>
                 </div>
             </div>
         </div>
+    </div> <!-- Floating Toast for test connection feedback -->
+    <div ng-if="toastMessage" class="toast-connection p-3 d-flex align-items-center justify-content-between"
+        style="border-left-color: {{toastType === 'success' ? '#28a745' : '#dc3545'}};">
+        <div> <i
+                class="fas {{toastType === 'success' ? 'fa-check-circle text-success' : 'fa-exclamation-triangle text-danger'}} me-2"></i>
+            <span class="small fw-medium">{{toastMessage}}</span> </div> <button type="button" class="btn-close btn-sm"
+            ng-click="toastMessage = null" aria-label="Close"></button>
     </div>
-</div>
-
+    <script> // Simple test connection implementation - no complex embedding, just button and link check (function() { var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_G-EYCvp9dNUepee73AEE9zC6sv_zLpvXSqp5vUJ1fdEf6bRPatgtQOz0iv8MFD0a8w/exec'; // Wait for controller to be available angular.module('sbNotesApp').run(['$rootScope', '$http', '$timeout', function($rootScope, $http, $timeout) { // Listen for controller creation $rootScope.$on('$viewContentLoaded', function() { // Add testConnection to rootScope if not present if (!$rootScope.testConnectionOriginal) { $rootScope.testConnectionOriginal = function(scope) { scope.testingConnection = true; scope.toastMessage = null; // Check if URL exists and is valid if (!SCRIPT_URL || SCRIPT_URL === '') { scope.testingConnection = false; scope.toastMessage = '⚠️ No test link found. Connection URL is not configured.'; scope.toastType = 'error'; $timeout(function() { if (scope.toastMessage) scope.toastMessage = null; }, 5000); return; } // Test the connection $http({ method: 'GET', url: SCRIPT_URL, params: { test: 'connection', _: new Date().getTime() }, timeout: 8000 }).then(function(response) { scope.testingConnection = false; var successMsg = '✅ Connection successful! Google Script is reachable.'; scope.toastMessage = successMsg; scope.toastType = 'success'; $timeout(function() { if (scope.toastMessage === successMsg) scope.toastMessage = null; }, 4000); }).catch(function(error) { scope.testingConnection = false; var errorMsg = ''; if (error.status === 0) { errorMsg = '❌ No test found. Connection failed: Network/CORS issue or script not accessible.'; } else if (error.status === 404) { errorMsg = '❌ No test found. Endpoint not reachable (404).'; } else if (error.status === 500) { errorMsg = '❌ Connection failed: Server error on script.'; } else { errorMsg = '❌ No test found. Connection failed: ' + (error.statusText || 'Unknown error'); } scope.toastMessage = errorMsg; scope.toastType = 'error'; $timeout(function() { if (scope.toastMessage === errorMsg) scope.toastMessage = null; }, 5000); }); }; } }); }]); // Simple controller extension to add testConnection method var app = angular.module('sbNotesApp'); var originalController = null; app.config(['$controllerProvider', function($controllerProvider) { var superRegister = $controllerProvider.register; $controllerProvider.register = function(name, constructor) { if (name === 'DashboardController') { originalController = constructor; var extendedController = function($scope, $http, $window, $timeout) { // Call original controller originalController($scope, $http, $window, $timeout); // Add test connection function $scope.testingConnection = false; $scope.toastMessage = null; $scope.toastType = 'success'; $scope.testConnection = function() { $scope.testingConnection = true; $scope.toastMessage = null; // Define the test URL var testUrl = 'https://script.google.com/macros/s/AKfycbw_G-EYCvp9dNUepee73AEE9zC6sv_zLpvXSqp5vUJ1fdEf6bRPatgtQOz0iv8MFD0a8w/exec'; // Check if URL is valid if (!testUrl || testUrl === '') { $scope.testingConnection = false; $scope.toastMessage = '⚠️ No test link found. Connection URL is not configured.'; $scope.toastType = 'error'; $timeout(function() { if ($scope.toastMessage) $scope.toastMessage = null; }, 5000); return; } // Make the test request $http({ method: 'GET', url: testUrl, params: { check: 'connectivity', timestamp: new Date().getTime() }, timeout: 10000 }).then(function(response) { $scope.testingConnection = false; var successMessage = '✅ Connection successful! Google Script is reachable.'; $scope.toastMessage = successMessage; $scope.toastType = 'success'; $timeout(function() { if ($scope.toastMessage === successMessage) { $scope.toastMessage = null; } }, 4000); }).catch(function(error) { $scope.testingConnection = false; var errorMessage = ''; if (error.status === 0) { errorMessage = '❌ No test found. Unable to connect - Network issue or CORS restriction.'; } else if (error.status === 404) { errorMessage = '❌ No test found. Test link is not accessible (404).'; } else if (error.status === 500) { errorMessage = '❌ Connection failed - Server error on the script.'; } else if (error.status === 403) { errorMessage = '❌ Access denied - Script requires authorization.'; } else { errorMessage = '❌ No test found. Connection failed: ' + (error.statusText || 'Unknown error'); } $scope.toastMessage = errorMessage; $scope.toastType = 'error'; $timeout(function() { if ($scope.toastMessage === errorMessage) { $scope.toastMessage = null; } }, 5000); }); }; }; extendedController.$inject = ['$scope', '$http', '$window', '$timeout']; return superRegister.call($controllerProvider, name, extendedController); } return superRegister.call($controllerProvider, name, constructor); }; }]); })(); </script>
 </body>
+
 </html>
