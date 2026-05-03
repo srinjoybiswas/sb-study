@@ -1,593 +1,350 @@
+Here is the HTML/CSS code that displays the past exam winners and the next exam date.
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>SB Notes Proctored Exam | Computer Hardware & OS</title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- html2pdf for PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+    <title>SB Notes | Exam Results & Schedule</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
-        
+
         body {
             background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
         }
-        
-        .container-custom {
-            max-width: 1000px;
+
+        .container {
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 20px;
         }
-        
-        .login-card, .test-card, .result-card, .preExamCard {
-            background: rgba(255,255,255,0.98);
-            border-radius: 28px;
-            padding: 30px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-        }
-        
-        .timer-box {
-            background: linear-gradient(95deg, #1e293b, #0f172a);
-            color: #facc15;
-            padding: 12px 20px;
-            border-radius: 60px;
-            font-size: 26px;
-            font-weight: bold;
+
+        /* Main Card */
+        .result-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 48px;
+            padding: 40px 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        
-        .supervisor-alert {
-            background: #fef9c3;
-            border-left: 8px solid #eab308;
-            padding: 14px 18px;
-            border-radius: 18px;
-            margin-bottom: 18px;
-            font-weight: bold;
-            animation: pulse 0.8s ease;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.6; transform: scale(0.98);}
-            100% { opacity: 1; transform: scale(1);}
-        }
-        
-        .countdownCircle {
-            background: #0f172a;
-            color: #facc15;
+
+        .sb-logo {
             font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
             font-weight: 800;
-            width: 100px;
-            height: 100px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .sub {
+            color: #475569;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        /* No Exam Found Banner */
+        .no-exam-banner {
+            background: #fef2f2;
+            border-left: 8px solid #dc2626;
+            padding: 20px 25px;
+            border-radius: 28px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .no-exam-icon {
+            font-size: 48px;
+        }
+
+        .no-exam-text h3 {
+            color: #991b1b;
+            font-weight: 800;
+            font-size: 1.6rem;
+        }
+
+        .no-exam-text p {
+            color: #7f1d1d;
+            font-size: 1rem;
+        }
+
+        /* Winners Grid */
+        .winners-section {
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+            border-left: 5px solid #facc15;
+            padding-left: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .winners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .winner-card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .winner-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .winner-avatar {
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 15px auto;
-            box-shadow: 0 0 25px #facc15;
-        }
-        
-        .btn-premium {
-            background: linear-gradient(95deg, #2563eb, #1e40af);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
+            margin: 0 auto 18px;
+            font-size: 40px;
             font-weight: bold;
+            color: white;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
         }
-        
-        .option-btn.selected {
-            background-color: #1e40af !important;
-            color: white !important;
-        }
-        
-        .camera-preview {
-            background: #000;
-            border-radius: 24px;
-            padding: 5px;
-            margin-top: 10px;
-        }
-        
-        video {
-            width: 100%;
-            max-height: 180px;
-            border-radius: 18px;
-            background: #111;
-        }
-        
-        .pre-timer {
-            font-size: 48px;
+
+        .winner-name {
+            font-size: 1.5rem;
             font-weight: 800;
-            background: #1e40af;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .winner-email {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            word-break: break-all;
+        }
+
+        .winner-status {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 700;
             display: inline-block;
-            padding: 10px 25px;
-            border-radius: 60px;
+            margin-bottom: 12px;
+        }
+
+        .winner-badge {
+            background: #fef9c3;
+            color: #854d0e;
+            padding: 6px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timestamp {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin-top: 12px;
+            font-family: monospace;
+        }
+
+        /* Next Exam Card */
+        .next-exam-card {
+            background: linear-gradient(105deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 32px;
+            padding: 32px;
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            box-shadow: 0 20px 35px -10px black;
+        }
+
+        .next-exam-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 500;
             color: #facc15;
+            margin-bottom: 12px;
+        }
+
+        .next-exam-date {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #facc15, #f59e0b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .next-exam-time {
+            font-size: 1.2rem;
+            color: #cbd5e1;
             margin-bottom: 20px;
+        }
+
+        .info-note {
+            background: rgba(255,255,255,0.1);
+            border-radius: 60px;
+            padding: 8px 18px;
+            display: inline-block;
+            font-size: 0.85rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 640px) {
+            .result-card {
+                padding: 25px 20px;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .next-exam-date {
+                font-size: 1.8rem;
+            }
+            .winner-name {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
-<body oncontextmenu="return false;" onselectstart="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
-    <div class="container-custom">
-        
-        <!-- PRE-EXAM STAGE (60-second full instruction sequence) -->
-        <div id="preExamBox" style="display: none;">
-            <div class="preExamCard">
-                <div class="text-center">
-                    <h2>📢 Exam Preparation Stage</h2>
-                    <p class="text-muted">Supervisor announcements in progress...</p>
-                    <div class="pre-timer" id="preTimerDisplay">01:00</div>
+<body>
+    <div class="container">
+        <!-- Main Result Panel -->
+        <div class="result-card">
+            <div class="sb-logo">📘⚡</div>
+            <h1>SB NOTES PREMIUM EXAM</h1>
+            <div class="sub">Past Participation & Winners Circle</div>
+            
+            <!-- NO EXAM FOUND / NO ACTIVE EXAM MESSAGE -->
+            <div class="no-exam-banner">
+                <div class="no-exam-icon">🔍❌</div>
+                <div class="no-exam-text">
+                    <h3>No Exam Found — Past Participation Only</h3>
+                    <p>The previous exam session has officially ended. No active test is running right now.</p>
                 </div>
-                <div id="announcementArea" class="mt-3">
-                    <div class="supervisor-alert" id="dynamicAnnouncement">⏳ Loading exam instructions...</div>
-                </div>
-                <div id="cameraRequestArea" class="mt-3 text-center" style="display: none;">
-                    <button class="btn btn-warning btn-lg" id="enableCameraBtn">📸 Allow Camera Access (Proctoring)</button>
-                    <div id="cameraPreview" class="camera-preview mt-2" style="display: none;">
-                        <video id="videoFeed" autoplay muted playsinline></video>
-                        <p class="text-muted small mt-1">🔍 SB Notes monitoring active</p>
+            </div>
+        </div>
+
+        <!-- WINNERS SECTION (Past Participants who won / qualified) -->
+        <div class="winners-section">
+            <div class="section-title">🏆 Past Winners & Participants</div>
+            <div class="winners-grid">
+                <!-- Winner 1: Soumili Ghosh -->
+                <div class="winner-card">
+                    <div class="winner-avatar">SG</div>
+                    <div class="winner-name">Soumili Ghosh</div>
+                    <div class="winner-email">soumili.ghosh.bca28@tha.edu.in</div>
+                    <div class="winner-status">✅ QUALIFIED / WINNER</div>
+                    <div class="winner-badge">
+                        <span>🏅 Exam Status: TRUE (Passed)</span>
+                    </div>
+                    <div class="timestamp">
+                        📅 Completed: 5/3/2026 12:44:41
                     </div>
                 </div>
-                <div id="repoCountdownArea" class="text-center mt-4" style="display: none;">
-                    <h4>📖 Sudrangshu assigned Question Set</h4>
-                    <div class="countdownCircle" id="repoTimer">3</div>
-                    <p class="fw-bold">Final countdown...</p>
-                </div>
-                <div class="text-center mt-4">
-                    <button id="finalStartBtn" class="btn btn-success btn-lg px-5" style="display: none;">🚀 START EXAM NOW</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- LOGIN BOX -->
-        <div id="loginBox" style="display: block;">
-            <div class="login-card">
-                <div class="text-center mb-3">
-                    <h2>📘 SB Notes Premium Exam</h2>
-                    <p class="text-muted">Computer Hardware & Operating System</p>
-                </div>
-                <div class="alert alert-success text-center">✅ Exam Ready - Sunday 8:00 PM Slot</div>
-                <div class="mb-3">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="Enter registered email">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Enter password">
-                </div>
-                <button class="btn btn-primary w-100 py-2" onclick="login()">🔐 Verify & Enter Exam Lobby</button>
-                <div id="loginError" class="text-danger text-center mt-2"></div>
-            </div>
-        </div>
-        
-        <!-- TEST BOX (actual exam) -->
-        <div id="testBox" style="display: none;">
-            <div class="test-card">
-                <div class="timer-box">⏱️ <span id="timer">60:00</span></div>
-                <div class="bg-light p-3 rounded mb-3">
-                    <div class="d-flex justify-content-between">
-                        <span id="questionCounter">Q1/25</span>
-                        <span class="badge bg-dark">Proctored</span>
+
+                <!-- Winner 2: Rwitika Sarkar -->
+                <div class="winner-card">
+                    <div class="winner-avatar">RS</div>
+                    <div class="winner-name">Rwitika Sarkar</div>
+                    <div class="winner-email">rwitikasarkar@gmail.com</div>
+                    <div class="winner-status">✅ QUALIFIED / WINNER</div>
+                    <div class="winner-badge">
+                        <span>🏅 Exam Status: TRUE (Passed)</span>
+                    </div>
+                    <div class="timestamp">
+                        📅 Completed: 5/3/2026 16:02:05
                     </div>
                 </div>
-                <div id="question" class="fw-bold fs-4 my-3"></div>
-                <div id="options"></div>
-                <div class="d-flex justify-content-between mt-4">
-                    <button id="prevBtn" class="btn btn-secondary" onclick="prevQuestion()" disabled>◀ Previous</button>
-                    <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Next ▶</button>
-                    <button id="submitBtn" class="btn btn-success" onclick="finishTest()" style="display: none;">✅ Submit Exam</button>
-                </div>
-                <div class="text-center mt-3 small text-secondary">🎥 Camera active for proctoring | Arrow keys to navigate</div>
-            </div>
-        </div>
-        
-        <!-- RESULT BOX -->
-        <div id="resultBox" style="display: none;">
-            <div class="result-card">
-                <div id="resultContent"></div>
-                <div class="d-flex gap-3 justify-content-center mt-4">
-                    <button id="downloadPDF" class="btn-premium">📄 Download PDF Certificate</button>
-                    <button id="restartBtn" class="btn btn-secondary">🔄 Restart Exam</button>
+
+                <!-- Winner 3: Akash Das -->
+                <div class="winner-card">
+                    <div class="winner-avatar">AD</div>
+                    <div class="winner-name">Akash Das</div>
+                    <div class="winner-email">akash.das.bca28@tha.edu.in</div>
+                    <div class="winner-status">✅ QUALIFIED / WINNER</div>
+                    <div class="winner-badge">
+                        <span>🏅 Exam Status: TRUE (Passed)</span>
+                    </div>
+                    <div class="timestamp">
+                        📅 Completed: 5/3/2026 16:38:04
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- NEXT EXAM INFORMATION (10-05-2025) according to requirement -->
+        <div class="next-exam-card">
+            <div class="next-exam-label">📢 UPCOMING EXAM</div>
+            <div class="next-exam-date">Sunday, 10 May 2025</div>
+            <div class="next-exam-time">⏰ 8:00 PM – 9:00 PM (IST)</div>
+            <div class="info-note">
+                ⚡ Next SB Notes Premium Examination will be held on 10-05-2025
+            </div>
+            <p style="margin-top: 18px; font-size: 0.85rem; opacity: 0.8;">
+                📌 Register early • Strict proctoring • Computer Hardware & OS
+            </p>
+        </div>
+
+        <footer>
+            © 2026 SB Notes — Past winners list based on official records. Next exam: 10-05-2025.
+        </footer>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    
+
+    <!-- Optional: tiny dynamic check to ensure no active exam message matches real behavior -->
     <script>
-        // ================= STUDENT DATABASE =================
-        const students = [
-            { email: "srinjoyb2004@gmail.com", password: "12345", name: "Srinjoy", testId: "SB2025001" },
-            { email: "soumili.ghosh.bca28@tha.edu.in", password: "sghosh066", name: "Soumili Ghosh", testId: "SB2025002" },
-            { email: "rwitikasarkar@gmail.com", password: "Ritika@7278", name: "Rwitika Sarkar", testId: "SB2025003" },
-            { email: "akash.das.bca28@tha.edu.in", password: "AKASH123", name: "Akash Das", testId: "SB2025004" }
-        ];
-        
-        // ================= EXAM FULLY UNLOCKED =================
-        function isExamAvailable() { return true; }
-        
-        // ================= GLOBAL STATE =================
-        let currentUser = null;
-        let questionsList = [];
-        let userAnswers = [];
-        let currentQuestionIdx = 0;
-        let examTimerInterval = null;
-        let examTimeSeconds = 3600;
-        let testStartTime = null;
-        
-        let mediaStream = null;
-        let cameraEnabled = false;
-        let preExamStageActive = false;
-        let preExamInterval = null;
-        
-        // ================= QUESTION BANK (25 MCQs) =================
-        const originalQuestions = [
-            { question: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Tech Language", "Hyper Tool Markup Language", "Home Tool Language"], answer: "Hyper Text Markup Language" },
-            { question: "Which language is used for styling web pages?", options: ["HTML", "CSS", "Java", "Python"], answer: "CSS" },
-            { question: "Which is a programming language?", options: ["HTTP", "HTML", "JavaScript", "URL"], answer: "JavaScript" },
-            { question: "Which tag is used for a hyperlink?", options: ["<link>", "<a>", "<href>", "<h>"], answer: "<a>" },
-            { question: "Which symbol is used for comments in JS?", options: ["//", "#", "<!-- -->", "**"], answer: "//" },
-            { question: "What is CPU?", options: ["Central Process Unit", "Central Processing Unit", "Computer Personal Unit", "Control Processing Unit"], answer: "Central Processing Unit" },
-            { question: "RAM stands for?", options: ["Random Access Memory", "Read Access Memory", "Run Access Memory", "Rapid Access Memory"], answer: "Random Access Memory" },
-            { question: "Which is an input device?", options: ["Monitor", "Keyboard", "Printer", "Speaker"], answer: "Keyboard" },
-            { question: "Which is an output device?", options: ["Mouse", "Scanner", "Monitor", "Keyboard"], answer: "Monitor" },
-            { question: "Brain of computer?", options: ["RAM", "CPU", "Hard Disk", "Motherboard"], answer: "CPU" },
-            { question: "Which OS is open source?", options: ["Windows", "Linux", "MacOS", "DOS"], answer: "Linux" },
-            { question: "Shortcut to refresh?", options: ["F2", "F5", "F10", "F7"], answer: "F5" },
-            { question: "Default extension of text file?", options: [".doc", ".txt", ".exe", ".pdf"], answer: ".txt" },
-            { question: "GUI means?", options: ["Graphical User Interface", "General User Interface", "Graphical Unit Interface", "General Unit Interface"], answer: "Graphical User Interface" },
-            { question: "Command to list files in Linux?", options: ["ls", "dir", "list", "show"], answer: "ls" },
-            { question: "SQL stands for?", options: ["Structured Query Language", "Simple Query Language", "Structured Question Language", "System Query Language"], answer: "Structured Query Language" },
-            { question: "Command to fetch data from database?", options: ["INSERT", "DELETE", "SELECT", "UPDATE"], answer: "SELECT" },
-            { question: "Primary key must be?", options: ["Null", "Duplicate", "Unique", "Optional"], answer: "Unique" },
-            { question: "LAN stands for?", options: ["Local Area Network", "Large Area Network", "Long Area Network", "Link Area Network"], answer: "Local Area Network" },
-            { question: "IP stands for?", options: ["Internet Protocol", "Internal Protocol", "Internet Program", "Internal Program"], answer: "Internet Protocol" },
-            { question: "Which is presentation software?", options: ["Word", "Excel", "PowerPoint", "Access"], answer: "PowerPoint" },
-            { question: "Shortcut to copy?", options: ["Ctrl+V", "Ctrl+C", "Ctrl+X", "Ctrl+Z"], answer: "Ctrl+C" },
-            { question: "PDF stands for?", options: ["Portable Document Format", "Print Document File", "Public Data File", "Program Data Format"], answer: "Portable Document Format" },
-            { question: "Which is social media platform?", options: ["Google", "Instagram", "Microsoft", "Amazon"], answer: "Instagram" },
-            { question: "Most used web programming language?", options: ["C++", "Java", "Python", "JavaScript"], answer: "JavaScript" }
-        ];
-        
-        function loadQuestions() { 
-            questionsList = JSON.parse(JSON.stringify(originalQuestions)); 
-            userAnswers = new Array(questionsList.length).fill(null); 
-        }
-        
-        // ================= 60-SECOND PRE-EXAM WITH FULL INSTRUCTIONS =================
-        function showPreExamFlow() {
-            document.getElementById("loginBox").style.display = "none";
-            document.getElementById("testBox").style.display = "none";
-            document.getElementById("resultBox").style.display = "none";
-            const preDiv = document.getElementById("preExamBox");
-            preDiv.style.display = "block";
-            preExamStageActive = true;
-            
-            const annDiv = document.getElementById("dynamicAnnouncement");
-            const cameraArea = document.getElementById("cameraRequestArea");
-            const repoArea = document.getElementById("repoCountdownArea");
-            const startBtn = document.getElementById("finalStartBtn");
-            const preTimerDisplay = document.getElementById("preTimerDisplay");
-            
-            cameraArea.style.display = "none";
-            repoArea.style.display = "none";
-            startBtn.style.display = "none";
-            
-            let secondsLeft = 60;
-            
-            function updateDisplay() {
-                let mins = Math.floor(secondsLeft / 60);
-                let secs = secondsLeft % 60;
-                preTimerDisplay.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-            }
-            updateDisplay();
-            
-            if (preExamInterval) clearInterval(preExamInterval);
-            
-            preExamInterval = setInterval(() => {
-                if (!preExamStageActive) {
-                    clearInterval(preExamInterval);
-                    return;
-                }
-                
-                if (secondsLeft <= 0) {
-                    clearInterval(preExamInterval);
-                    if (preExamStageActive) {
-                        beginActualExam();
-                    }
-                    return;
-                }
-                
-                // === ANNOUNCEMENTS AT SPECIFIC TIMES ===
-                // 60 sec - Supervisor Sudrangshu arrives
-                if (secondsLeft === 60) {
-                    annDiv.innerHTML = "🧑‍🏫 <strong>Supervisor Sudrangshu has arrived!</strong> Please maintain silence. The premium examination will begin shortly.";
-                }
-                // 50 sec - Team SB-Notes monitoring
-                else if (secondsLeft === 50) {
-                    annDiv.innerHTML = "📢 <strong>Team SB-Notes:</strong> Strict proctoring is active. Do not switch tabs or leave fullscreen mode.";
-                }
-                // 40 sec - Srinjoy Biswas all the best
-                else if (secondsLeft === 40) {
-                    annDiv.innerHTML = "✨ <strong>Srinjoy Biswas says:</strong> 'All of you, all the best! Give your best performance and stay focused.' ✨";
-                }
-                // 30 sec - Camera access request
-                else if (secondsLeft === 30) {
-                    annDiv.innerHTML = "🔍 <strong>TEAM SB-NOTES:</strong> Camera access required for proctoring. Please click the button below to allow access.";
-                    cameraArea.style.display = "block";
-                    
-                    document.getElementById("enableCameraBtn").onclick = async () => {
-                        try {
-                            if(mediaStream) mediaStream.getTracks().forEach(t=>t.stop());
-                            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                            mediaStream = stream;
-                            const videoElem = document.getElementById("videoFeed");
-                            videoElem.srcObject = stream;
-                            document.getElementById("cameraPreview").style.display = "block";
-                            cameraEnabled = true;
-                            document.getElementById("enableCameraBtn").disabled = true;
-                            document.getElementById("enableCameraBtn").innerHTML = "✅ Camera Active - Monitoring Started";
-                            annDiv.innerHTML = "✅ Camera connected! SB-Notes proctoring is now active.";
-                        } catch(e) { 
-                            alert("Camera access required for proctoring. Please allow camera to continue.");
-                            annDiv.innerHTML = "⚠️ Camera access not granted. Please click the button again to allow monitoring.";
-                        }
-                    };
-                }
-                // 15 sec - Sudrangshu assigns question set
-                else if (secondsLeft === 15) {
-                    annDiv.innerHTML = "📌 <strong>Sudrangshu assigned your question set.</strong> Stay focused! Final preparations underway.";
-                    cameraArea.style.display = "none";
-                    repoArea.style.display = "block";
-                    
-                    let repoCount = 3;
-                    const repoCircle = document.getElementById("repoTimer");
-                    const repoInt = setInterval(() => {
-                        if (repoCount <= 0) {
-                            clearInterval(repoInt);
-                            repoCircle.innerText = "GO!";
-                            startBtn.style.display = "block";
-                            startBtn.onclick = () => {
-                                if (preExamStageActive) {
-                                    clearInterval(preExamInterval);
-                                    beginActualExam();
-                                }
-                            };
-                        } else {
-                            repoCircle.innerText = repoCount;
-                            repoCount--;
-                        }
-                    }, 1000);
-                }
-                // 10 sec - warning
-                else if (secondsLeft === 10) {
-                    annDiv.innerHTML = "⚠️ <strong>10 SECONDS LEFT!</strong> Get ready. Click START when ready or exam will auto-start.";
-                }
-                // 5 sec - final countdown
-                else if (secondsLeft === 5) {
-                    annDiv.innerHTML = "🔔 <strong>FINAL COUNTDOWN!</strong> 5...";
-                }
-                else if (secondsLeft === 4) {
-                    annDiv.innerHTML = "🔔 4...";
-                }
-                else if (secondsLeft === 3) {
-                    annDiv.innerHTML = "🔔 3...";
-                }
-                else if (secondsLeft === 2) {
-                    annDiv.innerHTML = "🔔 2...";
-                }
-                else if (secondsLeft === 1) {
-                    annDiv.innerHTML = "🔔 1... EXAM STARTING!";
-                }
-                
-                secondsLeft--;
-                updateDisplay();
-            }, 1000);
-        }
-        
-        function beginActualExam() {
-            if (preExamInterval) clearInterval(preExamInterval);
-            preExamStageActive = false;
-            document.getElementById("preExamBox").style.display = "none";
-            
-            loadQuestions();
-            currentQuestionIdx = 0;
-            examTimeSeconds = 3600;
-            testStartTime = new Date();
-            
-            document.getElementById("testBox").style.display = "block";
-            
-            startExamTimer();
-            renderCurrentQuestion();
-            updateNavButtonsExam();
-            
-            if (cameraEnabled && mediaStream) {
-                console.log("Proctoring active");
-            } else {
-                setTimeout(() => {
-                    if (!cameraEnabled && confirm("Camera access helps with proctoring. Enable now?")) {
-                        navigator.mediaDevices.getUserMedia({ video: true })
-                            .then(stream => { mediaStream = stream; cameraEnabled = true; })
-                            .catch(e => console.log("Camera denied"));
-                    }
-                }, 2000);
-            }
-        }
-        
-        function startExamTimer() {
-            if(examTimerInterval) clearInterval(examTimerInterval);
-            examTimerInterval = setInterval(() => {
-                if(examTimeSeconds <= 0) {
-                    clearInterval(examTimerInterval);
-                    finishTest();
-                } else {
-                    examTimeSeconds--;
-                    let mins = Math.floor(examTimeSeconds / 60);
-                    let secs = examTimeSeconds % 60;
-                    document.getElementById("timer").innerHTML = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-                    
-                    if(examTimeSeconds === 300) alert("⚠️ 5 minutes remaining!");
-                    if(examTimeSeconds === 60) alert("⚠️ 1 minute remaining! Finish your exam.");
-                }
-            }, 1000);
-        }
-        
-        function renderCurrentQuestion() {
-            const q = questionsList[currentQuestionIdx];
-            document.getElementById("question").innerText = q.question;
-            document.getElementById("questionCounter").innerHTML = `Question ${currentQuestionIdx+1} of ${questionsList.length}`;
-            let optsHtml = "";
-            q.options.forEach((opt, idx) => {
-                const isSel = (userAnswers[currentQuestionIdx] === idx);
-                const btnClass = isSel ? "btn-primary selected" : "btn-outline-primary";
-                optsHtml += `<button onclick="selectOption(${idx})" class="btn ${btnClass} w-100 mb-2 text-start option-btn" style="border-radius: 14px; padding: 12px;"><span class="fw-bold me-2">${String.fromCharCode(65+idx)}.</span> ${escapeHtml(opt)}</button>`;
-            });
-            document.getElementById("options").innerHTML = optsHtml;
-            updateNavButtonsExam();
-        }
-        
-        function selectOption(idx) {
-            userAnswers[currentQuestionIdx] = idx;
-            renderCurrentQuestion();
-        }
-        
-        function nextQuestion() {
-            if(currentQuestionIdx < questionsList.length-1) {
-                currentQuestionIdx++;
-                renderCurrentQuestion();
-            }
-        }
-        
-        function prevQuestion() {
-            if(currentQuestionIdx > 0) {
-                currentQuestionIdx--;
-                renderCurrentQuestion();
-            }
-        }
-        
-        function updateNavButtonsExam() {
-            const prevBtn = document.getElementById("prevBtn");
-            const nextBtn = document.getElementById("nextBtn");
-            const submitBtn = document.getElementById("submitBtn");
-            prevBtn.disabled = (currentQuestionIdx === 0);
-            if(currentQuestionIdx === questionsList.length-1) {
-                nextBtn.style.display = "none";
-                submitBtn.style.display = "block";
-            } else {
-                nextBtn.style.display = "block";
-                submitBtn.style.display = "none";
-            }
-        }
-        
-        function finishTest() {
-            if(examTimerInterval) clearInterval(examTimerInterval);
-            if(mediaStream) mediaStream.getTracks().forEach(t=>t.stop());
-            
-            let score = 0;
-            questionsList.forEach((q, i) => {
-                const selectedIdx = userAnswers[i];
-                if(selectedIdx !== null && q.options[selectedIdx] === q.answer) score++;
-            });
-            const total = questionsList.length;
-            const percent = Math.round((score/total)*100);
-            const durationSec = Math.floor((new Date() - testStartTime)/1000);
-            const durMins = Math.floor(durationSec/60);
-            const durSecs = durationSec%60;
-            
-            document.getElementById("testBox").style.display = "none";
-            document.getElementById("resultBox").style.display = "block";
-            
-            const resultDiv = document.getElementById("resultContent");
-            const grade = percent>=90?"A+": percent>=75?"A": percent>=60?"B":"C";
-            const status = percent>=60?"PASSED":"FAILED";
-            
-            resultDiv.innerHTML = `
-                <div id="pdfContent" style="padding:15px">
-                    <div class="text-center border-bottom pb-3"><h2 class="text-primary">📘 SB NOTES</h2><p>Premium Examination Certificate</p></div>
-                    <div class="mt-3"><strong>Name:</strong> ${currentUser.name}</div>
-                    <div><strong>Email:</strong> ${currentUser.email}</div>
-                    <div><strong>Test ID:</strong> ${currentUser.testId}</div>
-                    <div><strong>Date:</strong> ${new Date().toLocaleString()}</div>
-                    <div><strong>Duration:</strong> ${durMins}m ${durSecs}s</div>
-                    <div class="text-center mt-3"><h3>Score: ${score}/${total} (${percent}%)</h3><h4>Status: ${status} | Grade: ${grade}</h4></div>
-                    <div class="text-center text-muted small mt-2">Thank you for taking the SB Notes Premium Examination</div>
-                </div>
-            `;
-            
-            document.getElementById("downloadPDF").onclick = () => { html2pdf().from(document.getElementById("pdfContent")).save(); };
-            document.getElementById("restartBtn").onclick = () => location.reload();
-        }
-        
-        function escapeHtml(str) { 
-            return str.replace(/[&<>]/g, function(m){
-                if(m==='&') return '&amp;'; 
-                if(m==='<') return '&lt;'; 
-                if(m==='>') return '&gt;'; 
-                return m;
-            }); 
-        }
-        
-        // ================= LOGIN =================
-        function login() {
-            const email = document.getElementById("email").value.trim();
-            const pwd = document.getElementById("password").value.trim();
-            const user = students.find(s=> s.email===email && s.password===pwd);
-            
-            if(!user) { 
-                document.getElementById("loginError").innerText = "Invalid email or password"; 
-                return; 
-            }
-            
-            currentUser = user;
-            showPreExamFlow();
-        }
-        
-        // Make functions global
-        window.login = login;
-        window.selectOption = selectOption;
-        window.nextQuestion = nextQuestion;
-        window.prevQuestion = prevQuestion;
-        window.finishTest = finishTest;
-        
-        // ================= ANTI-CHEAT =================
-        document.addEventListener("keydown", function(e){
-            if(e.key==='F12' || 
-               (e.ctrlKey && e.shiftKey && (e.key==='I'||e.key==='J'||e.key==='C')) || 
-               (e.ctrlKey && e.key==='u') || 
-               (e.ctrlKey && e.key==='s') || 
-               (e.ctrlKey && e.key==='p')) {
-                e.preventDefault();
-            }
-            // Arrow keys for navigation during exam
-            if(document.getElementById("testBox").style.display === "block") {
-                if(e.key === "ArrowRight" && currentQuestionIdx < questionsList.length-1) {
-                    nextQuestion();
-                } else if(e.key === "ArrowLeft" && currentQuestionIdx > 0) {
-                    prevQuestion();
-                }
-            }
+        // simple console info: no active exam, just past winners
+        console.log("SB NOTES: No active exam found. Past participation winners displayed. Next exam on 10-05-2025.");
+        // Additionally we could prevent right-click but not needed for this page
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
         });
-        
-        document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
-        document.addEventListener('selectstart', function(e) { e.preventDefault(); return false; });
-        document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
-        document.addEventListener('cut', function(e) { e.preventDefault(); return false; });
-        document.addEventListener('paste', function(e) { e.preventDefault(); return false; });
-        
-        console.log("Exam ready - Use credentials: srinjoyb2004@gmail.com / 12345");
     </script>
 </body>
 </html>
+```
