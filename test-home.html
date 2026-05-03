@@ -31,12 +31,11 @@
             padding: 20px;
         }
         
-        .login-card, .test-card, .result-card, .lock-card, .preExamCard {
+        .login-card, .test-card, .result-card, .preExamCard {
             background: rgba(255,255,255,0.98);
             border-radius: 28px;
             padding: 30px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            backdrop-filter: blur(2px);
         }
         
         .timer-box {
@@ -48,8 +47,6 @@
             font-weight: bold;
             text-align: center;
             margin-bottom: 20px;
-            letter-spacing: 1px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         
         .supervisor-alert {
@@ -89,13 +86,11 @@
             padding: 12px 30px;
             border-radius: 50px;
             font-weight: bold;
-            transition: all 0.2s;
         }
         
         .option-btn.selected {
             background-color: #1e40af !important;
             color: white !important;
-            border-color: #1e40af;
         }
         
         .camera-preview {
@@ -103,7 +98,6 @@
             border-radius: 24px;
             padding: 5px;
             margin-top: 10px;
-            text-align: center;
         }
         
         video {
@@ -113,72 +107,43 @@
             background: #111;
         }
         
-        .toast-message {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #1e293b;
-            color: white;
-            padding: 12px 24px;
+        .pre-timer {
+            font-size: 48px;
+            font-weight: 800;
+            background: #1e40af;
+            display: inline-block;
+            padding: 10px 25px;
             border-radius: 60px;
-            font-weight: bold;
-            z-index: 9999;
-            box-shadow: 0 8px 18px black;
-        }
-        
-        .exam-closing-warning {
-            background: #dc2626;
-            color: white;
-            text-align: center;
-            padding: 8px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+            color: #facc15;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
     <div class="container-custom">
         
-        <!-- LOCK / UNAVAILABLE -->
-        <div id="lockBox">
-            <div class="lock-card text-center">
-                <div class="lock-icon">🔒</div>
-                <h2 class="text-danger">Exam Locked</h2>
-                <p>SB Notes Premium Exam is available only on:</p>
-                <p><strong>📅 Sundays at 8:00 PM - 9:00 PM</strong></p>
-                <div class="next-exam bg-primary text-white d-inline-block p-3 rounded-pill mt-3" id="nextExamTime">Calculating...</div>
-                <p class="mt-3 text-muted small">⏰ Exam closes sharp at 9:00 PM. Late entries not permitted.</p>
-            </div>
-        </div>
-
-        <!-- PRE-EXAM STAGE (timer before exam start with announcements) -->
+        <!-- PRE-EXAM STAGE (60-second full instruction sequence) -->
         <div id="preExamBox" style="display: none;">
             <div class="preExamCard">
                 <div class="text-center">
-                    <h2>📢 Exam Countdown</h2>
-                    <p class="text-muted">Get ready! Supervisor announcements incoming</p>
+                    <h2>📢 Exam Preparation Stage</h2>
+                    <p class="text-muted">Supervisor announcements in progress...</p>
+                    <div class="pre-timer" id="preTimerDisplay">01:00</div>
                 </div>
                 <div id="announcementArea" class="mt-3">
-                    <div class="supervisor-alert" id="dynamicAnnouncement">⏳ Loading exam status...</div>
+                    <div class="supervisor-alert" id="dynamicAnnouncement">⏳ Loading exam instructions...</div>
                 </div>
                 <div id="cameraRequestArea" class="mt-3 text-center" style="display: none;">
-                    <button class="btn btn-warning" id="enableCameraBtn">📸 Allow Camera Access (Proctoring)</button>
+                    <button class="btn btn-warning btn-lg" id="enableCameraBtn">📸 Allow Camera Access (Proctoring)</button>
                     <div id="cameraPreview" class="camera-preview mt-2" style="display: none;">
-                        <video id="videoFeed" autoplay muted></video>
+                        <video id="videoFeed" autoplay muted playsinline></video>
                         <p class="text-muted small mt-1">🔍 SB Notes monitoring active</p>
                     </div>
                 </div>
                 <div id="repoCountdownArea" class="text-center mt-4" style="display: none;">
                     <h4>📖 Sudrangshu assigned Question Set</h4>
                     <div class="countdownCircle" id="repoTimer">3</div>
-                    <p class="fw-bold">Exam begins in ...</p>
+                    <p class="fw-bold">Final countdown...</p>
                 </div>
                 <div class="text-center mt-4">
                     <button id="finalStartBtn" class="btn btn-success btn-lg px-5" style="display: none;">🚀 START EXAM NOW</button>
@@ -186,45 +151,45 @@
             </div>
         </div>
         
-        <!-- LOGIN BOX (after unlock but before pre-exam) -->
-        <div id="loginBox" style="display: none;">
+        <!-- LOGIN BOX -->
+        <div id="loginBox" style="display: block;">
             <div class="login-card">
-                <h2>📘 SB Notes Premium Exam</h2>
-                <div class="subtitle">Computer Hardware & Operating System</div>
-                <div class="alert alert-info">✅ Exam Window: Sunday 8:00 PM - 9:00 PM</div>
-                <div class="alert alert-warning small">⚠️ Exam ends exactly at 9:00 PM. All responses auto-submitted.</div>
+                <div class="text-center mb-3">
+                    <h2>📘 SB Notes Premium Exam</h2>
+                    <p class="text-muted">Computer Hardware & Operating System</p>
+                </div>
+                <div class="alert alert-success text-center">✅ Exam Ready - Sunday 8:00 PM Slot</div>
                 <div class="mb-3">
                     <label class="form-label">Email Address</label>
                     <input type="email" id="email" class="form-control" placeholder="Enter registered email">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Password">
+                    <input type="password" id="password" class="form-control" placeholder="Enter password">
                 </div>
-                <button class="btn btn-primary w-100 py-2" onclick="login()">🔐 Verify & Enter Lobby</button>
-                <div id="loginError" class="error-text text-danger mt-2"></div>
+                <button class="btn btn-primary w-100 py-2" onclick="login()">🔐 Verify & Enter Exam Lobby</button>
+                <div id="loginError" class="text-danger text-center mt-2"></div>
             </div>
         </div>
         
         <!-- TEST BOX (actual exam) -->
         <div id="testBox" style="display: none;">
             <div class="test-card">
-                <div id="closingWarning" class="exam-closing-warning" style="display: none;">⚠️ EXAM CLOSING SOON - Auto-submit at 9:00 PM ⚠️</div>
                 <div class="timer-box">⏱️ <span id="timer">60:00</span></div>
-                <div class="question-header bg-light p-3 rounded">
+                <div class="bg-light p-3 rounded mb-3">
                     <div class="d-flex justify-content-between">
                         <span id="questionCounter">Q1/25</span>
                         <span class="badge bg-dark">Proctored</span>
                     </div>
                 </div>
-                <div id="question" class="question-text fw-bold fs-4 my-3"></div>
+                <div id="question" class="fw-bold fs-4 my-3"></div>
                 <div id="options"></div>
-                <div class="nav-buttons d-flex justify-content-between mt-4">
+                <div class="d-flex justify-content-between mt-4">
                     <button id="prevBtn" class="btn btn-secondary" onclick="prevQuestion()" disabled>◀ Previous</button>
                     <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Next ▶</button>
                     <button id="submitBtn" class="btn btn-success" onclick="finishTest()" style="display: none;">✅ Submit Exam</button>
                 </div>
-                <div class="text-center mt-3 small text-secondary">⚠️ Camera recording active | Auto-submit at 9:00 PM sharp</div>
+                <div class="text-center mt-3 small text-secondary">🎥 Camera active for proctoring | Arrow keys to navigate</div>
             </div>
         </div>
         
@@ -233,8 +198,8 @@
             <div class="result-card">
                 <div id="resultContent"></div>
                 <div class="d-flex gap-3 justify-content-center mt-4">
-                    <button id="downloadPDF" class="btn-premium">📄 Download PDF</button>
-                    <button id="restartBtn" class="btn btn-secondary">🔄 Restart</button>
+                    <button id="downloadPDF" class="btn-premium">📄 Download PDF Certificate</button>
+                    <button id="restartBtn" class="btn btn-secondary">🔄 Restart Exam</button>
                 </div>
             </div>
         </div>
@@ -251,68 +216,8 @@
             { email: "akash.das.bca28@tha.edu.in", password: "AKASH123", name: "Akash Das", testId: "SB2025004" }
         ];
         
-        // ================= EXAM SCHEDULE LOGIC =================
-        // Exam available: Sundays from 8:00 PM to 9:15 PM (internal) but displays as 9:00 PM end
-        // After 9:15 PM, it locks and shows next Sunday at 8:00 PM
-        
-        function isExamAvailable() {
-            const now = new Date();
-            const currentDay = now.getDay(); // 0 = Sunday
-            const currentHour = now.getHours();
-            const currentMinutes = now.getMinutes();
-            const currentTimeInMinutes = (currentHour * 60) + currentMinutes;
-            
-            // Exam actually available from 8:00 PM (1200) to 9:15 PM (1215)
-            // But user-facing shows end time as 9:00 PM
-            const ACTUAL_START = 20 * 60;      // 8:00 PM = 1200 minutes
-            const ACTUAL_END = 21 * 60 + 15;   // 9:15 PM = 1215 minutes
-            
-            if (currentDay === 0) {
-                if (currentTimeInMinutes >= ACTUAL_START && currentTimeInMinutes < ACTUAL_END) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        // Get the next exam start time (next Sunday at 8:00 PM)
-        function getNextExamDateTime() {
-            const now = new Date();
-            const nextExam = new Date(now);
-            nextExam.setHours(20, 0, 0, 0); // 8:00 PM
-            
-            if (nextExam.getDay() !== 0) {
-                // If not Sunday, go to next Sunday
-                nextExam.setDate(now.getDate() + (7 - now.getDay()));
-            } else if (now.getHours() >= 20 || (now.getHours() === 20 && now.getMinutes() >= 0)) {
-                // Today is Sunday but after 8:00 PM, next Sunday
-                nextExam.setDate(now.getDate() + 7);
-            }
-            return nextExam;
-        }
-        
-        function formatNextExamTime() {
-            const nextExam = getNextExamDateTime();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            };
-            return nextExam.toLocaleDateString('en-US', options);
-        }
-        
-        // Get remaining minutes until exam closes (from current time to 9:00 PM)
-        function getMinutesUntilClosure() {
-            const now = new Date();
-            const closureTime = new Date(now);
-            closureTime.setHours(21, 0, 0, 0); // 9:00 PM sharp (displayed end time)
-            const diffMs = closureTime - now;
-            return Math.floor(diffMs / 60000);
-        }
+        // ================= EXAM FULLY UNLOCKED =================
+        function isExamAvailable() { return true; }
         
         // ================= GLOBAL STATE =================
         let currentUser = null;
@@ -320,18 +225,15 @@
         let userAnswers = [];
         let currentQuestionIdx = 0;
         let examTimerInterval = null;
-        let examTimeSeconds = 3600; // 60 minutes
+        let examTimeSeconds = 3600;
         let testStartTime = null;
-        let autoCloseTimer = null;
         
-        // camera reference
         let mediaStream = null;
         let cameraEnabled = false;
-        
-        // Pre-exam stage active flag
         let preExamStageActive = false;
+        let preExamInterval = null;
         
-        // ================= QUESTION BANK (25 MCQs - UNCHANGED) =================
+        // ================= QUESTION BANK (25 MCQs) =================
         const originalQuestions = [
             { question: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Tech Language", "Hyper Tool Markup Language", "Home Tool Language"], answer: "Hyper Text Markup Language" },
             { question: "Which language is used for styling web pages?", options: ["HTML", "CSS", "Java", "Python"], answer: "CSS" },
@@ -361,11 +263,11 @@
         ];
         
         function loadQuestions() { 
-            questionsList = [...originalQuestions]; 
+            questionsList = JSON.parse(JSON.stringify(originalQuestions)); 
             userAnswers = new Array(questionsList.length).fill(null); 
         }
         
-        // ================= UI HANDLER =================
+        // ================= 60-SECOND PRE-EXAM WITH FULL INSTRUCTIONS =================
         function showPreExamFlow() {
             document.getElementById("loginBox").style.display = "none";
             document.getElementById("testBox").style.display = "none";
@@ -378,32 +280,55 @@
             const cameraArea = document.getElementById("cameraRequestArea");
             const repoArea = document.getElementById("repoCountdownArea");
             const startBtn = document.getElementById("finalStartBtn");
+            const preTimerDisplay = document.getElementById("preTimerDisplay");
+            
             cameraArea.style.display = "none";
             repoArea.style.display = "none";
             startBtn.style.display = "none";
             
-            let secondsLeftPre = 60; // 60-second pre-exam theater
+            let secondsLeft = 60;
             
-            annDiv.innerHTML = "⏳ Preparing exam environment... Please stay seated.";
+            function updateDisplay() {
+                let mins = Math.floor(secondsLeft / 60);
+                let secs = secondsLeft % 60;
+                preTimerDisplay.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+            }
+            updateDisplay();
             
-            const preInterval = setInterval(() => {
-                if (!preExamStageActive) { clearInterval(preInterval); return; }
-                if (secondsLeftPre <= 0) {
-                    clearInterval(preInterval);
-                    beginActualExam();
+            if (preExamInterval) clearInterval(preExamInterval);
+            
+            preExamInterval = setInterval(() => {
+                if (!preExamStageActive) {
+                    clearInterval(preExamInterval);
                     return;
                 }
                 
-                // Announcements based on seconds left
-                if (secondsLeftPre === 60) annDiv.innerHTML = "🧑‍🏫 Supervisor Sudrangshu has arrived! Get ready for the premium examination.";
-                else if (secondsLeftPre === 50) annDiv.innerHTML = "📢 Team SB-Notes: Strict monitoring will be active. No tab switching allowed.";
-                else if (secondsLeftPre === 40) annDiv.innerHTML = "✨ Srinjoy Biswas says: 'All of you, all the best! Give your best performance.'";
-                else if (secondsLeftPre === 30) {
-                    annDiv.innerHTML = "🔍 TEAM SB-NOTES: Monitoring your movement. Camera access will be requested soon.";
-                    cameraArea.style.display = "block";
+                if (secondsLeft <= 0) {
+                    clearInterval(preExamInterval);
+                    if (preExamStageActive) {
+                        beginActualExam();
+                    }
+                    return;
                 }
-                else if (secondsLeftPre === 25) {
-                    // camera access button
+                
+                // === ANNOUNCEMENTS AT SPECIFIC TIMES ===
+                // 60 sec - Supervisor Sudrangshu arrives
+                if (secondsLeft === 60) {
+                    annDiv.innerHTML = "🧑‍🏫 <strong>Supervisor Sudrangshu has arrived!</strong> Please maintain silence. The premium examination will begin shortly.";
+                }
+                // 50 sec - Team SB-Notes monitoring
+                else if (secondsLeft === 50) {
+                    annDiv.innerHTML = "📢 <strong>Team SB-Notes:</strong> Strict proctoring is active. Do not switch tabs or leave fullscreen mode.";
+                }
+                // 40 sec - Srinjoy Biswas all the best
+                else if (secondsLeft === 40) {
+                    annDiv.innerHTML = "✨ <strong>Srinjoy Biswas says:</strong> 'All of you, all the best! Give your best performance and stay focused.' ✨";
+                }
+                // 30 sec - Camera access request
+                else if (secondsLeft === 30) {
+                    annDiv.innerHTML = "🔍 <strong>TEAM SB-NOTES:</strong> Camera access required for proctoring. Please click the button below to allow access.";
+                    cameraArea.style.display = "block";
+                    
                     document.getElementById("enableCameraBtn").onclick = async () => {
                         try {
                             if(mediaStream) mediaStream.getTracks().forEach(t=>t.stop());
@@ -414,70 +339,91 @@
                             document.getElementById("cameraPreview").style.display = "block";
                             cameraEnabled = true;
                             document.getElementById("enableCameraBtn").disabled = true;
-                            document.getElementById("enableCameraBtn").innerHTML = "✅ Camera Active";
-                        } catch(e) { alert("Camera access required for proctoring. Allow to continue."); }
+                            document.getElementById("enableCameraBtn").innerHTML = "✅ Camera Active - Monitoring Started";
+                            annDiv.innerHTML = "✅ Camera connected! SB-Notes proctoring is now active.";
+                        } catch(e) { 
+                            alert("Camera access required for proctoring. Please allow camera to continue.");
+                            annDiv.innerHTML = "⚠️ Camera access not granted. Please click the button again to allow monitoring.";
+                        }
                     };
                 }
-                else if (secondsLeftPre === 15) {
-                    annDiv.innerHTML = "📌 Sudrangshu assigned your question set. Stay focused!";
+                // 15 sec - Sudrangshu assigns question set
+                else if (secondsLeft === 15) {
+                    annDiv.innerHTML = "📌 <strong>Sudrangshu assigned your question set.</strong> Stay focused! Final preparations underway.";
                     cameraArea.style.display = "none";
                     repoArea.style.display = "block";
+                    
                     let repoCount = 3;
                     const repoCircle = document.getElementById("repoTimer");
                     const repoInt = setInterval(() => {
-                        if(repoCount <= 0) { 
-                            clearInterval(repoInt); 
-                            repoCircle.innerText = "GO!"; 
-                            startBtn.style.display = "block"; 
-                            startBtn.onclick = () => { 
-                                if(preExamStageActive) beginActualExam(); 
+                        if (repoCount <= 0) {
+                            clearInterval(repoInt);
+                            repoCircle.innerText = "GO!";
+                            startBtn.style.display = "block";
+                            startBtn.onclick = () => {
+                                if (preExamStageActive) {
+                                    clearInterval(preExamInterval);
+                                    beginActualExam();
+                                }
                             };
-                        } else { 
-                            repoCircle.innerText = repoCount; 
-                            repoCount--; 
+                        } else {
+                            repoCircle.innerText = repoCount;
+                            repoCount--;
                         }
                     }, 1000);
                 }
-                else if (secondsLeftPre === 2) annDiv.innerHTML = "⚠️ 1 minute left! Final preparation. Click START when ready.";
+                // 10 sec - warning
+                else if (secondsLeft === 10) {
+                    annDiv.innerHTML = "⚠️ <strong>10 SECONDS LEFT!</strong> Get ready. Click START when ready or exam will auto-start.";
+                }
+                // 5 sec - final countdown
+                else if (secondsLeft === 5) {
+                    annDiv.innerHTML = "🔔 <strong>FINAL COUNTDOWN!</strong> 5...";
+                }
+                else if (secondsLeft === 4) {
+                    annDiv.innerHTML = "🔔 4...";
+                }
+                else if (secondsLeft === 3) {
+                    annDiv.innerHTML = "🔔 3...";
+                }
+                else if (secondsLeft === 2) {
+                    annDiv.innerHTML = "🔔 2...";
+                }
+                else if (secondsLeft === 1) {
+                    annDiv.innerHTML = "🔔 1... EXAM STARTING!";
+                }
                 
-                secondsLeftPre--;
+                secondsLeft--;
+                updateDisplay();
             }, 1000);
         }
         
         function beginActualExam() {
+            if (preExamInterval) clearInterval(preExamInterval);
             preExamStageActive = false;
             document.getElementById("preExamBox").style.display = "none";
             
             loadQuestions();
             currentQuestionIdx = 0;
-            
-            // Calculate exam time based on remaining time until 9:00 PM
-            const minutesUntilClosure = getMinutesUntilClosure();
-            if (minutesUntilClosure <= 0) {
-                alert("Exam window has ended. Please check back next Sunday.");
-                location.reload();
-                return;
-            }
-            
-            // Set exam time to either 60 minutes or remaining time until 9:00 PM (whichever is smaller)
-            examTimeSeconds = Math.min(3600, minutesUntilClosure * 60);
-            if (examTimeSeconds <= 0) examTimeSeconds = 60;
-            
+            examTimeSeconds = 3600;
             testStartTime = new Date();
+            
             document.getElementById("testBox").style.display = "block";
             
-            // Show warning if exam will end soon
-            if (minutesUntilClosure <= 15) {
-                document.getElementById("closingWarning").style.display = "block";
-            }
-            
             startExamTimer();
-            startAutoClosureMonitor();
             renderCurrentQuestion();
             updateNavButtonsExam();
             
-            if(cameraEnabled && mediaStream) {
+            if (cameraEnabled && mediaStream) {
                 console.log("Proctoring active");
+            } else {
+                setTimeout(() => {
+                    if (!cameraEnabled && confirm("Camera access helps with proctoring. Enable now?")) {
+                        navigator.mediaDevices.getUserMedia({ video: true })
+                            .then(stream => { mediaStream = stream; cameraEnabled = true; })
+                            .catch(e => console.log("Camera denied"));
+                    }
+                }, 2000);
             }
         }
         
@@ -497,32 +443,6 @@
                     if(examTimeSeconds === 60) alert("⚠️ 1 minute remaining! Finish your exam.");
                 }
             }, 1000);
-        }
-        
-        function startAutoClosureMonitor() {
-            // Check every minute if we've reached 9:00 PM
-            if(autoCloseTimer) clearInterval(autoCloseTimer);
-            autoCloseTimer = setInterval(() => {
-                const now = new Date();
-                const hour = now.getHours();
-                const minutes = now.getMinutes();
-                
-                // If it's 9:00 PM or later, auto-submit exam
-                if (hour >= 21) {
-                    clearInterval(autoCloseTimer);
-                    if (document.getElementById("testBox").style.display === "block") {
-                        alert("⏰ 9:00 PM has arrived. Exam is being auto-submitted.");
-                        finishTest();
-                    }
-                } else if (hour === 20 && minutes >= 55) {
-                    // Show warning banner 5 minutes before closure
-                    const warningBanner = document.getElementById("closingWarning");
-                    if (warningBanner) warningBanner.style.display = "block";
-                    if (minutes === 59) {
-                        document.getElementById("timer").style.color = "#ff4444";
-                    }
-                }
-            }, 10000); // check every 10 seconds
         }
         
         function renderCurrentQuestion() {
@@ -574,7 +494,6 @@
         
         function finishTest() {
             if(examTimerInterval) clearInterval(examTimerInterval);
-            if(autoCloseTimer) clearInterval(autoCloseTimer);
             if(mediaStream) mediaStream.getTracks().forEach(t=>t.stop());
             
             let score = 0;
@@ -604,7 +523,7 @@
                     <div><strong>Date:</strong> ${new Date().toLocaleString()}</div>
                     <div><strong>Duration:</strong> ${durMins}m ${durSecs}s</div>
                     <div class="text-center mt-3"><h3>Score: ${score}/${total} (${percent}%)</h3><h4>Status: ${status} | Grade: ${grade}</h4></div>
-                    <div class="text-center text-muted small mt-2">Exam closed at 9:00 PM as per schedule</div>
+                    <div class="text-center text-muted small mt-2">Thank you for taking the SB Notes Premium Examination</div>
                 </div>
             `;
             
@@ -623,40 +542,17 @@
         
         // ================= LOGIN =================
         function login() {
-            if(!isExamAvailable()) { 
-                alert("❌ Exam window closed. Available Sundays 8:00 PM - 9:00 PM. Please check back next Sunday at 8 PM.");
-                location.reload(); 
-                return; 
-            }
-            
             const email = document.getElementById("email").value.trim();
             const pwd = document.getElementById("password").value.trim();
             const user = students.find(s=> s.email===email && s.password===pwd);
             
             if(!user) { 
-                document.getElementById("loginError").innerText="Invalid email or password"; 
+                document.getElementById("loginError").innerText = "Invalid email or password"; 
                 return; 
             }
             
             currentUser = user;
             showPreExamFlow();
-        }
-        
-        // ================= LOCK / AVAILABILITY =================
-        function checkExamLock() {
-            const lockDiv = document.getElementById("lockBox");
-            const loginDiv = document.getElementById("loginBox");
-            const nextTimeSpan = document.getElementById("nextExamTime");
-            
-            if(isExamAvailable()) {
-                lockDiv.style.display = "none";
-                loginDiv.style.display = "block";
-                if(nextTimeSpan) nextTimeSpan.innerText = "Available NOW until 9:00 PM!";
-            } else {
-                lockDiv.style.display = "block";
-                loginDiv.style.display = "none";
-                if(nextTimeSpan) nextTimeSpan.innerText = formatNextExamTime();
-            }
         }
         
         // Make functions global
@@ -665,19 +561,6 @@
         window.nextQuestion = nextQuestion;
         window.prevQuestion = prevQuestion;
         window.finishTest = finishTest;
-        
-        // Initial check
-        checkExamLock();
-        
-        // Monitor every 30 seconds to refresh lock state
-        setInterval(() => { 
-            if(isExamAvailable() && document.getElementById("lockBox").style.display !== "none") {
-                location.reload();
-            } else if(!isExamAvailable() && document.getElementById("testBox").style.display === "block") {
-                // If exam is ongoing but time passed 9:15, force finish
-                finishTest();
-            }
-        }, 30000);
         
         // ================= ANTI-CHEAT =================
         document.addEventListener("keydown", function(e){
@@ -688,6 +571,14 @@
                (e.ctrlKey && e.key==='p')) {
                 e.preventDefault();
             }
+            // Arrow keys for navigation during exam
+            if(document.getElementById("testBox").style.display === "block") {
+                if(e.key === "ArrowRight" && currentQuestionIdx < questionsList.length-1) {
+                    nextQuestion();
+                } else if(e.key === "ArrowLeft" && currentQuestionIdx > 0) {
+                    prevQuestion();
+                }
+            }
         });
         
         document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
@@ -695,6 +586,8 @@
         document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
         document.addEventListener('cut', function(e) { e.preventDefault(); return false; });
         document.addEventListener('paste', function(e) { e.preventDefault(); return false; });
+        
+        console.log("Exam ready - Use credentials: srinjoyb2004@gmail.com / 12345");
     </script>
 </body>
 </html>
