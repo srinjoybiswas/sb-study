@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>SB Notes Premium Exam | Computer Hardware & OS</title>
+    <title>SB Notes Proctored Exam | Computer Hardware & OS</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,369 +16,278 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none;
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         .container-custom {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
         
-        /* Login Box */
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            margin-top: 50px;
-        }
-        
-        .login-card h2 {
-            color: #1e40af;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        .login-card .subtitle {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 30px;
-        }
-        
-        /* Test Box */
-        .test-card {
-            background: white;
-            border-radius: 20px;
+        .login-card, .test-card, .result-card, .lock-card, .preExamCard {
+            background: rgba(255,255,255,0.98);
+            border-radius: 28px;
             padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            min-height: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            backdrop-filter: blur(2px);
         }
         
         .timer-box {
-            background: #1e40af;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 24px;
+            background: linear-gradient(95deg, #1e293b, #0f172a);
+            color: #facc15;
+            padding: 12px 20px;
+            border-radius: 60px;
+            font-size: 26px;
             font-weight: bold;
             text-align: center;
             margin-bottom: 20px;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         
-        .question-header {
-            background: #f0f9ff;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border-left: 5px solid #1e40af;
-        }
-        
-        .question-text {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-        
-        .option-btn {
-            transition: all 0.2s ease;
-            text-align: left !important;
-        }
-        
-        .option-btn:hover {
-            transform: translateX(5px);
-        }
-        
-        .option-btn.selected {
-            background-color: #1e40af !important;
-            color: white !important;
-        }
-        
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .nav-buttons button {
-            padding: 12px 30px;
-            border-radius: 50px;
+        .supervisor-alert {
+            background: #fef9c3;
+            border-left: 8px solid #eab308;
+            padding: 14px 18px;
+            border-radius: 18px;
+            margin-bottom: 18px;
             font-weight: bold;
+            animation: pulse 0.8s ease;
         }
         
-        .question-counter {
-            text-align: center;
-            margin-top: 20px;
-            color: #64748b;
-            font-size: 14px;
+        @keyframes pulse {
+            0% { opacity: 0.6; transform: scale(0.98);}
+            100% { opacity: 1; transform: scale(1);}
         }
         
-        /* Result Box */
-        .result-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-        }
-        
-        .result-actions {
+        .countdownCircle {
+            background: #0f172a;
+            color: #facc15;
+            font-size: 3rem;
+            font-weight: 800;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
             display: flex;
-            gap: 15px;
+            align-items: center;
             justify-content: center;
-            margin-top: 20px;
+            margin: 15px auto;
+            box-shadow: 0 0 25px #facc15;
         }
         
         .btn-premium {
-            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            background: linear-gradient(95deg, #2563eb, #1e40af);
             color: white;
             border: none;
             padding: 12px 30px;
             border-radius: 50px;
             font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
         
-        .btn-premium:hover {
-            transform: translateY(-2px);
+        .option-btn.selected {
+            background-color: #1e40af !important;
+            color: white !important;
+            border-color: #1e40af;
         }
         
-        .error-text {
-            color: #dc2626;
-            font-size: 14px;
+        .camera-preview {
+            background: #000;
+            border-radius: 24px;
+            padding: 5px;
             margin-top: 10px;
             text-align: center;
         }
         
-        /* Lock Message Styles */
-        .lock-card {
-            background: white;
-            border-radius: 20px;
-            padding: 50px 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            margin-top: 50px;
-            text-align: center;
+        video {
+            width: 100%;
+            max-height: 180px;
+            border-radius: 18px;
+            background: #111;
         }
         
-        .lock-card .lock-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-        }
-        
-        .lock-card h2 {
-            color: #dc2626;
-            margin-bottom: 20px;
-        }
-        
-        .lock-card p {
-            color: #64748b;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .lock-card .next-exam {
-            background: #1e40af;
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            margin-top: 30px;
-            display: inline-block;
-            font-weight: bold;
-        }
-        
-        .toast {
+        .toast-message {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
+            background: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: bold;
             z-index: 9999;
+            box-shadow: 0 8px 18px black;
         }
         
-        @media (max-width: 768px) {
-            .question-text {
-                font-size: 1.1rem;
-            }
-            .test-card {
-                padding: 20px;
-            }
-            .option-btn {
-                font-size: 0.9rem;
-            }
+        .exam-closing-warning {
+            background: #dc2626;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
         }
     </style>
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
     <div class="container-custom">
         
-        <!-- LOCK / UNAVAILABLE MESSAGE BOX -->
+        <!-- LOCK / UNAVAILABLE -->
         <div id="lockBox">
-            <div class="lock-card">
+            <div class="lock-card text-center">
                 <div class="lock-icon">🔒</div>
-                <h2>Exam Locked</h2>
-                <p>The SB Notes Premium Exam is available only on:</p>
+                <h2 class="text-danger">Exam Locked</h2>
+                <p>SB Notes Premium Exam is available only on:</p>
                 <p><strong>📅 Sundays at 8:00 PM - 9:00 PM</strong></p>
-                <div class="next-exam" id="nextExamTime">Calculating next exam time...</div>
-                <p style="margin-top: 20px; font-size: 14px;">Please check back during the scheduled time slot.</p>
+                <div class="next-exam bg-primary text-white d-inline-block p-3 rounded-pill mt-3" id="nextExamTime">Calculating...</div>
+                <p class="mt-3 text-muted small">⏰ Exam closes sharp at 9:00 PM. Late entries not permitted.</p>
+            </div>
+        </div>
+
+        <!-- PRE-EXAM STAGE (timer before exam start with announcements) -->
+        <div id="preExamBox" style="display: none;">
+            <div class="preExamCard">
+                <div class="text-center">
+                    <h2>📢 Exam Countdown</h2>
+                    <p class="text-muted">Get ready! Supervisor announcements incoming</p>
+                </div>
+                <div id="announcementArea" class="mt-3">
+                    <div class="supervisor-alert" id="dynamicAnnouncement">⏳ Loading exam status...</div>
+                </div>
+                <div id="cameraRequestArea" class="mt-3 text-center" style="display: none;">
+                    <button class="btn btn-warning" id="enableCameraBtn">📸 Allow Camera Access (Proctoring)</button>
+                    <div id="cameraPreview" class="camera-preview mt-2" style="display: none;">
+                        <video id="videoFeed" autoplay muted></video>
+                        <p class="text-muted small mt-1">🔍 SB Notes monitoring active</p>
+                    </div>
+                </div>
+                <div id="repoCountdownArea" class="text-center mt-4" style="display: none;">
+                    <h4>📖 Sudrangshu assigned Question Set</h4>
+                    <div class="countdownCircle" id="repoTimer">3</div>
+                    <p class="fw-bold">Exam begins in ...</p>
+                </div>
+                <div class="text-center mt-4">
+                    <button id="finalStartBtn" class="btn btn-success btn-lg px-5" style="display: none;">🚀 START EXAM NOW</button>
+                </div>
             </div>
         </div>
         
-        <!-- LOGIN BOX (Hidden initially, shows when exam is unlocked) -->
+        <!-- LOGIN BOX (after unlock but before pre-exam) -->
         <div id="loginBox" style="display: none;">
             <div class="login-card">
                 <h2>📘 SB Notes Premium Exam</h2>
                 <div class="subtitle">Computer Hardware & Operating System</div>
-                <div style="background: #e0e7ff; padding: 10px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
-                    <span style="color: #1e40af;">✅ Exam Window: Sunday 8:00 PM - 9:00 PM</span>
-                </div>
+                <div class="alert alert-info">✅ Exam Window: Sunday 8:00 PM - 9:00 PM</div>
+                <div class="alert alert-warning small">⚠️ Exam ends exactly at 9:00 PM. All responses auto-submitted.</div>
                 <div class="mb-3">
                     <label class="form-label">Email Address</label>
-                    <input type="email" id="email" class="form-control" placeholder="Enter your registered email">
+                    <input type="email" id="email" class="form-control" placeholder="Enter registered email">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Enter your password">
+                    <input type="password" id="password" class="form-control" placeholder="Password">
                 </div>
-                <button class="btn btn-primary w-100 py-2" onclick="login()">🚀 Start Examination</button>
-                <div id="loginError" class="error-text"></div>
+                <button class="btn btn-primary w-100 py-2" onclick="login()">🔐 Verify & Enter Lobby</button>
+                <div id="loginError" class="error-text text-danger mt-2"></div>
             </div>
         </div>
         
-        <!-- TEST BOX (Hidden initially) -->
+        <!-- TEST BOX (actual exam) -->
         <div id="testBox" style="display: none;">
             <div class="test-card">
-                <div class="timer-box">
-                    ⏱️ Time Remaining: <span id="timer">60:00</span>
-                </div>
-                
-                <div class="question-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span id="questionCounter">Question 1 of 25</span>
-                        <span class="badge bg-primary">SB Notes</span>
+                <div id="closingWarning" class="exam-closing-warning" style="display: none;">⚠️ EXAM CLOSING SOON - Auto-submit at 9:00 PM ⚠️</div>
+                <div class="timer-box">⏱️ <span id="timer">60:00</span></div>
+                <div class="question-header bg-light p-3 rounded">
+                    <div class="d-flex justify-content-between">
+                        <span id="questionCounter">Q1/25</span>
+                        <span class="badge bg-dark">Proctored</span>
                     </div>
                 </div>
-                
-                <div id="question" class="question-text"></div>
-                
+                <div id="question" class="question-text fw-bold fs-4 my-3"></div>
                 <div id="options"></div>
-                
-                <div class="nav-buttons">
+                <div class="nav-buttons d-flex justify-content-between mt-4">
                     <button id="prevBtn" class="btn btn-secondary" onclick="prevQuestion()" disabled>◀ Previous</button>
                     <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Next ▶</button>
                     <button id="submitBtn" class="btn btn-success" onclick="finishTest()" style="display: none;">✅ Submit Exam</button>
                 </div>
-                
-                <div class="question-counter">
-                    ⚡ Use arrow keys to navigate • Total Questions: 25
-                </div>
+                <div class="text-center mt-3 small text-secondary">⚠️ Camera recording active | Auto-submit at 9:00 PM sharp</div>
             </div>
         </div>
         
-        <!-- RESULT BOX (Hidden initially) -->
+        <!-- RESULT BOX -->
         <div id="resultBox" style="display: none;">
             <div class="result-card">
                 <div id="resultContent"></div>
-                <div class="result-actions">
-                    <button id="downloadPDF" class="btn-premium">📄 Download Premium PDF</button>
-                    <button id="restartBtn" class="btn btn-secondary">🔄 Restart Exam</button>
+                <div class="d-flex gap-3 justify-content-center mt-4">
+                    <button id="downloadPDF" class="btn-premium">📄 Download PDF</button>
+                    <button id="restartBtn" class="btn btn-secondary">🔄 Restart</button>
                 </div>
             </div>
         </div>
-        
     </div>
     
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Student Database -->
     <script>
         // ================= STUDENT DATABASE =================
-const students = [
-    {
-        email: "srinjoyb2004@gmail.com",
-        password: "12345",
-        name: "Srinjoy",
-        testId: "SB2025001"
-    },
-    {
-        email: "soumili.ghosh.bca28@tha.edu.in",
-        password: "sghosh066",
-        name: "Soumili Ghosh",
-        testId: "SB2025002"
-    },
-    {
-        email: "rwitikasarkar@gmail.com",
-        password: "Ritika@7278",
-        name: "Rwitika Sarkar",
-        testId: "SB2025003"
-    },
-    {
-        email: "akash.das.bca28@tha.edu.in",
-        password: "AKASH123",
-        name: "Akash Das",
-        testId: "SB2025004"
-    }
-];
-    </script>
-    
-    <!-- Test Logic -->
-    <script>
-        // ================= EXAM UNLOCK LOGIC =================
-        // Exam schedule: Every Sunday, 8:00 PM to 9:00 PM (20:00 to 21:00)
+        const students = [
+            { email: "srinjoyb2004@gmail.com", password: "12345", name: "Srinjoy", testId: "SB2025001" },
+            { email: "soumili.ghosh.bca28@tha.edu.in", password: "sghosh066", name: "Soumili Ghosh", testId: "SB2025002" },
+            { email: "rwitikasarkar@gmail.com", password: "Ritika@7278", name: "Rwitika Sarkar", testId: "SB2025003" },
+            { email: "akash.das.bca28@tha.edu.in", password: "AKASH123", name: "Akash Das", testId: "SB2025004" }
+        ];
+        
+        // ================= EXAM SCHEDULE LOGIC =================
+        // Exam available: Sundays from 8:00 PM to 9:15 PM (internal) but displays as 9:00 PM end
+        // After 9:15 PM, it locks and shows next Sunday at 8:00 PM
         
         function isExamAvailable() {
             const now = new Date();
-            const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            const currentDay = now.getDay(); // 0 = Sunday
             const currentHour = now.getHours();
             const currentMinutes = now.getMinutes();
             const currentTimeInMinutes = (currentHour * 60) + currentMinutes;
             
-            // Exam window: Sunday (day 0) from 20:00 (8:00 PM) to 21:00 (9:00 PM)
-            const EXAM_START_MINUTES = 20 * 60; // 8:00 PM = 1200 minutes
-            const EXAM_END_MINUTES = 21 * 60;   // 9:00 PM = 1260 minutes
-            
-            if (currentDay === 0) { // Sunday
-                if (currentTimeInMinutes >= EXAM_START_MINUTES && currentTimeInMinutes < EXAM_END_MINUTES) {
-                    return true; // Exam is available
-                }
-            }
-            return false; // Exam is locked
-        }
-        
-        function getNextExamDateTime() {
-            const now = new Date();
-            const currentDay = now.getDay();
-            const currentHour = now.getHours();
-            const currentMinutes = now.getMinutes();
-            
-            const EXAM_START_HOUR = 20;
-            const EXAM_START_MINUTE = 0;
-            
-            let nextExam = new Date(now);
+            // Exam actually available from 8:00 PM (1200) to 9:15 PM (1215)
+            // But user-facing shows end time as 9:00 PM
+            const ACTUAL_START = 20 * 60;      // 8:00 PM = 1200 minutes
+            const ACTUAL_END = 21 * 60 + 15;   // 9:15 PM = 1215 minutes
             
             if (currentDay === 0) {
-                // Today is Sunday
-                if (currentHour < 20 || (currentHour === 20 && currentMinutes < 0)) {
-                    // Before 8 PM, next exam is today at 8 PM
-                    nextExam.setHours(EXAM_START_HOUR, EXAM_START_MINUTE, 0, 0);
-                } else {
-                    // After 8 PM or during exam, next exam is next Sunday
-                    nextExam.setDate(now.getDate() + 7);
-                    nextExam.setHours(EXAM_START_HOUR, EXAM_START_MINUTE, 0, 0);
+                if (currentTimeInMinutes >= ACTUAL_START && currentTimeInMinutes < ACTUAL_END) {
+                    return true;
                 }
-            } else {
-                // Not Sunday, get next Sunday
-                const daysUntilSunday = (7 - currentDay);
-                nextExam.setDate(now.getDate() + daysUntilSunday);
-                nextExam.setHours(EXAM_START_HOUR, EXAM_START_MINUTE, 0, 0);
             }
+            return false;
+        }
+        
+        // Get the next exam start time (next Sunday at 8:00 PM)
+        function getNextExamDateTime() {
+            const now = new Date();
+            const nextExam = new Date(now);
+            nextExam.setHours(20, 0, 0, 0); // 8:00 PM
             
+            if (nextExam.getDay() !== 0) {
+                // If not Sunday, go to next Sunday
+                nextExam.setDate(now.getDate() + (7 - now.getDay()));
+            } else if (now.getHours() >= 20 || (now.getHours() === 20 && now.getMinutes() >= 0)) {
+                // Today is Sunday but after 8:00 PM, next Sunday
+                nextExam.setDate(now.getDate() + 7);
+            }
             return nextExam;
         }
         
@@ -396,76 +305,34 @@ const students = [
             return nextExam.toLocaleDateString('en-US', options);
         }
         
-        function updateLockMessage() {
-            const nextExamSpan = document.getElementById("nextExamTime");
-            if (nextExamSpan) {
-                nextExamSpan.innerText = formatNextExamTime();
-            }
+        // Get remaining minutes until exam closes (from current time to 9:00 PM)
+        function getMinutesUntilClosure() {
+            const now = new Date();
+            const closureTime = new Date(now);
+            closureTime.setHours(21, 0, 0, 0); // 9:00 PM sharp (displayed end time)
+            const diffMs = closureTime - now;
+            return Math.floor(diffMs / 60000);
         }
         
-        function checkAndShowExam() {
-            const lockBox = document.getElementById("lockBox");
-            const loginBox = document.getElementById("loginBox");
-            
-            if (isExamAvailable()) {
-                // Exam is available - show login
-                lockBox.style.display = "none";
-                loginBox.style.display = "block";
-                console.log("✅ Exam is available! Sunday 8 PM - 9 PM window is open.");
-            } else {
-                // Exam is locked - show lock message
-                lockBox.style.display = "block";
-                loginBox.style.display = "none";
-                updateLockMessage();
-                console.log("🔒 Exam is locked. Next exam:", formatNextExamTime());
-            }
-        }
-        
-        // Check exam availability every minute (to auto-refresh when exam window opens)
-        let lastCheckState = false;
-        function monitorExamAvailability() {
-            const currentState = isExamAvailable();
-            
-            // If state changed from locked to unlocked, refresh the page
-            if (lastCheckState !== currentState && currentState === true) {
-                location.reload();
-            }
-            lastCheckState = currentState;
-        }
-        
-        // Initial check
-        checkAndShowExam();
-        
-        // Monitor every 30 seconds for exam window change
-        setInterval(() => {
-            monitorExamAvailability();
-        }, 30000);
-        
-        // ================= TEST LOGIC =================
+        // ================= GLOBAL STATE =================
         let currentUser = null;
-        let currentQuestion = 0;
-        let timeLeft = 3600; // 60 minutes
+        let questionsList = [];
         let userAnswers = [];
-        let timerInterval = null;
+        let currentQuestionIdx = 0;
+        let examTimerInterval = null;
+        let examTimeSeconds = 3600; // 60 minutes
         let testStartTime = null;
-
-        // DOM Elements
-        const loginBoxElem = document.getElementById("loginBox");
-        const testBox = document.getElementById("testBox");
-        const resultBox = document.getElementById("resultBox");
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        const loginError = document.getElementById("loginError");
-        const timerDisplay = document.getElementById("timer");
-        const questionText = document.getElementById("question");
-        const optionsContainer = document.getElementById("options");
-        const questionCounter = document.getElementById("questionCounter");
-        const prevBtn = document.getElementById("prevBtn");
-        const nextBtn = document.getElementById("nextBtn");
-        const submitBtn = document.getElementById("submitBtn");
-
-        // ================= QUESTIONS (25 MCQs) =================
-        const questions = [
+        let autoCloseTimer = null;
+        
+        // camera reference
+        let mediaStream = null;
+        let cameraEnabled = false;
+        
+        // Pre-exam stage active flag
+        let preExamStageActive = false;
+        
+        // ================= QUESTION BANK (25 MCQs - UNCHANGED) =================
+        const originalQuestions = [
             { question: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Tech Language", "Hyper Tool Markup Language", "Home Tool Language"], answer: "Hyper Text Markup Language" },
             { question: "Which language is used for styling web pages?", options: ["HTML", "CSS", "Java", "Python"], answer: "CSS" },
             { question: "Which is a programming language?", options: ["HTTP", "HTML", "JavaScript", "URL"], answer: "JavaScript" },
@@ -492,120 +359,211 @@ const students = [
             { question: "Which is social media platform?", options: ["Google", "Instagram", "Microsoft", "Amazon"], answer: "Instagram" },
             { question: "Most used web programming language?", options: ["C++", "Java", "Python", "JavaScript"], answer: "JavaScript" }
         ];
-
-        // ================= LOGIN FUNCTION =================
-        function login() {
-            // Double-check exam availability before login
-            if (!isExamAvailable()) {
-                alert("❌ Exam is not available right now. The exam opens every Sunday at 8:00 PM for 1 hour.");
+        
+        function loadQuestions() { 
+            questionsList = [...originalQuestions]; 
+            userAnswers = new Array(questionsList.length).fill(null); 
+        }
+        
+        // ================= UI HANDLER =================
+        function showPreExamFlow() {
+            document.getElementById("loginBox").style.display = "none";
+            document.getElementById("testBox").style.display = "none";
+            document.getElementById("resultBox").style.display = "none";
+            const preDiv = document.getElementById("preExamBox");
+            preDiv.style.display = "block";
+            preExamStageActive = true;
+            
+            const annDiv = document.getElementById("dynamicAnnouncement");
+            const cameraArea = document.getElementById("cameraRequestArea");
+            const repoArea = document.getElementById("repoCountdownArea");
+            const startBtn = document.getElementById("finalStartBtn");
+            cameraArea.style.display = "none";
+            repoArea.style.display = "none";
+            startBtn.style.display = "none";
+            
+            let secondsLeftPre = 60; // 60-second pre-exam theater
+            
+            annDiv.innerHTML = "⏳ Preparing exam environment... Please stay seated.";
+            
+            const preInterval = setInterval(() => {
+                if (!preExamStageActive) { clearInterval(preInterval); return; }
+                if (secondsLeftPre <= 0) {
+                    clearInterval(preInterval);
+                    beginActualExam();
+                    return;
+                }
+                
+                // Announcements based on seconds left
+                if (secondsLeftPre === 60) annDiv.innerHTML = "🧑‍🏫 Supervisor Sudrangshu has arrived! Get ready for the premium examination.";
+                else if (secondsLeftPre === 50) annDiv.innerHTML = "📢 Team SB-Notes: Strict monitoring will be active. No tab switching allowed.";
+                else if (secondsLeftPre === 40) annDiv.innerHTML = "✨ Srinjoy Biswas says: 'All of you, all the best! Give your best performance.'";
+                else if (secondsLeftPre === 30) {
+                    annDiv.innerHTML = "🔍 TEAM SB-NOTES: Monitoring your movement. Camera access will be requested soon.";
+                    cameraArea.style.display = "block";
+                }
+                else if (secondsLeftPre === 25) {
+                    // camera access button
+                    document.getElementById("enableCameraBtn").onclick = async () => {
+                        try {
+                            if(mediaStream) mediaStream.getTracks().forEach(t=>t.stop());
+                            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                            mediaStream = stream;
+                            const videoElem = document.getElementById("videoFeed");
+                            videoElem.srcObject = stream;
+                            document.getElementById("cameraPreview").style.display = "block";
+                            cameraEnabled = true;
+                            document.getElementById("enableCameraBtn").disabled = true;
+                            document.getElementById("enableCameraBtn").innerHTML = "✅ Camera Active";
+                        } catch(e) { alert("Camera access required for proctoring. Allow to continue."); }
+                    };
+                }
+                else if (secondsLeftPre === 15) {
+                    annDiv.innerHTML = "📌 Sudrangshu assigned your question set. Stay focused!";
+                    cameraArea.style.display = "none";
+                    repoArea.style.display = "block";
+                    let repoCount = 3;
+                    const repoCircle = document.getElementById("repoTimer");
+                    const repoInt = setInterval(() => {
+                        if(repoCount <= 0) { 
+                            clearInterval(repoInt); 
+                            repoCircle.innerText = "GO!"; 
+                            startBtn.style.display = "block"; 
+                            startBtn.onclick = () => { 
+                                if(preExamStageActive) beginActualExam(); 
+                            };
+                        } else { 
+                            repoCircle.innerText = repoCount; 
+                            repoCount--; 
+                        }
+                    }, 1000);
+                }
+                else if (secondsLeftPre === 2) annDiv.innerHTML = "⚠️ 1 minute left! Final preparation. Click START when ready.";
+                
+                secondsLeftPre--;
+            }, 1000);
+        }
+        
+        function beginActualExam() {
+            preExamStageActive = false;
+            document.getElementById("preExamBox").style.display = "none";
+            
+            loadQuestions();
+            currentQuestionIdx = 0;
+            
+            // Calculate exam time based on remaining time until 9:00 PM
+            const minutesUntilClosure = getMinutesUntilClosure();
+            if (minutesUntilClosure <= 0) {
+                alert("Exam window has ended. Please check back next Sunday.");
                 location.reload();
                 return;
             }
             
-            const email = emailInput.value.trim();
-            const password = passwordInput.value.trim();
-
-            if (!email || !password) {
-                loginError.innerText = "Please enter email and password";
-                return;
-            }
-
-            const user = students.find(s => s.email === email && s.password === password);
-
-            if (!user) {
-                loginError.innerText = "Invalid email or password";
-                return;
-            }
-
-            currentUser = user;
-            startTest();
-        }
-
-        // ================= START TEST =================
-        function startTest() {
-            loginBoxElem.style.display = "none";
-            testBox.style.display = "block";
+            // Set exam time to either 60 minutes or remaining time until 9:00 PM (whichever is smaller)
+            examTimeSeconds = Math.min(3600, minutesUntilClosure * 60);
+            if (examTimeSeconds <= 0) examTimeSeconds = 60;
             
-            currentQuestion = 0;
-            userAnswers = new Array(questions.length).fill(null);
             testStartTime = new Date();
+            document.getElementById("testBox").style.display = "block";
             
-            startTimer();
-            loadQuestion();
-            updateNavButtons();
+            // Show warning if exam will end soon
+            if (minutesUntilClosure <= 15) {
+                document.getElementById("closingWarning").style.display = "block";
+            }
+            
+            startExamTimer();
+            startAutoClosureMonitor();
+            renderCurrentQuestion();
+            updateNavButtonsExam();
+            
+            if(cameraEnabled && mediaStream) {
+                console.log("Proctoring active");
+            }
         }
-
-        // ================= TIMER FUNCTION =================
-        function startTimer() {
-            if (timerInterval) clearInterval(timerInterval);
-            
-            timerInterval = setInterval(() => {
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
+        
+        function startExamTimer() {
+            if(examTimerInterval) clearInterval(examTimerInterval);
+            examTimerInterval = setInterval(() => {
+                if(examTimeSeconds <= 0) {
+                    clearInterval(examTimerInterval);
                     finishTest();
                 } else {
-                    timeLeft--;
-                    const minutes = Math.floor(timeLeft / 60);
-                    const seconds = timeLeft % 60;
-                    timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                    examTimeSeconds--;
+                    let mins = Math.floor(examTimeSeconds / 60);
+                    let secs = examTimeSeconds % 60;
+                    document.getElementById("timer").innerHTML = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
                     
-                    if (timeLeft === 300) {
-                        alert("⚠️ 5 minutes remaining!");
-                    }
+                    if(examTimeSeconds === 300) alert("⚠️ 5 minutes remaining!");
+                    if(examTimeSeconds === 60) alert("⚠️ 1 minute remaining! Finish your exam.");
                 }
             }, 1000);
         }
-
-        // ================= LOAD QUESTION =================
-        function loadQuestion() {
-            const q = questions[currentQuestion];
-            questionText.innerText = q.question;
-            questionCounter.innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
-            
-            let html = "";
-            q.options.forEach((opt, index) => {
-                const isSelected = (userAnswers[currentQuestion] === index);
-                const selectedClass = isSelected ? 'btn-primary selected' : 'btn-outline-primary';
-                html += `
-                    <button onclick="selectOption(${index})" 
-                        class="btn ${selectedClass} w-100 mb-2 text-start option-btn"
-                        style="border-radius: 12px; padding: 12px 16px;">
-                        <span style="font-weight: bold; width: 30px; display: inline-block;">${String.fromCharCode(65+index)}.</span> 
-                        ${escapeHtml(opt)}
-                    </button>
-                `;
+        
+        function startAutoClosureMonitor() {
+            // Check every minute if we've reached 9:00 PM
+            if(autoCloseTimer) clearInterval(autoCloseTimer);
+            autoCloseTimer = setInterval(() => {
+                const now = new Date();
+                const hour = now.getHours();
+                const minutes = now.getMinutes();
+                
+                // If it's 9:00 PM or later, auto-submit exam
+                if (hour >= 21) {
+                    clearInterval(autoCloseTimer);
+                    if (document.getElementById("testBox").style.display === "block") {
+                        alert("⏰ 9:00 PM has arrived. Exam is being auto-submitted.");
+                        finishTest();
+                    }
+                } else if (hour === 20 && minutes >= 55) {
+                    // Show warning banner 5 minutes before closure
+                    const warningBanner = document.getElementById("closingWarning");
+                    if (warningBanner) warningBanner.style.display = "block";
+                    if (minutes === 59) {
+                        document.getElementById("timer").style.color = "#ff4444";
+                    }
+                }
+            }, 10000); // check every 10 seconds
+        }
+        
+        function renderCurrentQuestion() {
+            const q = questionsList[currentQuestionIdx];
+            document.getElementById("question").innerText = q.question;
+            document.getElementById("questionCounter").innerHTML = `Question ${currentQuestionIdx+1} of ${questionsList.length}`;
+            let optsHtml = "";
+            q.options.forEach((opt, idx) => {
+                const isSel = (userAnswers[currentQuestionIdx] === idx);
+                const btnClass = isSel ? "btn-primary selected" : "btn-outline-primary";
+                optsHtml += `<button onclick="selectOption(${idx})" class="btn ${btnClass} w-100 mb-2 text-start option-btn" style="border-radius: 14px; padding: 12px;"><span class="fw-bold me-2">${String.fromCharCode(65+idx)}.</span> ${escapeHtml(opt)}</button>`;
             });
-            optionsContainer.innerHTML = html;
-            updateNavButtons();
+            document.getElementById("options").innerHTML = optsHtml;
+            updateNavButtonsExam();
         }
-
-        // ================= SELECT OPTION =================
-        function selectOption(index) {
-            userAnswers[currentQuestion] = index;
-            loadQuestion();
+        
+        function selectOption(idx) {
+            userAnswers[currentQuestionIdx] = idx;
+            renderCurrentQuestion();
         }
-
-        // ================= NEXT QUESTION =================
+        
         function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                loadQuestion();
+            if(currentQuestionIdx < questionsList.length-1) {
+                currentQuestionIdx++;
+                renderCurrentQuestion();
             }
         }
-
-        // ================= PREVIOUS QUESTION =================
+        
         function prevQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                loadQuestion();
+            if(currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderCurrentQuestion();
             }
         }
-
-        // ================= UPDATE NAVIGATION BUTTONS =================
-        function updateNavButtons() {
-            prevBtn.disabled = (currentQuestion === 0);
-            
-            if (currentQuestion === questions.length - 1) {
+        
+        function updateNavButtonsExam() {
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            const submitBtn = document.getElementById("submitBtn");
+            prevBtn.disabled = (currentQuestionIdx === 0);
+            if(currentQuestionIdx === questionsList.length-1) {
                 nextBtn.style.display = "none";
                 submitBtn.style.display = "block";
             } else {
@@ -613,142 +571,130 @@ const students = [
                 submitBtn.style.display = "none";
             }
         }
-
-        // ================= FINISH TEST =================
+        
         function finishTest() {
-            if (timerInterval) clearInterval(timerInterval);
+            if(examTimerInterval) clearInterval(examTimerInterval);
+            if(autoCloseTimer) clearInterval(autoCloseTimer);
+            if(mediaStream) mediaStream.getTracks().forEach(t=>t.stop());
             
             let score = 0;
-            questions.forEach((q, i) => {
-                const selectedIndex = userAnswers[i];
-                if (selectedIndex !== null && q.options[selectedIndex] === q.answer) {
-                    score++;
-                }
+            questionsList.forEach((q, i) => {
+                const selectedIdx = userAnswers[i];
+                if(selectedIdx !== null && q.options[selectedIdx] === q.answer) score++;
             });
+            const total = questionsList.length;
+            const percent = Math.round((score/total)*100);
+            const durationSec = Math.floor((new Date() - testStartTime)/1000);
+            const durMins = Math.floor(durationSec/60);
+            const durSecs = durationSec%60;
             
-            const total = questions.length;
-            const percentage = Math.round((score / total) * 100);
-            const duration = Math.floor((new Date() - testStartTime) / 1000);
-            const durationMinutes = Math.floor(duration / 60);
-            const durationSeconds = duration % 60;
+            document.getElementById("testBox").style.display = "none";
+            document.getElementById("resultBox").style.display = "block";
             
-            testBox.style.display = "none";
-            resultBox.style.display = "block";
+            const resultDiv = document.getElementById("resultContent");
+            const grade = percent>=90?"A+": percent>=75?"A": percent>=60?"B":"C";
+            const status = percent>=60?"PASSED":"FAILED";
             
-            // Show result
-            const resultContainer = document.getElementById("resultContent");
-            const status = percentage >= 60 ? "PASSED" : "FAILED";
-            const grade = percentage >= 90 ? "A+" : percentage >= 75 ? "A" : percentage >= 60 ? "B" : "C";
-            
-            resultContainer.innerHTML = `
-                <div id="pdfContent" style="padding: 20px;">
-                    <div style="text-align: center; border-bottom: 3px solid #1e40af; padding-bottom: 20px;">
-                        <h1 style="color: #1e40af;">📘 SB NOTES</h1>
-                        <p>Premium Examination Certificate</p>
-                    </div>
-                    <div style="margin: 20px 0;">
-                        <p><strong>Name:</strong> ${currentUser.name}</p>
-                        <p><strong>Email:</strong> ${currentUser.email}</p>
-                        <p><strong>Test ID:</strong> ${currentUser.testId}</p>
-                        <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
-                        <p><strong>Duration:</strong> ${durationMinutes}m ${durationSeconds}s</p>
-                    </div>
-                    <div style="text-align: center; margin: 20px 0;">
-                        <h2>Score: ${score}/${total} (${percentage}%)</h2>
-                        <h3>Status: ${status} | Grade: ${grade}</h3>
-                    </div>
+            resultDiv.innerHTML = `
+                <div id="pdfContent" style="padding:15px">
+                    <div class="text-center border-bottom pb-3"><h2 class="text-primary">📘 SB NOTES</h2><p>Premium Examination Certificate</p></div>
+                    <div class="mt-3"><strong>Name:</strong> ${currentUser.name}</div>
+                    <div><strong>Email:</strong> ${currentUser.email}</div>
+                    <div><strong>Test ID:</strong> ${currentUser.testId}</div>
+                    <div><strong>Date:</strong> ${new Date().toLocaleString()}</div>
+                    <div><strong>Duration:</strong> ${durMins}m ${durSecs}s</div>
+                    <div class="text-center mt-3"><h3>Score: ${score}/${total} (${percent}%)</h3><h4>Status: ${status} | Grade: ${grade}</h4></div>
+                    <div class="text-center text-muted small mt-2">Exam closed at 9:00 PM as per schedule</div>
                 </div>
             `;
             
-            document.getElementById("downloadPDF").onclick = () => {
-                const element = document.getElementById("pdfContent");
-                html2pdf().from(element).save();
-            };
+            document.getElementById("downloadPDF").onclick = () => { html2pdf().from(document.getElementById("pdfContent")).save(); };
             document.getElementById("restartBtn").onclick = () => location.reload();
         }
-
-        function escapeHtml(str) {
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
+        
+        function escapeHtml(str) { 
+            return str.replace(/[&<>]/g, function(m){
+                if(m==='&') return '&amp;'; 
+                if(m==='<') return '&lt;'; 
+                if(m==='>') return '&gt;'; 
                 return m;
-            });
+            }); 
         }
-
-        // Keyboard navigation
-        document.addEventListener("keydown", function(e) {
-            if (testBox.style.display === "block") {
-                if (e.key === "ArrowRight" && currentQuestion < questions.length - 1) {
-                    nextQuestion();
-                } else if (e.key === "ArrowLeft" && currentQuestion > 0) {
-                    prevQuestion();
-                }
-            }
-        });
-
-        // ================= DISABLE RIGHT CLICK & DEV TOOLS =================
-        // Disable right click
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            return false;
-        });
         
-        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-        document.addEventListener('keydown', function(e) {
-            // F12
-            if (e.key === 'F12') {
-                e.preventDefault();
-                return false;
+        // ================= LOGIN =================
+        function login() {
+            if(!isExamAvailable()) { 
+                alert("❌ Exam window closed. Available Sundays 8:00 PM - 9:00 PM. Please check back next Sunday at 8 PM.");
+                location.reload(); 
+                return; 
             }
-            // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
-                e.preventDefault();
-                return false;
+            
+            const email = document.getElementById("email").value.trim();
+            const pwd = document.getElementById("password").value.trim();
+            const user = students.find(s=> s.email===email && s.password===pwd);
+            
+            if(!user) { 
+                document.getElementById("loginError").innerText="Invalid email or password"; 
+                return; 
             }
-            // Ctrl+U (view source)
-            if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+S (save)
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                return false;
-            }
-            // Ctrl+P (print)
-            if (e.ctrlKey && e.key === 'p') {
-                e.preventDefault();
-                return false;
-            }
-        });
+            
+            currentUser = user;
+            showPreExamFlow();
+        }
         
-        // Disable text selection
-        document.addEventListener('selectstart', function(e) {
-            e.preventDefault();
-            return false;
-        });
+        // ================= LOCK / AVAILABILITY =================
+        function checkExamLock() {
+            const lockDiv = document.getElementById("lockBox");
+            const loginDiv = document.getElementById("loginBox");
+            const nextTimeSpan = document.getElementById("nextExamTime");
+            
+            if(isExamAvailable()) {
+                lockDiv.style.display = "none";
+                loginDiv.style.display = "block";
+                if(nextTimeSpan) nextTimeSpan.innerText = "Available NOW until 9:00 PM!";
+            } else {
+                lockDiv.style.display = "block";
+                loginDiv.style.display = "none";
+                if(nextTimeSpan) nextTimeSpan.innerText = formatNextExamTime();
+            }
+        }
         
-        // Disable copy, cut, paste
-        document.addEventListener('copy', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        document.addEventListener('cut', function(e) {
-            e.preventDefault();
-            return false;
-        });
-        document.addEventListener('paste', function(e) {
-            e.preventDefault();
-            return false;
-        });
-
-        // Expose functions
+        // Make functions global
         window.login = login;
+        window.selectOption = selectOption;
         window.nextQuestion = nextQuestion;
         window.prevQuestion = prevQuestion;
-        window.selectOption = selectOption;
         window.finishTest = finishTest;
+        
+        // Initial check
+        checkExamLock();
+        
+        // Monitor every 30 seconds to refresh lock state
+        setInterval(() => { 
+            if(isExamAvailable() && document.getElementById("lockBox").style.display !== "none") {
+                location.reload();
+            } else if(!isExamAvailable() && document.getElementById("testBox").style.display === "block") {
+                // If exam is ongoing but time passed 9:15, force finish
+                finishTest();
+            }
+        }, 30000);
+        
+        // ================= ANTI-CHEAT =================
+        document.addEventListener("keydown", function(e){
+            if(e.key==='F12' || 
+               (e.ctrlKey && e.shiftKey && (e.key==='I'||e.key==='J'||e.key==='C')) || 
+               (e.ctrlKey && e.key==='u') || 
+               (e.ctrlKey && e.key==='s') || 
+               (e.ctrlKey && e.key==='p')) {
+                e.preventDefault();
+            }
+        });
+        
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
+        document.addEventListener('selectstart', function(e) { e.preventDefault(); return false; });
+        document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
+        document.addEventListener('cut', function(e) { e.preventDefault(); return false; });
+        document.addEventListener('paste', function(e) { e.preventDefault(); return false; });
     </script>
 </body>
 </html>
