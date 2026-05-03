@@ -1,246 +1,742 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Test System</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    /* Login Box Style */
-    #loginBox {
-      background: white;
-      border-radius: 20px;
-      padding: 40px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      text-align: center;
-      animation: fadeIn 0.5s ease;
-    }
-
-    #loginBox h2 {
-      color: #333;
-      margin-bottom: 25px;
-      font-size: 28px;
-    }
-
-    #loginBox input {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 10px 0;
-      border: 2px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    #loginBox input:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
-    }
-
-    #loginBox button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-      transition: transform 0.2s;
-    }
-
-    #loginBox button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102,126,234,0.4);
-    }
-
-    #loginError {
-      color: #e74c3c;
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    /* Test Box Style */
-    #testBox {
-      background: white;
-      border-radius: 20px;
-      padding: 40px;
-      width: 100%;
-      max-width: 700px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      animation: fadeIn 0.5s ease;
-    }
-
-    #timer {
-      text-align: center;
-      font-size: 48px;
-      font-weight: bold;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 30px;
-      font-family: monospace;
-    }
-
-    #question {
-      font-size: 22px;
-      color: #333;
-      margin-bottom: 25px;
-      line-height: 1.4;
-      font-weight: 500;
-    }
-
-    #options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 30px;
-    }
-
-    #options div {
-      background: #f8f9fa;
-      border: 2px solid #e0e0e0;
-      border-radius: 12px;
-      padding: 14px 18px;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 16px;
-    }
-
-    #options div:hover {
-      background: #e9ecef;
-      border-color: #667eea;
-      transform: translateX(5px);
-    }
-
-    #options div.selected {
-      background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
-      border-color: #667eea;
-      border-width: 2px;
-    }
-
-    #testBox button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      padding: 14px 35px;
-      border-radius: 50px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      display: block;
-      margin: 0 auto;
-      transition: all 0.3s;
-    }
-
-    #testBox button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 5px 20px rgba(102,126,234,0.4);
-    }
-
-    /* Fail Box Style */
-    #failBox {
-      background: white;
-      border-radius: 20px;
-      padding: 50px;
-      width: 100%;
-      max-width: 450px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      animation: shake 0.5s ease;
-    }
-
-    #failBox h1 {
-      color: #e74c3c;
-      font-size: 32px;
-      margin-bottom: 20px;
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-10px); }
-      75% { transform: translateX(10px); }
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      #loginBox, #testBox, #failBox {
-        padding: 25px;
-      }
-      
-      #timer {
-        font-size: 36px;
-      }
-      
-      #question {
-        font-size: 18px;
-      }
-      
-      #options div {
-        padding: 10px 14px;
-        font-size: 14px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SB Notes Premium Exam | Computer Hardware & OS</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- html2pdf for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .container-custom {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Login Box */
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-top: 50px;
+        }
+        
+        .login-card h2 {
+            color: #1e40af;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .login-card .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+        
+        /* Test Box */
+        .test-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            min-height: 500px;
+        }
+        
+        .timer-box {
+            background: #1e40af;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .question-header {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid #1e40af;
+        }
+        
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .option-btn {
+            transition: all 0.2s ease;
+            text-align: left !important;
+        }
+        
+        .option-btn:hover {
+            transform: translateX(5px);
+        }
+        
+        .option-btn.selected {
+            background-color: #1e40af !important;
+            color: white !important;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .nav-buttons button {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+        
+        .question-counter {
+            text-align: center;
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        /* Result Box */
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .btn-premium {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-premium:hover {
+            transform: translateY(-2px);
+        }
+        
+        .error-text {
+            color: #dc2626;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        /* Lock Message Styles */
+        .lock-card {
+            background: white;
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .lock-card .lock-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .lock-card h2 {
+            color: #dc2626;
+            margin-bottom: 20px;
+        }
+        
+        .lock-card p {
+            color: #64748b;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .lock-card .next-exam {
+            background: #1e40af;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            margin-top: 30px;
+            display: inline-block;
+            font-weight: bold;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        @media (max-width: 768px) {
+            .question-text {
+                font-size: 1.1rem;
+            }
+            .test-card {
+                padding: 20px;
+            }
+            .option-btn {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
-<body>
+<body oncontextmenu="return false;" onselectstart="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
+    <div class="container-custom">
+        
+        <!-- LOCK / UNAVAILABLE MESSAGE BOX -->
+        <div id="lockBox">
+            <div class="lock-card">
+                <div class="lock-icon">🔒</div>
+                <h2>Exam Locked</h2>
+                <p>The SB Notes Premium Exam is available only on:</p>
+                <p><strong>📅 Sundays at 8:00 PM - 9:00 PM</strong></p>
+                <div class="next-exam" id="nextExamTime">Calculating next exam time...</div>
+                <p style="margin-top: 20px; font-size: 14px;">Please check back during the scheduled time slot.</p>
+            </div>
+        </div>
+        
+        <!-- LOGIN BOX (Hidden initially, shows when exam is unlocked) -->
+        <div id="loginBox" style="display: none;">
+            <div class="login-card">
+                <h2>📘 SB Notes Premium Exam</h2>
+                <div class="subtitle">Computer Hardware & Operating System</div>
+                <div style="background: #e0e7ff; padding: 10px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                    <span style="color: #1e40af;">✅ Exam Window: Sunday 8:00 PM - 9:00 PM</span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your registered email">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter your password">
+                </div>
+                <button class="btn btn-primary w-100 py-2" onclick="login()">🚀 Start Examination</button>
+                <div id="loginError" class="error-text"></div>
+            </div>
+        </div>
+        
+        <!-- TEST BOX (Hidden initially) -->
+        <div id="testBox" style="display: none;">
+            <div class="test-card">
+                <div class="timer-box">
+                    ⏱️ Time Remaining: <span id="timer">60:00</span>
+                </div>
+                
+                <div class="question-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span id="questionCounter">Question 1 of 25</span>
+                        <span class="badge bg-primary">SB Notes</span>
+                    </div>
+                </div>
+                
+                <div id="question" class="question-text"></div>
+                
+                <div id="options"></div>
+                
+                <div class="nav-buttons">
+                    <button id="prevBtn" class="btn btn-secondary" onclick="prevQuestion()" disabled>◀ Previous</button>
+                    <button id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Next ▶</button>
+                    <button id="submitBtn" class="btn btn-success" onclick="finishTest()" style="display: none;">✅ Submit Exam</button>
+                </div>
+                
+                <div class="question-counter">
+                    ⚡ Use arrow keys to navigate • Total Questions: 25
+                </div>
+            </div>
+        </div>
+        
+        <!-- RESULT BOX (Hidden initially) -->
+        <div id="resultBox" style="display: none;">
+            <div class="result-card">
+                <div id="resultContent"></div>
+                <div class="result-actions">
+                    <button id="downloadPDF" class="btn-premium">📄 Download Premium PDF</button>
+                    <button id="restartBtn" class="btn btn-secondary">🔄 Restart Exam</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Student Database -->
+    <script>
+        // ================= STUDENT DATABASE =================
+        const students = [
+            {
+                email: "srinjoyb2004@gmail.com",
+                password: "12345",
+                name: "Srinjoy",
+                testId: "SB2025001"
+            },
+            {
+                email: "soumili.ghosh.bca28@tha.edu.in",
+                password: "sghosh066",
+                name: "Soumili Ghosh",
+                testId: "SB2025002"
+            }
+        ];
+    </script>
+    
+    <!-- Test Logic -->
+    <script>
+        // ================= EXAM UNLOCK LOGIC =================
+        // Exam schedule: Every Sunday, 8:00 PM to 9:00 PM (20:00 to 21:00)
+        
+        function isExamAvailable() {
+            const now = new Date();
+            const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            const currentHour = now.getHours();
+            const currentMinutes = now.getMinutes();
+            const currentTimeInMinutes = (currentHour * 60) + currentMinutes;
+            
+            // Exam window: Sunday (day 0) from 20:00 (8:00 PM) to 21:00 (9:00 PM)
+            const EXAM_START_MINUTES = 20 * 60; // 8:00 PM = 1200 minutes
+            const EXAM_END_MINUTES = 21 * 60;   // 9:00 PM = 1260 minutes
+            
+            if (currentDay === 0) { // Sunday
+                if (currentTimeInMinutes >= EXAM_START_MINUTES && currentTimeInMinutes < EXAM_END_MINUTES) {
+                    return true; // Exam is available
+                }
+            }
+            return false; // Exam is locked
+        }
+        
+        function getNextExamDateTime() {
+            const now = new Date();
+            const currentDay = now.getDay();
+            const currentHour = now.getHours();
+            const currentMinutes = now.getMinutes();
+            
+            const EXAM_START_HOUR = 20;
+            const EXAM_START_MINUTE = 0;
+            
+            let nextExam = new Date(now);
+            
+            if (currentDay === 0) {
+                // Today is Sunday
+                if (currentHour < 20 || (currentHour === 20 && currentMinutes < 0)) {
+                    // Before 8 PM, next exam is today at 8 PM
+                    nextExam.setHours(EXAM_START_HOUR, EXAM_START_MINUTE, 0, 0);
+                } else {
+                    // After 8 PM or during exam, next exam is next Sunday
+                    nextExam.setDate(now.getDate() + 7);
+                    nextExam.setHours(EXAM_START_HOUR, EXAM_START_MINUTE, 0, 0);
+                }
+            } else {
+                // Not Sunday, get next Sunday
+                const daysUntilSunday = (7 - currentDay);
+                nextExam.setDate(now.getDate() + daysUntilSunday);
+                nextExam.setHours(EXAM_START_HOUR, EXAM_START_MINUTE, 0, 0);
+            }
+            
+            return nextExam;
+        }
+        
+        function formatNextExamTime() {
+            const nextExam = getNextExamDateTime();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            };
+            return nextExam.toLocaleDateString('en-US', options);
+        }
+        
+        function updateLockMessage() {
+            const nextExamSpan = document.getElementById("nextExamTime");
+            if (nextExamSpan) {
+                nextExamSpan.innerText = formatNextExamTime();
+            }
+        }
+        
+        function checkAndShowExam() {
+            const lockBox = document.getElementById("lockBox");
+            const loginBox = document.getElementById("loginBox");
+            
+            if (isExamAvailable()) {
+                // Exam is available - show login
+                lockBox.style.display = "none";
+                loginBox.style.display = "block";
+                console.log("✅ Exam is available! Sunday 8 PM - 9 PM window is open.");
+            } else {
+                // Exam is locked - show lock message
+                lockBox.style.display = "block";
+                loginBox.style.display = "none";
+                updateLockMessage();
+                console.log("🔒 Exam is locked. Next exam:", formatNextExamTime());
+            }
+        }
+        
+        // Check exam availability every minute (to auto-refresh when exam window opens)
+        let lastCheckState = false;
+        function monitorExamAvailability() {
+            const currentState = isExamAvailable();
+            
+            // If state changed from locked to unlocked, refresh the page
+            if (lastCheckState !== currentState && currentState === true) {
+                location.reload();
+            }
+            lastCheckState = currentState;
+        }
+        
+        // Initial check
+        checkAndShowExam();
+        
+        // Monitor every 30 seconds for exam window change
+        setInterval(() => {
+            monitorExamAvailability();
+        }, 30000);
+        
+        // ================= TEST LOGIC =================
+        let currentUser = null;
+        let currentQuestion = 0;
+        let timeLeft = 3600; // 60 minutes
+        let userAnswers = [];
+        let timerInterval = null;
+        let testStartTime = null;
 
-<!-- LOGIN -->
-<div id="loginBox">
-  <h2>📝 Login</h2>
-  <input id="email" placeholder="Email"><br>
-  <input id="password" type="password" placeholder="Password"><br>
-  <button onclick="login()">Login</button>
-  <p id="loginError"></p>
-</div>
+        // DOM Elements
+        const loginBoxElem = document.getElementById("loginBox");
+        const testBox = document.getElementById("testBox");
+        const resultBox = document.getElementById("resultBox");
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const loginError = document.getElementById("loginError");
+        const timerDisplay = document.getElementById("timer");
+        const questionText = document.getElementById("question");
+        const optionsContainer = document.getElementById("options");
+        const questionCounter = document.getElementById("questionCounter");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const submitBtn = document.getElementById("submitBtn");
 
-<!-- TEST -->
-<div id="testBox" style="display:none;">
-  <h2 id="timer">60:00</h2>
-  <h3 id="question"></h3>
-  <div id="options"></div>
-  <button onclick="nextQuestion()">Next</button>
-</div>
+        // ================= QUESTIONS (25 MCQs) =================
+        const questions = [
+            { question: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Tech Language", "Hyper Tool Markup Language", "Home Tool Language"], answer: "Hyper Text Markup Language" },
+            { question: "Which language is used for styling web pages?", options: ["HTML", "CSS", "Java", "Python"], answer: "CSS" },
+            { question: "Which is a programming language?", options: ["HTTP", "HTML", "JavaScript", "URL"], answer: "JavaScript" },
+            { question: "Which tag is used for a hyperlink?", options: ["<link>", "<a>", "<href>", "<h>"], answer: "<a>" },
+            { question: "Which symbol is used for comments in JS?", options: ["//", "#", "<!-- -->", "**"], answer: "//" },
+            { question: "What is CPU?", options: ["Central Process Unit", "Central Processing Unit", "Computer Personal Unit", "Control Processing Unit"], answer: "Central Processing Unit" },
+            { question: "RAM stands for?", options: ["Random Access Memory", "Read Access Memory", "Run Access Memory", "Rapid Access Memory"], answer: "Random Access Memory" },
+            { question: "Which is an input device?", options: ["Monitor", "Keyboard", "Printer", "Speaker"], answer: "Keyboard" },
+            { question: "Which is an output device?", options: ["Mouse", "Scanner", "Monitor", "Keyboard"], answer: "Monitor" },
+            { question: "Brain of computer?", options: ["RAM", "CPU", "Hard Disk", "Motherboard"], answer: "CPU" },
+            { question: "Which OS is open source?", options: ["Windows", "Linux", "MacOS", "DOS"], answer: "Linux" },
+            { question: "Shortcut to refresh?", options: ["F2", "F5", "F10", "F7"], answer: "F5" },
+            { question: "Default extension of text file?", options: [".doc", ".txt", ".exe", ".pdf"], answer: ".txt" },
+            { question: "GUI means?", options: ["Graphical User Interface", "General User Interface", "Graphical Unit Interface", "General Unit Interface"], answer: "Graphical User Interface" },
+            { question: "Command to list files in Linux?", options: ["ls", "dir", "list", "show"], answer: "ls" },
+            { question: "SQL stands for?", options: ["Structured Query Language", "Simple Query Language", "Structured Question Language", "System Query Language"], answer: "Structured Query Language" },
+            { question: "Command to fetch data from database?", options: ["INSERT", "DELETE", "SELECT", "UPDATE"], answer: "SELECT" },
+            { question: "Primary key must be?", options: ["Null", "Duplicate", "Unique", "Optional"], answer: "Unique" },
+            { question: "LAN stands for?", options: ["Local Area Network", "Large Area Network", "Long Area Network", "Link Area Network"], answer: "Local Area Network" },
+            { question: "IP stands for?", options: ["Internet Protocol", "Internal Protocol", "Internet Program", "Internal Program"], answer: "Internet Protocol" },
+            { question: "Which is presentation software?", options: ["Word", "Excel", "PowerPoint", "Access"], answer: "PowerPoint" },
+            { question: "Shortcut to copy?", options: ["Ctrl+V", "Ctrl+C", "Ctrl+X", "Ctrl+Z"], answer: "Ctrl+C" },
+            { question: "PDF stands for?", options: ["Portable Document Format", "Print Document File", "Public Data File", "Program Data Format"], answer: "Portable Document Format" },
+            { question: "Which is social media platform?", options: ["Google", "Instagram", "Microsoft", "Amazon"], answer: "Instagram" },
+            { question: "Most used web programming language?", options: ["C++", "Java", "Python", "JavaScript"], answer: "JavaScript" }
+        ];
 
-<!-- FAIL -->
-<div id="failBox" style="display:none;">
-  <h1>❌ Test Stopped</h1>
-</div>
+        // ================= LOGIN FUNCTION =================
+        function login() {
+            // Double-check exam availability before login
+            if (!isExamAvailable()) {
+                alert("❌ Exam is not available right now. The exam opens every Sunday at 8:00 PM for 1 hour.");
+                location.reload();
+                return;
+            }
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
 
-<script src="student.js"></script>
-<script src="test.js"></script>
-<script src="main.js"></script>
+            if (!email || !password) {
+                loginError.innerText = "Please enter email and password";
+                return;
+            }
 
+            const user = students.find(s => s.email === email && s.password === password);
+
+            if (!user) {
+                loginError.innerText = "Invalid email or password";
+                return;
+            }
+
+            currentUser = user;
+            startTest();
+        }
+
+        // ================= START TEST =================
+        function startTest() {
+            loginBoxElem.style.display = "none";
+            testBox.style.display = "block";
+            
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            testStartTime = new Date();
+            
+            startTimer();
+            loadQuestion();
+            updateNavButtons();
+        }
+
+        // ================= TIMER FUNCTION =================
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                } else {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                    
+                    if (timeLeft === 300) {
+                        alert("⚠️ 5 minutes remaining!");
+                    }
+                }
+            }, 1000);
+        }
+
+        // ================= LOAD QUESTION =================
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            questionText.innerText = q.question;
+            questionCounter.innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
+            
+            let html = "";
+            q.options.forEach((opt, index) => {
+                const isSelected = (userAnswers[currentQuestion] === index);
+                const selectedClass = isSelected ? 'btn-primary selected' : 'btn-outline-primary';
+                html += `
+                    <button onclick="selectOption(${index})" 
+                        class="btn ${selectedClass} w-100 mb-2 text-start option-btn"
+                        style="border-radius: 12px; padding: 12px 16px;">
+                        <span style="font-weight: bold; width: 30px; display: inline-block;">${String.fromCharCode(65+index)}.</span> 
+                        ${escapeHtml(opt)}
+                    </button>
+                `;
+            });
+            optionsContainer.innerHTML = html;
+            updateNavButtons();
+        }
+
+        // ================= SELECT OPTION =================
+        function selectOption(index) {
+            userAnswers[currentQuestion] = index;
+            loadQuestion();
+        }
+
+        // ================= NEXT QUESTION =================
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            }
+        }
+
+        // ================= PREVIOUS QUESTION =================
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        // ================= UPDATE NAVIGATION BUTTONS =================
+        function updateNavButtons() {
+            prevBtn.disabled = (currentQuestion === 0);
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.style.display = "none";
+                submitBtn.style.display = "block";
+            } else {
+                nextBtn.style.display = "block";
+                submitBtn.style.display = "none";
+            }
+        }
+
+        // ================= FINISH TEST =================
+        function finishTest() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            let score = 0;
+            questions.forEach((q, i) => {
+                const selectedIndex = userAnswers[i];
+                if (selectedIndex !== null && q.options[selectedIndex] === q.answer) {
+                    score++;
+                }
+            });
+            
+            const total = questions.length;
+            const percentage = Math.round((score / total) * 100);
+            const duration = Math.floor((new Date() - testStartTime) / 1000);
+            const durationMinutes = Math.floor(duration / 60);
+            const durationSeconds = duration % 60;
+            
+            testBox.style.display = "none";
+            resultBox.style.display = "block";
+            
+            // Show result
+            const resultContainer = document.getElementById("resultContent");
+            const status = percentage >= 60 ? "PASSED" : "FAILED";
+            const grade = percentage >= 90 ? "A+" : percentage >= 75 ? "A" : percentage >= 60 ? "B" : "C";
+            
+            resultContainer.innerHTML = `
+                <div id="pdfContent" style="padding: 20px;">
+                    <div style="text-align: center; border-bottom: 3px solid #1e40af; padding-bottom: 20px;">
+                        <h1 style="color: #1e40af;">📘 SB NOTES</h1>
+                        <p>Premium Examination Certificate</p>
+                    </div>
+                    <div style="margin: 20px 0;">
+                        <p><strong>Name:</strong> ${currentUser.name}</p>
+                        <p><strong>Email:</strong> ${currentUser.email}</p>
+                        <p><strong>Test ID:</strong> ${currentUser.testId}</p>
+                        <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
+                        <p><strong>Duration:</strong> ${durationMinutes}m ${durationSeconds}s</p>
+                    </div>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <h2>Score: ${score}/${total} (${percentage}%)</h2>
+                        <h3>Status: ${status} | Grade: ${grade}</h3>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById("downloadPDF").onclick = () => {
+                const element = document.getElementById("pdfContent");
+                html2pdf().from(element).save();
+            };
+            document.getElementById("restartBtn").onclick = () => location.reload();
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener("keydown", function(e) {
+            if (testBox.style.display === "block") {
+                if (e.key === "ArrowRight" && currentQuestion < questions.length - 1) {
+                    nextQuestion();
+                } else if (e.key === "ArrowLeft" && currentQuestion > 0) {
+                    prevQuestion();
+                }
+            }
+        });
+
+        // ================= DISABLE RIGHT CLICK & DEV TOOLS =================
+        // Disable right click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        document.addEventListener('keydown', function(e) {
+            // F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+U (view source)
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+S (save)
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                return false;
+            }
+            // Ctrl+P (print)
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                return false;
+            }
+        });
+        
+        // Disable text selection
+        document.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        
+        // Disable copy, cut, paste
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        document.addEventListener('paste', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Expose functions
+        window.login = login;
+        window.nextQuestion = nextQuestion;
+        window.prevQuestion = prevQuestion;
+        window.selectOption = selectOption;
+        window.finishTest = finishTest;
+    </script>
 </body>
 </html>
