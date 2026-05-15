@@ -49,10 +49,92 @@
         .nav-link {
             font-weight: 500;
         }
+
+        /* CUSTOM POPUP STYLES */
+        .custom-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .custom-popup-box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-top: 5px solid #007bff;
+        }
+
+        .custom-popup-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .custom-popup-close:hover {
+            color: #dc3545;
+        }
+
+        .popup-info-row {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #f1f1f1;
+            padding-bottom: 8px;
+        }
+
+        .popup-info-row:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- CUSTOM POPUP MODAL -->
+    <div id="managerPopup" class="custom-popup-overlay">
+        <div class="custom-popup-box">
+            <span class="custom-popup-close" onclick="closePopup()">&times;</span>
+            <div class="text-center mb-4">
+                <i class="fas fa-user-shield text-primary fa-3x mb-2"></i>
+                <h3 class="fw-bold text-dark mb-1">Portal Management Authority</h3>
+                <p class="text-muted small">Student Details, Tests, Notes & PYQs Management</p>
+            </div>
+            
+            <div class="popup-content text-dark">
+                <div class="popup-info-row"><strong>Name:</strong> Rwitika Sarkar</div>
+                <div class="popup-info-row"><strong>Position:</strong> Website Examination Manager</div>
+                <div class="popup-info-row"><strong>Responsibility:</strong> Student verification, examination monitoring, AI proctoring supervision, and portal management</div>
+                <div class="popup-info-row"><strong>Official Email:</strong> <a href="mailto:rwitikasarkar@gmail.com" class="text-primary text-decoration-none">rwitikasarkar@gmail.com</a></div>
+                <div class="popup-info-row"><strong>Working Days:</strong> Monday to Saturday</div>
+                <div class="popup-info-row"><strong>Examination Supervision Time:</strong> 8:00 AM – 6:00 PM</div>
+                <div class="popup-info-row"><strong>Department:</strong> Examination Control & Student Verification Unit</div>
+                <div class="popup-info-row"><strong>Portal Name:</strong> SB Note Examination Portal</div>
+                <div class="popup-info-row"><strong>Role Access:</strong> Admin Control Panel & Exam Monitoring Authority</div>
+                <div class="popup-info-row"><strong>Security Level:</strong> <span class="badge bg-danger">High-Level Administrative Access</span></div>
+                <div class="popup-info-row"><strong>Support Type:</strong> Student login issues, exam verification, and examination monitoring support</div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button class="btn btn-primary px-4 rounded-pill" onclick="closePopup()">Acknowledge & Proceed</button>
+            </div>
+        </div>
+    </div>
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
@@ -98,7 +180,7 @@
     <!-- FEATURES -->
     <section id="features" class="py-5 bg-light">
         <div class="container text-center py-5">
-            <h2 class="fw-bold mb-5">Why Choose SB Notes?</h2>
+            <h2 class="fw-bold mb-5">Why Choose SB Choose?</h2>
 
             <div class="row g-4">
                 <div class="col-md-4">
@@ -185,6 +267,13 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- POPUP SCRIPT -->
+    <script>
+        function closePopup() {
+            document.getElementById('managerPopup').style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>
