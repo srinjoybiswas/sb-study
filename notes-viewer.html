@@ -129,12 +129,34 @@
         }
 
         /* MOBILE FIX */
+        /* MOBILE OPTIMIZATION */
         @media (max-width: 768px) {
-            .premium-split { flex-direction: column; overflow-y: auto; }
-            .viewer-fortress { min-height: 50vh; margin-bottom: 5px; }
-            .pencil-panel { margin-left: 15px; min-height: 40vh; }
-        }
+            body {
+                overflow-y: auto; /* Allow scrolling to reach notes */
+            }
+            
+            .premium-split { 
+                flex-direction: column; 
+                height: auto; /* Allow content to stack */
+            }
 
+            .viewer-fortress { 
+                height: 70vh; /* Much taller reader section */
+                margin: 10px;
+                flex: none; /* Disable flex growth */
+            }
+
+            .pencil-panel { 
+                margin: 0 10px 20px 10px; 
+                height: 30vh; /* Smaller notes section */
+                flex: none;
+            }
+
+            .fortress-card {
+                height: auto; /* Card expands with content */
+                margin-bottom: 20px;
+            }
+        }
         iframe { width: 100%; height: 100%; border: none; }
         [ng-cloak] { display: none; }
     </style>
