@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AECC401A – Society, Culture & Human Behaviour</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;800&family=Fira+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --u1: #ff6b35;
+    --u1l: #fff3ee;
+    --u2: #7c3aed;
+    --u2l: #f5f0ff;
+    --u3: #0891b2;
+    --u3l: #e0f6fb;
+    --u4: #be123c;
+    --u4l: #fff0f3;
+    --u5: #15803d;
+    --u5l: #edfff4;
+    --gold: #f59e0b;
+    --dark: #1a1a2e;
+    --mid: #2d2d44;
+    --light: #f8f7ff;
+    --white: #ffffff;
+    --card-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    --radius: 18px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    line-height: 1.8;
+    font-size: 16px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    color: white;
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  header .badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 800;
+    font-size: 13px;
+    padding: 5px 18px;
+    border-radius: 50px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  header p {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 auto 24px;
+  }
+  .header-meta {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;
+    margin-top: 10px;
+  }
+  .header-meta span {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  /* ── LAYOUT ── */
+  .wrapper { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    padding: 36px 40px;
+    margin: 48px auto;
+    max-width: 1100px;
+  }
+  .toc h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+    color: var(--dark);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .toc-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 0.93rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 5px solid;
+  }
+  .toc-item:hover { transform: translateX(4px); box-shadow: var(--card-shadow); }
+  .toc-item.u1 { background: var(--u1l); border-color: var(--u1); }
+  .toc-item.u2 { background: var(--u2l); border-color: var(--u2); }
+  .toc-item.u3 { background: var(--u3l); border-color: var(--u3); }
+  .toc-item.u4 { background: var(--u4l); border-color: var(--u4); }
+  .toc-item.u5 { background: var(--u5l); border-color: var(--u5); }
+  .toc-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 0.85rem; flex-shrink: 0;
+    font-weight: 800;
+  }
+  .u1 .toc-num { background: var(--u1); }
+  .u2 .toc-num { background: var(--u2); }
+  .u3 .toc-num { background: var(--u3); }
+  .u4 .toc-num { background: var(--u4); }
+  .u5 .toc-num { background: var(--u5); }
+
+  /* ── UNIT SECTIONS ── */
+  .unit {
+    max-width: 1100px;
+    margin: 0 auto 64px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    background: white;
+  }
+  .unit-header {
+    padding: 36px 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .unit-header::after {
+    content: attr(data-unit);
+    position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    font-weight: 900;
+    opacity: 0.08;
+    line-height: 1;
+    color: white;
+  }
+  .u1-hdr { background: linear-gradient(135deg, #ff6b35, #ff8c42); }
+  .u2-hdr { background: linear-gradient(135deg, #7c3aed, #9d5cf5); }
+  .u3-hdr { background: linear-gradient(135deg, #0891b2, #06b6d4); }
+  .u4-hdr { background: linear-gradient(135deg, #be123c, #e11d48); }
+  .u5-hdr { background: linear-gradient(135deg, #15803d, #16a34a); }
+  .unit-label {
+    background: rgba(255,255,255,0.25);
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .unit-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    color: white;
+    font-weight: 900;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .unit-body { padding: 40px 48px 48px; }
+
+  /* ── TOPIC BLOCKS ── */
+  .topic { margin-bottom: 48px; }
+  .topic h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .u1 h3 { color: var(--u1); border-color: var(--u1); }
+  .u2 h3 { color: var(--u2); border-color: var(--u2); }
+  .u3 h3 { color: var(--u3); border-color: var(--u3); }
+  .u4 h3 { color: var(--u4); border-color: var(--u4); }
+  .u5 h3 { color: var(--u5); border-color: var(--u5); }
+
+  .topic h4 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin: 22px 0 10px;
+    padding: 6px 14px;
+    border-radius: 8px;
+  }
+  .u1 h4 { background: var(--u1l); color: #c2410c; }
+  .u2 h4 { background: var(--u2l); color: #5b21b6; }
+  .u3 h4 { background: var(--u3l); color: #0e7490; }
+  .u4 h4 { background: var(--u4l); color: #9f1239; }
+  .u5 h4 { background: var(--u5l); color: #166534; }
+
+  p { margin-bottom: 14px; font-size: 1rem; }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    border-left: 5px solid;
+    font-size: 0.97rem;
+  }
+  .callout-def { border-color: var(--gold); background: #fffbeb; }
+  .callout-def strong { color: #92400e; }
+  .callout-key { border-color: #06b6d4; background: #ecfeff; }
+  .callout-key strong { color: #0e7490; }
+  .callout-fact { border-color: #10b981; background: #ecfdf5; }
+  .callout-fact strong { color: #065f46; }
+  .callout-imp { border-color: var(--u4); background: var(--u4l); }
+  .callout-imp strong { color: #9f1239; }
+  .callout-title {
+    font-weight: 800;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; margin: 24px 0; }
+  .card {
+    border-radius: 14px;
+    padding: 22px 20px;
+    transition: transform 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); }
+  .card h5 { font-size: 1rem; font-weight: 800; margin-bottom: 8px; }
+  .card p { font-size: 0.92rem; margin: 0; line-height: 1.6; }
+
+  /* ── STATS ROW ── */
+  .stats { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0; }
+  .stat-box {
+    flex: 1 1 160px;
+    border-radius: 14px;
+    padding: 20px 18px;
+    text-align: center;
+  }
+  .stat-box .num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; }
+  .stat-box .lbl { font-size: 0.82rem; font-weight: 700; margin-top: 4px; opacity: 0.85; }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin: 24px 0; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  thead tr { color: white; }
+  .u1 thead tr { background: var(--u1); }
+  .u2 thead tr { background: var(--u2); }
+  .u3 thead tr { background: var(--u3); }
+  .u4 thead tr { background: var(--u4); }
+  .u5 thead tr { background: var(--u5); }
+  th, td { padding: 13px 18px; text-align: left; }
+  tbody tr:nth-child(even) { background: #f8f8fc; }
+  tbody tr:hover { background: #f0eeff; }
+  td:first-child { font-weight: 700; }
+
+  /* ── LIST STYLE ── */
+  ul.nice, ol.nice { padding-left: 0; list-style: none; }
+  ul.nice li, ol.nice li {
+    padding: 8px 0 8px 28px;
+    border-bottom: 1px solid #f0f0f5;
+    position: relative;
+    font-size: 0.97rem;
+  }
+  ul.nice li::before { content: '→'; position: absolute; left: 0; font-weight: 800; }
+  .u1 ul.nice li::before { color: var(--u1); }
+  .u2 ul.nice li::before { color: var(--u2); }
+  .u3 ul.nice li::before { color: var(--u3); }
+  .u4 ul.nice li::before { color: var(--u4); }
+  .u5 ul.nice li::before { color: var(--u5); }
+  ol.nice { counter-reset: item; }
+  ol.nice li::before { content: counter(item)'.'; counter-increment: item; position: absolute; left: 0; font-weight: 800; }
+  .u1 ol.nice li::before { color: var(--u1); }
+  .u2 ol.nice li::before { color: var(--u2); }
+  .u3 ol.nice li::before { color: var(--u3); }
+  .u4 ol.nice li::before { color: var(--u4); }
+  .u5 ol.nice li::before { color: var(--u5); }
+
+  /* ── HIGHLIGHT PILL ── */
+  .pill {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    font-weight: 800;
+    margin: 3px 3px 3px 0;
+  }
+  .pill-o { background: #fff3ee; color: var(--u1); }
+  .pill-p { background: var(--u2l); color: var(--u2); }
+  .pill-b { background: var(--u3l); color: var(--u3); }
+  .pill-r { background: var(--u4l); color: var(--u4); }
+  .pill-g { background: var(--u5l); color: var(--u5); }
+
+  /* ── DIVIDER ── */
+  .divider { height: 3px; background: linear-gradient(90deg, transparent, currentColor 20%, currentColor 80%, transparent); opacity: 0.15; margin: 32px 0; }
+
+  /* ── QUOTE ── */
+  blockquote {
+    border-left: 4px solid var(--gold);
+    background: #fffbeb;
+    padding: 18px 24px;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    margin: 24px 0;
+    font-size: 1.05rem;
+  }
+
+  /* ── STICKY NAV ── */
+  .sticky-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(26,26,46,0.97);
+    backdrop-filter: blur(8px);
+    padding: 12px 24px;
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .sticky-nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 50px;
+    transition: background 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .sticky-nav a:hover { background: rgba(255,255,255,0.15); }
+  .sticky-nav a.u1-n { border: 2px solid var(--u1); }
+  .sticky-nav a.u2-n { border: 2px solid var(--u2); }
+  .sticky-nav a.u3-n { border: 2px solid var(--u3); }
+  .sticky-nav a.u4-n { border: 2px solid var(--u4); }
+  .sticky-nav a.u5-n { border: 2px solid var(--u5); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 36px 24px;
+    margin-top: 60px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 24px 0; }
+  .tl-item { display: flex; gap: 16px; margin-bottom: 20px; }
+  .tl-dot {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800; font-size: 0.85rem; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .tl-body h5 { font-weight: 800; margin-bottom: 4px; }
+  .tl-body p { font-size: 0.93rem; margin: 0; }
+
+  @media (max-width: 700px) {
+    .unit-body, .unit-header { padding: 24px 20px; }
+    .toc { padding: 24px 20px; }
+    .unit-header::after { display: none; }
+    .cards { grid-template-columns: 1fr; }
+    .stats { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="badge">Course Code: AECC401A · Credits: 2.0</div>
+  <h1>Society, Culture &amp;<br>Human Behaviour</h1>
+  <p>Comprehensive Study Notes · All 5 Units Covered in Full Detail</p>
+  <div class="header-meta">
+    <span>📚 5 Units</span>
+    <span>⏱ 30 Hours</span>
+    <span>🎓 2 Credits</span>
+    <span>📄 Detailed Notes</span>
+  </div>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <a href="#unit1" class="u1-n">Unit I: Demographic Profile</a>
+  <a href="#unit2" class="u2-n">Unit II: Indian Society</a>
+  <a href="#unit3" class="u3-n">Unit III: Social Stratification</a>
+  <a href="#unit4" class="u4-n">Unit IV: Socio-Economic Problems</a>
+  <a href="#unit5" class="u5-n">Unit V: Human Behaviour</a>
+</nav>
+
+<!-- TABLE OF CONTENTS -->
+<div class="wrapper">
+<div class="toc">
+  <h2>📋 Table of Contents</h2>
+  <div class="toc-grid">
+    <a href="#unit1" class="toc-item u1"><span class="toc-num">I</span>Demographic Profile of India</a>
+    <a href="#u1-pop" class="toc-item u1"><span class="toc-num">→</span>Population Growth</a>
+    <a href="#u1-age" class="toc-item u1"><span class="toc-num">→</span>Age, Sex, Religion & Language</a>
+    <a href="#u1-occ" class="toc-item u1"><span class="toc-num">→</span>Occupations & National Policy</a>
+    <a href="#unit2" class="toc-item u2"><span class="toc-num">II</span>Indian Society & Culture</a>
+    <a href="#u2-soc" class="toc-item u2"><span class="toc-num">→</span>Society & Its Types</a>
+    <a href="#u2-cul" class="toc-item u2"><span class="toc-num">→</span>Culture: Features & Diversity</a>
+    <a href="#u2-west" class="toc-item u2"><span class="toc-num">→</span>Differences with Western Culture</a>
+    <a href="#unit3" class="toc-item u3"><span class="toc-num">III</span>Social Stratification</a>
+    <a href="#u3-caste" class="toc-item u3"><span class="toc-num">→</span>Caste & Class System</a>
+    <a href="#u3-ethnic" class="toc-item u3"><span class="toc-num">→</span>Ethnic Groups & Minorities</a>
+    <a href="#u3-const" class="toc-item u3"><span class="toc-num">→</span>Constitutional Provisions</a>
+    <a href="#unit4" class="toc-item u4"><span class="toc-num">IV</span>Socio-Economic Problems</a>
+    <a href="#u4-pov" class="toc-item u4"><span class="toc-num">→</span>Poverty, Illiteracy, Unemployment</a>
+    <a href="#u4-crime" class="toc-item u4"><span class="toc-num">→</span>Crime, Terrorism & Migration</a>
+    <a href="#u4-family" class="toc-item u4"><span class="toc-num">→</span>Family & Social Problems</a>
+    <a href="#unit5" class="toc-item u5"><span class="toc-num">V</span>Introduction to Human Behaviour</a>
+    <a href="#u5-over" class="toc-item u5"><span class="toc-num">→</span>Overview & Importance</a>
+    <a href="#u5-det" class="toc-item u5"><span class="toc-num">→</span>Determinants of Behaviour</a>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     UNIT I: DEMOGRAPHIC PROFILE
+══════════════════════════════════════════════════════════ -->
+<div class="wrapper">
+<section id="unit1" class="unit u1">
+  <div class="unit-header u1-hdr" data-unit="I">
+    <span class="unit-label">Unit I · 6 Hours</span>
+    <h2>Demographic Profile of India</h2>
+  </div>
+  <div class="unit-body">
+
+    <!-- 1.1 -->
+    <div class="topic u1" id="u1-intro">
+      <h3>📊 1.1 What is Demography?</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Demography</strong> is the scientific study of human populations — how large they are, how they grow or shrink, who lives in them, and how they change over time. The word comes from the Greek words <em>demos</em> (people) and <em>graphein</em> (to write).
+      </div>
+      <p>Think of it like a "report card" of a country's people. Just like a hospital monitors a patient's health with numbers (blood pressure, temperature, weight), a country monitors its population with numbers like birth rate, death rate, literacy rate, and so on.</p>
+      <p>India is the <strong>most populous country in the world</strong> (surpassing China in 2023) with over <strong>1.44 billion people</strong>. Understanding its demography is essential for planning schools, hospitals, jobs, roads, and food supply.</p>
+    </div>
+
+    <!-- 1.2 -->
+    <div class="topic u1" id="u1-pop">
+      <h3>📈 1.2 Population Growth in India</h3>
+      <p>India's population has grown enormously over the past 200 years. In 1901, India had about 238 million people. By 2011, it had crossed 1.2 billion. This rapid growth is called a <strong>population explosion</strong>.</p>
+
+      <h4>Key Concepts in Population Growth</h4>
+      <div class="cards">
+        <div class="card" style="background:#fff3ee; border: 2px solid #ffcba4;">
+          <h5 style="color:#c2410c;">🐣 Birth Rate (BR)</h5>
+          <p>Number of live births per 1,000 people per year. Higher BR = faster population growth. India's BR has fallen from 41.7 (1951) to about 19.5 (2020).</p>
+        </div>
+        <div class="card" style="background:#fff3ee; border: 2px solid #ffcba4;">
+          <h5 style="color:#c2410c;">💀 Death Rate (DR)</h5>
+          <p>Number of deaths per 1,000 people per year. India's DR fell sharply due to better medicine and sanitation — from 27.4 (1951) to about 7.4 (2020).</p>
+        </div>
+        <div class="card" style="background:#fff3ee; border: 2px solid #ffcba4;">
+          <h5 style="color:#c2410c;">📊 Natural Growth Rate</h5>
+          <p>NR = BR − DR. When births are much more than deaths, population grows fast. India's NR was very high in the 1970s-80s.</p>
+        </div>
+        <div class="card" style="background:#fff3ee; border: 2px solid #ffcba4;">
+          <h5 style="color:#c2410c;">👶 Infant Mortality Rate</h5>
+          <p>Deaths of children under 1 year per 1,000 live births. India's IMR fell from 146 (1951) to about 28 (2020) — a huge achievement.</p>
+        </div>
+      </div>
+
+      <h4>Phases of Population Growth in India</h4>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot" style="background:#ffcba4; color: #c2410c;">1</div>
+          <div class="tl-body">
+            <h5>Phase 1: 1901–1921 (Stagnant Growth)</h5>
+            <p>Very slow growth. High birth rates but also very high death rates due to famines, epidemics (plague, influenza), and poor healthcare. This period is called the "Era of Great Divide".</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:#ff8c42; color: white;">2</div>
+          <div class="tl-body">
+            <h5>Phase 2: 1921–1951 (Steady Growth)</h5>
+            <p>Population began to grow steadily. Death rates fell due to better sanitation and public health programs. Birth rates remained high. 1921 is called the "Year of Great Divide" (turning point).</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:#ff6b35; color: white;">3</div>
+          <div class="tl-body">
+            <h5>Phase 3: 1951–1981 (Population Explosion)</h5>
+            <p>Fastest growth phase. Death rates fell sharply with independence, new hospitals, medicines (penicillin, vaccines), and the Green Revolution ensured food. But birth rates stayed high = population explosion.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background:#c2410c; color: white;">4</div>
+          <div class="tl-body">
+            <h5>Phase 4: 1981–Present (Declining Growth Rate)</h5>
+            <p>Growth rate is slowing. Better education (especially for women), family planning programs, later marriages, and urbanisation are reducing birth rates. However, total population is still large.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-fact">
+        <span class="callout-title">💡 Key Fact</span>
+        <strong>Demographic Transition Theory</strong> explains that as societies develop economically, they move from high birth + high death rates → high birth + low death rates → low birth + low death rates. India is currently in the third stage of this transition.
+      </div>
+
+      <h4>Factors Causing High Population Growth in India</h4>
+      <ul class="nice">
+        <li><strong>Early marriage</strong> – Girls marry young, leading to more years of childbearing</li>
+        <li><strong>Son preference</strong> – Families keep having children hoping for a son</li>
+        <li><strong>Low education</strong> – Less educated women tend to have more children</li>
+        <li><strong>Lack of family planning awareness</strong> – Especially in rural areas</li>
+        <li><strong>Religious beliefs</strong> – Some communities oppose birth control</li>
+        <li><strong>Poverty</strong> – Children are seen as extra hands to earn income</li>
+        <li><strong>Joint family system</strong> – Many people share costs, reducing fear of more children</li>
+      </ul>
+    </div>
+
+    <!-- 1.3 -->
+    <div class="topic u1" id="u1-age">
+      <h3>👥 1.3 Age and Sex Composition</h3>
+
+      <h4>Age Structure of India</h4>
+      <p>India has a very <strong>young population</strong> — this is called a "young age structure". About <strong>65% of Indians are below 35 years</strong> of age. This is called India's "demographic dividend" — a large working-age population that can drive economic growth IF they are educated and employed.</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Age Group</th><th>Category</th><th>% of Population (approx.)</th><th>Implication</th></tr></thead>
+          <tbody>
+            <tr><td>0–14 years</td><td>Young / Dependent</td><td>~26%</td><td>Need schools, nutrition, childcare</td></tr>
+            <tr><td>15–64 years</td><td>Working Age</td><td>~67%</td><td>Productive force, needs jobs</td></tr>
+            <tr><td>65+ years</td><td>Elderly / Dependent</td><td>~7%</td><td>Need healthcare, pensions</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Sex Ratio in India</h4>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Sex Ratio</strong> = Number of females per 1,000 males. A ratio of 1,000 means equal numbers. India's overall sex ratio is <strong>943 females per 1,000 males</strong> (Census 2011). This is lower than ideal, showing a preference for male children.
+      </div>
+      <p>There is also a special concern about the <strong>Child Sex Ratio (0–6 years)</strong> which was only <strong>919 girls per 1,000 boys</strong> in 2011. This reflects female foeticide and sex-selective abortions.</p>
+      <div class="stats">
+        <div class="stat-box" style="background:#fff3ee; color: var(--u1);">
+          <div class="num">943</div><div class="lbl">Girls per 1000 Boys (Overall)</div>
+        </div>
+        <div class="stat-box" style="background:#fff3ee; color: var(--u1);">
+          <div class="num">919</div><div class="lbl">Child Sex Ratio (0–6 yrs)</div>
+        </div>
+        <div class="stat-box" style="background:#fff3ee; color: var(--u1);">
+          <div class="num">Kerala</div><div class="lbl">Highest Sex Ratio State (1084)</div>
+        </div>
+        <div class="stat-box" style="background:#fff3ee; color: var(--u1);">
+          <div class="num">Haryana</div><div class="lbl">Lowest Sex Ratio State (~879)</div>
+        </div>
+      </div>
+
+      <h4>Religion in India</h4>
+      <p>India is a land of many religions — it is one of the most religiously diverse countries on Earth. The Indian Constitution declares India a <strong>secular state</strong>, meaning no single religion is the official religion.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Religion</th><th>% of Population (2011)</th><th>Key Features</th></tr></thead>
+          <tbody>
+            <tr><td>🕉️ Hinduism</td><td>79.8%</td><td>Oldest religion, diverse sects and practices</td></tr>
+            <tr><td>☪️ Islam</td><td>14.2%</td><td>Second largest; significant minority</td></tr>
+            <tr><td>✝️ Christianity</td><td>2.3%</td><td>Strong presence in Northeast, Kerala, Goa</td></tr>
+            <tr><td>🔱 Sikhism</td><td>1.7%</td><td>Mainly Punjab; strong diaspora globally</td></tr>
+            <tr><td>☸️ Buddhism</td><td>0.7%</td><td>Originated in India; popular in Maharashtra</td></tr>
+            <tr><td>🌸 Jainism</td><td>0.4%</td><td>Strong in business communities</td></tr>
+            <tr><td>Others</td><td>0.9%</td><td>Zoroastrian, Tribal faiths, etc.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Language in India</h4>
+      <p>India has <strong>no single national language</strong> but Hindi is the official language of the Union Government. India has <strong>22 scheduled languages</strong> listed in the 8th Schedule of the Constitution. In reality, India has over <strong>1,600 dialects and languages</strong>.</p>
+      <ul class="nice">
+        <li><strong>Hindi</strong> – Spoken by ~44% as first language; used across North India</li>
+        <li><strong>Bengali</strong> – Second most spoken; West Bengal and Bangladesh</li>
+        <li><strong>Telugu, Tamil, Kannada, Malayalam</strong> – Major Dravidian languages of South India</li>
+        <li><strong>Marathi, Gujarati, Punjabi, Odia</strong> – Major regional languages</li>
+        <li><strong>English</strong> – Associate official language; used in higher education, courts, and business</li>
+      </ul>
+      <div class="callout callout-key">
+        <span class="callout-title">💡 Important Concept</span>
+        <strong>Linguistic diversity</strong> is both India's strength (rich cultural heritage) and a challenge (communication barriers, regional identities can cause tensions). The States Reorganisation Act of 1956 reorganised states largely on linguistic lines to address this.
+      </div>
+    </div>
+
+    <!-- 1.4 -->
+    <div class="topic u1" id="u1-occ">
+      <h3>🏗️ 1.4 Occupations in India</h3>
+      <p>India's working population is engaged in three main sectors. The shift of workers from agriculture to industry and services is a sign of economic development.</p>
+      <div class="cards">
+        <div class="card" style="background:#fff3ee; border:2px solid #ff6b35;">
+          <h5 style="color:#c2410c;">🌾 Primary Sector</h5>
+          <p>Agriculture, fishing, forestry, mining. About <strong>45–50%</strong> of workers are in this sector, though it contributes only ~18% to GDP. Major issue: disguised unemployment.</p>
+        </div>
+        <div class="card" style="background:#fff3ee; border:2px solid #ff6b35;">
+          <h5 style="color:#c2410c;">🏭 Secondary Sector</h5>
+          <p>Manufacturing, construction, industries. About <strong>25%</strong> of workers. Growing sector with Special Economic Zones (SEZs), Make in India initiative.</p>
+        </div>
+        <div class="card" style="background:#fff3ee; border:2px solid #ff6b35;">
+          <h5 style="color:#c2410c;">💼 Tertiary Sector</h5>
+          <p>IT, banking, healthcare, education, trade, transport. Fastest growing sector; contributes about <strong>55% of GDP</strong>. India is a global IT and services hub.</p>
+        </div>
+      </div>
+      <div class="callout callout-imp">
+        <span class="callout-title">⚠️ Key Problem</span>
+        <strong>Disguised Unemployment</strong> — In agriculture, more people work on a farm than actually needed. If 5 people work on land where 2 are sufficient, 3 are "disguisedly unemployed". Their removal would NOT reduce output. This is a major Indian problem.
+      </div>
+
+      <h3 id="u1-npp">🏛️ 1.5 National Population Policy (NPP 2000)</h3>
+      <p>India launched its National Population Policy in <strong>2000</strong>. It was the first comprehensive policy to address population issues holistically — not just about having fewer children, but about health, education, and rights.</p>
+      <h4>Three Main Goals of NPP 2000</h4>
+      <ol class="nice">
+        <li><strong>Immediate Goal</strong> – Meet unmet needs for contraception, healthcare, and reduce IMR and MMR (maternal mortality rate)</li>
+        <li><strong>Medium-term Goal</strong> – Bring Total Fertility Rate (TFR) to replacement level (2.1 children per woman) by 2010</li>
+        <li><strong>Long-term Goal</strong> – Achieve stable population by 2045, consistent with sustainable economic growth</li>
+      </ol>
+      <h4>Key Features of NPP 2000</h4>
+      <ul class="nice">
+        <li>Free and compulsory education up to age 14</li>
+        <li>Reduce infant mortality rate below 30 per 1,000 live births</li>
+        <li>Universal immunisation of children</li>
+        <li>Promote delayed marriage (girls ≥ 18, boys ≥ 21)</li>
+        <li>Incentives for adopting small family norms</li>
+        <li>Integrate family welfare into poverty alleviation and development programs</li>
+      </ul>
+    </div>
+
+  </div><!-- /unit-body -->
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     UNIT II: INDIAN SOCIETY & CULTURE
+══════════════════════════════════════════════════════════ -->
+<div class="wrapper">
+<section id="unit2" class="unit u2">
+  <div class="unit-header u2-hdr" data-unit="II">
+    <span class="unit-label">Unit II · 6 Hours</span>
+    <h2>Indian Society &amp; Culture</h2>
+  </div>
+  <div class="unit-body">
+
+    <!-- 2.1 -->
+    <div class="topic u2" id="u2-soc">
+      <h3>🏘️ 2.1 What is Society?</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Society</strong> is a group of people who live together in a specific geographic area, share common norms, values, and institutions, and interact with each other on a regular basis. Society is NOT just a collection of people — it involves relationships, rules, roles, and shared identity.
+      </div>
+      <p>Think of society like a school. It has teachers, students, a principal — each has a role. There are rules (wear uniform, don't bully), shared values (respect, learning), and everyone interacts. Together they form a "school society".</p>
+      <blockquote>"Man is by nature a social animal" — Aristotle</blockquote>
+
+      <h4>Types of Society (Based on Development Level)</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Type of Society</th><th>Main Activity</th><th>Period</th><th>Key Features</th></tr></thead>
+          <tbody>
+            <tr><td>🏹 Hunting & Gathering</td><td>Hunting animals, collecting plants</td><td>50,000+ years ago</td><td>Nomadic, small groups, equality, no property</td></tr>
+            <tr><td>🐑 Pastoral</td><td>Herding animals</td><td>10,000 BCE</td><td>Semi-nomadic, surplus food possible</td></tr>
+            <tr><td>🌾 Horticultural</td><td>Small scale farming</td><td>10,000 BCE</td><td>Settled communities, gender division of labour</td></tr>
+            <tr><td>🚜 Agrarian/Agricultural</td><td>Large-scale farming</td><td>5,000 BCE</td><td>Surplus production, social classes, states form</td></tr>
+            <tr><td>🏭 Industrial</td><td>Factory-based production</td><td>1750 CE</td><td>Urbanisation, nuclear family, wage labour</td></tr>
+            <tr><td>💻 Post-Industrial</td><td>Information, services</td><td>1970s+</td><td>Knowledge economy, globalisation, tech-driven</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Types of Society (Based on Structure)</h4>
+      <div class="cards">
+        <div class="card" style="background:#f5f0ff; border: 2px solid #c4b5fd;">
+          <h5 style="color:#5b21b6;">👨‍👩‍👧 Tribal Society</h5>
+          <p>Organized around kinship and clans. Strong oral traditions, common land, own language/dialect. India has over 700 tribal communities (Adivasis).</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border: 2px solid #c4b5fd;">
+          <h5 style="color:#5b21b6;">🏡 Rural Society</h5>
+          <p>Agriculture-based; strong family ties, caste system is important, joint family common, less occupational diversity, conservative values.</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border: 2px solid #c4b5fd;">
+          <h5 style="color:#5b21b6;">🏙️ Urban Society</h5>
+          <p>Industry/service based; nuclear families, more individualism, less caste consciousness, more social mobility, faster change.</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border: 2px solid #c4b5fd;">
+          <h5 style="color:#5b21b6;">🌐 Modern/Global Society</h5>
+          <p>Driven by technology, globalisation, internet. High mobility, multicultural exposure, blurring of traditional boundaries.</p>
+        </div>
+      </div>
+
+      <h4>Basic Characteristics of Indian Society</h4>
+      <ul class="nice">
+        <li><strong>Unity in Diversity</strong> – Despite hundreds of languages, castes, and religions, Indians share a common cultural identity and nationhood</li>
+        <li><strong>Family-centric</strong> – The family (especially joint family) is the basic unit of Indian society</li>
+        <li><strong>Caste System</strong> – Hierarchical social structure based on birth (discussed in Unit III)</li>
+        <li><strong>Religious pluralism</strong> – Multiple faiths coexist, influencing laws, customs, and daily life</li>
+        <li><strong>Patriarchal system</strong> – Male dominance in most regions, though changing</li>
+        <li><strong>Rural dominance</strong> – Even today, ~65% of Indians live in villages</li>
+        <li><strong>Sacred-secular mix</strong> – Religion is deeply embedded in social, political, and economic life</li>
+      </ul>
+    </div>
+
+    <!-- 2.2 -->
+    <div class="topic u2" id="u2-cul">
+      <h3>🎭 2.2 Culture — Meaning, Features & Diversity</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Culture</strong> is the total way of life of a group of people. It includes their beliefs, values, customs, language, art, music, food, dress, laws, morals, and everything learned and shared within a community. Culture is <em>not inherited biologically</em> — it is learned (this is called "enculturation").
+      </div>
+      <p>Simple analogy: If society is a river, culture is the water flowing in it. Culture shapes how we think, behave, and understand the world around us.</p>
+
+      <h4>Components of Culture</h4>
+      <div class="cards">
+        <div class="card" style="background:#f5f0ff; border:2px solid #a78bfa;">
+          <h5 style="color:#5b21b6;">📜 Material Culture</h5>
+          <p>Physical, tangible objects created by humans — tools, buildings, clothes, food, technology, art. E.g., Indian temples, saris, tabla, biryani.</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border:2px solid #a78bfa;">
+          <h5 style="color:#5b21b6;">💭 Non-Material Culture</h5>
+          <p>Intangible elements — values, beliefs, norms, laws, language, religion, customs, folklore. E.g., Ahimsa (non-violence), respect for elders, Namaste greeting.</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border:2px solid #a78bfa;">
+          <h5 style="color:#5b21b6;">📏 Norms</h5>
+          <p>Rules of acceptable behaviour. Formal norms (laws) and informal norms (customs, etiquette). E.g., removing shoes before entering a temple.</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border:2px solid #a78bfa;">
+          <h5 style="color:#5b21b6;">❤️ Values</h5>
+          <p>Shared beliefs about what is good, right, and desirable. E.g., dharma, karma, family loyalty, respect for teachers (Guru Dakshina).</p>
+        </div>
+      </div>
+
+      <h4>Key Features / Characteristics of Culture</h4>
+      <ol class="nice">
+        <li><strong>Culture is learned</strong> – No one is born with culture; it is acquired through socialisation (family, school, religion, media)</li>
+        <li><strong>Culture is shared</strong> – It is a collective property, not individual. You speak a language only because others do too</li>
+        <li><strong>Culture is transmitted</strong> – Passed from one generation to next through language, education, and tradition</li>
+        <li><strong>Culture is dynamic</strong> – It changes over time. Indian culture has changed with Mughal influence, British rule, globalisation, internet</li>
+        <li><strong>Culture is cumulative</strong> – Each generation adds to what it inherits; knowledge builds up over time</li>
+        <li><strong>Culture is symbolic</strong> – Much of culture is communicated through symbols: the Tricolour, Om, Cross, Crescent Moon</li>
+        <li><strong>Culture is diverse</strong> – Different groups have different cultures (subcultures) based on region, religion, tribe, class</li>
+        <li><strong>Culture is adaptive</strong> – Cultures adapt to their environment. Kashmiris wear warm woollen clothes; Rajasthanis wear light cotton due to climate</li>
+        <li><strong>Culture integrates society</strong> – Common culture creates a sense of "we-feeling" and keeps society together</li>
+      </ol>
+
+      <h4>Cultural Diversity of India</h4>
+      <p>India's cultural diversity is unmatched in the world. The same country has snow-capped mountain tribes and tropical coastal fishing communities, ancient Vedic traditions and modern tech-savvy urban youth. This diversity comes from:</p>
+      <div class="cards">
+        <div class="card" style="background:#f5f0ff; border:2px solid #7c3aed;">
+          <h5 style="color:#5b21b6;">🌏 Geographic Diversity</h5>
+          <p>Mountains, plains, deserts, coasts — each creates different lifestyles, foods, and customs. Punjab's bhangra vs Kerala's Kathakali.</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border:2px solid #7c3aed;">
+          <h5 style="color:#5b21b6;">📜 Historical Diversity</h5>
+          <p>Successive invasions (Aryans, Mughals, British) each left cultural imprints — architecture, language, food, clothing.</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border:2px solid #7c3aed;">
+          <h5 style="color:#5b21b6;">🕉️ Religious Diversity</h5>
+          <p>Every major world religion is practiced in India. Each brings its own festivals, food rules, dress, and rituals.</p>
+        </div>
+        <div class="card" style="background:#f5f0ff; border:2px solid #7c3aed;">
+          <h5 style="color:#5b21b6;">🗣️ Linguistic Diversity</h5>
+          <p>22 scheduled languages, 1600+ dialects. Each has its own rich literature, music, and oral traditions.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-key">
+        <span class="callout-title">🔑 Remember</span>
+        India's motto is "<strong>Unity in Diversity</strong>" — despite being extraordinarily diverse, Indians share common values of dharma, family, hospitality, and spiritual seeking. Dr. B.R. Ambedkar said India's unity comes from its common constitutional values, not uniformity.
+      </div>
+    </div>
+
+    <!-- 2.3 -->
+    <div class="topic u2" id="u2-west">
+      <h3>🆚 2.3 Indian Culture vs Western Culture</h3>
+      <p>With globalisation and the internet, Indian and Western cultures are increasingly interacting. Understanding their differences helps appreciate both without judging either as "better".</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Aspect</th><th>Indian Culture</th><th>Western Culture</th></tr></thead>
+          <tbody>
+            <tr><td>Family Structure</td><td>Joint/extended family preferred; elders respected and cared for at home</td><td>Nuclear family common; elderly often in care homes</td></tr>
+            <tr><td>Individualism vs Collectivism</td><td>Collectivist — family and community needs come first</td><td>Individualist — personal freedom and self-reliance valued</td></tr>
+            <tr><td>Marriage</td><td>Often arranged; marriage seen as a family and social affair</td><td>Usually love marriage; personal choice paramount</td></tr>
+            <tr><td>Religion</td><td>Deeply integrated into daily life, festivals, food, law</td><td>Generally more secularised; religion often private matter</td></tr>
+            <tr><td>Social hierarchy</td><td>Strong hierarchy — elders, teachers, bosses command respect</td><td>More egalitarian; informal even with seniors</td></tr>
+            <tr><td>Food</td><td>Largely plant-based; spices; eating together is social ritual</td><td>More meat-based; fast food culture; eating is functional</td></tr>
+            <tr><td>Time orientation</td><td>Past-oriented; value tradition and ancestral wisdom</td><td>Future-oriented; value progress, innovation, change</td></tr>
+            <tr><td>Dress</td><td>Traditional attire for formal/religious events; modern clothes daily</td><td>Western clothing dominates; formal = suit/tie</td></tr>
+            <tr><td>Greeting</td><td>Namaste (no touch), touching elders' feet as respect</td><td>Handshake, hug, or kiss on cheek</td></tr>
+            <tr><td>Value of education</td><td>Engineering/Medicine highly valued; parents drive career choices</td><td>More freedom in career choices; humanities valued equally</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-fact">
+        <span class="callout-title">💡 Important Concept</span>
+        <strong>Cultural Relativism</strong> means judging a culture by its own standards, not by the standards of another culture. <strong>Ethnocentrism</strong> means believing your own culture is superior — this is a bias to avoid. A sociologist must be culturally relative, not ethnocentric.
+      </div>
+
+      <h4>Westernisation of India</h4>
+      <p>M.N. Srinivas coined the term <strong>"Westernisation"</strong> to describe changes that occurred in Indian society and culture due to British rule. It includes changes in technology, clothing, English education, food habits, and values like democracy and equality.</p>
+      <p>Today, Western influence continues through Hollywood, social media, fast food, corporate culture, and global brands. While this brings modernity, it also raises concerns about loss of traditional culture — this tension is called <strong>cultural conflict</strong> or <strong>identity crisis</strong>.</p>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     UNIT III: SOCIAL STRATIFICATION
+══════════════════════════════════════════════════════════ -->
+<div class="wrapper">
+<section id="unit3" class="unit u3">
+  <div class="unit-header u3-hdr" data-unit="III">
+    <span class="unit-label">Unit III · 6 Hours</span>
+    <h2>Social Stratification</h2>
+  </div>
+  <div class="unit-body">
+
+    <div class="topic u3">
+      <h3>🏗️ 3.1 What is Social Stratification?</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Social Stratification</strong> means the division of society into different layers or ranks (called strata), where some groups have more power, wealth, status, or privileges than others. It is like a ladder — some people are at the top, some in the middle, and some at the bottom, and this ranking affects their life chances.
+      </div>
+      <p>Stratification is <strong>universal</strong> (exists in every society), <strong>ancient</strong> (as old as human civilisation), and <strong>diverse</strong> (takes different forms — caste, class, race, gender). In India, the most important forms are the Caste System and the Class System.</p>
+    </div>
+
+    <!-- 3.2 Caste -->
+    <div class="topic u3" id="u3-caste">
+      <h3>📿 3.2 The Caste System</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Caste</strong> is a hereditary, endogamous (marrying within the same group), and occupationally fixed social group. Your caste is determined by <em>birth</em> — you cannot change it. Caste prescribes what work you do, whom you marry, what you eat, and your social status.
+      </div>
+
+      <h4>Historical Origin of Caste</h4>
+      <p>The caste system is rooted in the ancient Vedic concept of <strong>Varna</strong> (colour/class), which divided society into four groups:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Varna</th><th>Traditional Role</th><th>Modern Equivalent</th></tr></thead>
+          <tbody>
+            <tr><td>🙏 Brahmins</td><td>Priests, scholars, teachers</td><td>Academic, religious professionals</td></tr>
+            <tr><td>⚔️ Kshatriyas</td><td>Warriors, rulers, kings</td><td>Military, police, administrators</td></tr>
+            <tr><td>💰 Vaishyas</td><td>Merchants, traders, farmers</td><td>Business, commerce, banking</td></tr>
+            <tr><td>🔨 Shudras</td><td>Artisans, servants, labourers</td><td>Manual workers, craftspeople</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Below the four Varnas were the <strong>Avarnas</strong> (untouchables / Dalits / Scheduled Castes), who were assigned the most stigmatised work — cleaning, handling dead bodies, leather work. They faced severe discrimination and were denied entry to temples, wells, and public spaces.</p>
+
+      <h4>Characteristics of the Caste System</h4>
+      <ul class="nice">
+        <li><strong>Hereditary</strong> – Caste is inherited at birth from parents; cannot be changed</li>
+        <li><strong>Endogamy</strong> – One must marry within their own caste (inter-caste marriage was taboo)</li>
+        <li><strong>Occupational rigidity</strong> – Each caste had a prescribed occupation passed down generations</li>
+        <li><strong>Social restrictions</strong> – Rules about who can dine together, use the same water source, enter certain spaces</li>
+        <li><strong>Ritual hierarchy</strong> – Purity and pollution rules — "upper" castes seen as ritually pure, "lower" castes as polluted</li>
+        <li><strong>Corporate character</strong> – Caste groups act collectively, have their own panchayats (caste councils)</li>
+      </ul>
+
+      <h4>Problems Created by the Caste System</h4>
+      <ul class="nice">
+        <li>Untouchability — one of the most inhumane forms of discrimination</li>
+        <li>Denied education, economic opportunities, and dignity to lower castes for centuries</li>
+        <li>Caste-based violence (atrocities against Dalits) continues even today</li>
+        <li>Caste-based politics — parties seek caste vote banks</li>
+        <li>Honor killings — when people marry outside their caste</li>
+      </ul>
+
+      <h4>Modern Changes in the Caste System</h4>
+      <p>The caste system has weakened significantly due to:</p>
+      <ul class="nice">
+        <li>Constitutional provisions abolishing untouchability (Article 17)</li>
+        <li>Reservation policy in education and government jobs</li>
+        <li>Urbanisation — city life reduces caste visibility</li>
+        <li>Education — educated people are more caste-neutral</li>
+        <li>Social reform movements — B.R. Ambedkar, Jyotirao Phule, E.V. Ramasamy (Periyar)</li>
+        <li>Inter-caste marriages (legally protected, incentivised by government)</li>
+      </ul>
+
+      <h4>The Class System</h4>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Social Class</strong> is a group of people who share a similar economic position — same level of income, wealth, occupation, and education. Unlike caste, class is NOT fixed by birth. You can move up or down (called <strong>social mobility</strong>).
+      </div>
+      <div class="cards">
+        <div class="card" style="background:#e0f6fb; border:2px solid #06b6d4;">
+          <h5 style="color:#0e7490;">💎 Upper Class</h5>
+          <p>Top 1–2% of society. Owns businesses, factories, large land. "Old money" aristocrats + new-age billionaires (Ambani, Tata, etc.)</p>
+        </div>
+        <div class="card" style="background:#e0f6fb; border:2px solid #06b6d4;">
+          <h5 style="color:#0e7490;">👔 Middle Class</h5>
+          <p>Salaried professionals, small business owners, doctors, engineers, teachers. India's middle class is 300+ million — the backbone of consumer economy.</p>
+        </div>
+        <div class="card" style="background:#e0f6fb; border:2px solid #06b6d4;">
+          <h5 style="color:#0e7490;">👷 Working Class</h5>
+          <p>Manual labourers, factory workers, daily wage earners. Often poor, lack job security, depend on physical work.</p>
+        </div>
+        <div class="card" style="background:#e0f6fb; border:2px solid #06b6d4;">
+          <h5 style="color:#0e7490;">😔 Underclass</h5>
+          <p>Permanently poor, homeless, unemployed, or marginally employed. Lack access to basic services — food, shelter, healthcare.</p>
+        </div>
+      </div>
+
+      <h4>Caste vs Class — Key Differences</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Feature</th><th>Caste</th><th>Class</th></tr></thead>
+          <tbody>
+            <tr><td>Basis</td><td>Birth / heredity</td><td>Wealth / income / occupation</td></tr>
+            <tr><td>Mobility</td><td>None (you are born into it)</td><td>Possible (you can get richer or poorer)</td></tr>
+            <tr><td>Marriage</td><td>Endogamous (within caste)</td><td>Open — you can marry anyone</td></tr>
+            <tr><td>Occupation</td><td>Fixed (your caste dictates work)</td><td>Flexible — based on skill and opportunity</td></tr>
+            <tr><td>Found mainly in</td><td>South Asia, especially India</td><td>Modern industrial societies worldwide</td></tr>
+            <tr><td>Religious sanction</td><td>Yes — legitimised by Hindu scriptures</td><td>No — based on economics</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3.3 -->
+    <div class="topic u3" id="u3-ethnic">
+      <h3>🌍 3.3 Communities, Ethnic Groups & Weaker Sections</h3>
+
+      <h4>Communities in India</h4>
+      <p>A <strong>community</strong> is a group of people who share a common identity, interests, or location. India has thousands of communities defined by caste, religion, language, tribe, region, and occupation.</p>
+
+      <h4>Ethnic Groups</h4>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        An <strong>ethnic group</strong> is a group of people who share a common racial, cultural, linguistic, or ancestral heritage. They identify with each other as different from other groups. India has hundreds of ethnic groups — Marathas, Rajputs, Nagas, Bodos, Gujjars, Santals, etc.
+      </div>
+
+      <h4>Weaker Sections & Minorities</h4>
+      <p>The Indian Constitution recognises certain groups as needing special protection due to historical discrimination or numerical disadvantage:</p>
+      <div class="cards">
+        <div class="card" style="background:#e0f6fb; border:2px solid #0891b2;">
+          <h5 style="color:#0e7490;">📋 Scheduled Castes (SC)</h5>
+          <p>Castes listed in the Constitution's Schedule — historically "untouchables" (Dalits). ~16.6% of India's population. Entitled to reservations in education and government jobs.</p>
+        </div>
+        <div class="card" style="background:#e0f6fb; border:2px solid #0891b2;">
+          <h5 style="color:#0e7490;">🌿 Scheduled Tribes (ST)</h5>
+          <p>Indigenous tribal communities — Adivasis. ~8.6% of population. Include Gonds, Santhals, Bhils, Mundas. Entitled to reservations and special rights over forests and land.</p>
+        </div>
+        <div class="card" style="background:#e0f6fb; border:2px solid #0891b2;">
+          <h5 style="color:#0e7490;">📜 Other Backward Classes (OBC)</h5>
+          <p>Socially and educationally backward classes (other than SCs and STs). Mandal Commission (1980) identified 3,743 OBC communities — about 52% of India's population.</p>
+        </div>
+        <div class="card" style="background:#e0f6fb; border:2px solid #0891b2;">
+          <h5 style="color:#0e7490;">🕌 Minorities</h5>
+          <p>Religious minorities (Muslims, Christians, Sikhs, Buddhists, Jains, Zoroastrians) and linguistic minorities protected under Articles 29 and 30.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.4 Constitutional Provisions -->
+    <div class="topic u3" id="u3-const">
+      <h3>📜 3.4 Constitutional Provisions for SCs, STs & OBCs</h3>
+      <p>Dr. B.R. Ambedkar, the chief architect of the Indian Constitution, ensured strong protections for historically marginalised groups. Here are the key constitutional provisions:</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Article</th><th>Provision</th></tr></thead>
+          <tbody>
+            <tr><td>Article 14</td><td>Equality before law — no discrimination based on caste, race, sex, religion, or place of birth</td></tr>
+            <tr><td>Article 15</td><td>Prohibits discrimination on grounds of caste, religion, race, sex. Allows special provisions for women, children, SCs, STs</td></tr>
+            <tr><td>Article 16</td><td>Equality of opportunity in public employment; allows reservations for backward classes</td></tr>
+            <tr><td>Article 17</td><td><strong>Abolishes untouchability</strong> — practicing it is a punishable offence under the Protection of Civil Rights Act, 1955</td></tr>
+            <tr><td>Article 46</td><td>State shall promote educational and economic interests of SCs, STs, and other weaker sections</td></tr>
+            <tr><td>Article 330-342</td><td>Reservation of seats in Lok Sabha and state assemblies for SCs and STs</td></tr>
+            <tr><td>5th Schedule</td><td>Administration and control of Scheduled Areas (tribal areas) in most states</td></tr>
+            <tr><td>6th Schedule</td><td>Special provisions for tribal areas in Northeast India</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Reservation Policy</h4>
+      <p>India's reservation system (also called <strong>affirmative action</strong>) reserves seats in government jobs, educational institutions, and legislature for SCs, STs, and OBCs.</p>
+      <div class="stats">
+        <div class="stat-box" style="background:#e0f6fb; color: var(--u3);">
+          <div class="num">15%</div><div class="lbl">Reservation for SCs</div>
+        </div>
+        <div class="stat-box" style="background:#e0f6fb; color: var(--u3);">
+          <div class="num">7.5%</div><div class="lbl">Reservation for STs</div>
+        </div>
+        <div class="stat-box" style="background:#e0f6fb; color: var(--u3);">
+          <div class="num">27%</div><div class="lbl">Reservation for OBCs</div>
+        </div>
+        <div class="stat-box" style="background:#e0f6fb; color: var(--u3);">
+          <div class="num">10%</div><div class="lbl">EWS (Economically Weaker Sections) — added 2019</div>
+        </div>
+      </div>
+      <div class="callout callout-imp">
+        <span class="callout-title">⚠️ Important</span>
+        The Scheduled Castes and Scheduled Tribes (Prevention of Atrocities) Act, 1989 (amended 2015) provides strict punishment for crimes committed against SCs and STs, including land grabbing, social boycott, and sexual exploitation.
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     UNIT IV: SOCIO-ECONOMIC PROBLEMS
+══════════════════════════════════════════════════════════ -->
+<div class="wrapper">
+<section id="unit4" class="unit u4">
+  <div class="unit-header u4-hdr" data-unit="IV">
+    <span class="unit-label">Unit IV · 6 Hours</span>
+    <h2>Socio-Economic Problems of India</h2>
+  </div>
+  <div class="unit-body">
+
+    <div class="topic u4">
+      <h3>🔍 4.1 Overview</h3>
+      <p>India, despite being one of the world's fastest-growing economies, faces serious social and economic problems. These problems are <strong>inter-linked</strong> — poverty causes illiteracy, illiteracy causes unemployment, unemployment causes poverty. Together they form a <strong>vicious cycle of deprivation</strong>.</p>
+    </div>
+
+    <!-- 4.2 Poverty -->
+    <div class="topic u4" id="u4-pov">
+      <h3>😔 4.2 Poverty</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Poverty</strong> is a condition in which people lack the financial resources to meet basic needs — food, shelter, clothing, healthcare, and education. India's poverty line is defined by a minimum level of calorie intake (2400 kcal/day in rural areas, 2100 in urban) plus basic non-food needs.
+      </div>
+      <h4>Types of Poverty</h4>
+      <div class="cards">
+        <div class="card" style="background:#fff0f3; border:2px solid #fca5a5;">
+          <h5 style="color:#9f1239;">💸 Absolute Poverty</h5>
+          <p>Inability to afford minimum necessities of life. Living below the poverty line (BPL). About 21% of India (273 million people) live in absolute poverty as of recent estimates.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #fca5a5;">
+          <h5 style="color:#9f1239;">📊 Relative Poverty</h5>
+          <p>Being poor compared to the average standard of living in society. Someone with ₹10,000/month may be "poor" in Mumbai but comfortable in rural Bihar.</p>
+        </div>
+      </div>
+      <h4>Causes of Poverty in India</h4>
+      <ul class="nice">
+        <li>Rapid population growth — resources grow slower than people</li>
+        <li>Low agricultural productivity — 50% of workforce earns little from farming</li>
+        <li>Unemployment and underemployment</li>
+        <li>Unequal distribution of wealth — top 10% own 77% of national wealth</li>
+        <li>Illiteracy — limits access to good jobs</li>
+        <li>Casteism — Dalits and tribals face additional discrimination in employment</li>
+        <li>Lack of social security — no universal pension, healthcare, or unemployment benefit</li>
+        <li>Corruption — subsidies and welfare funds do not reach the poor</li>
+      </ul>
+      <h4>Government Anti-Poverty Programs</h4>
+      <ul class="nice">
+        <li><strong>MGNREGA</strong> – 100 days of guaranteed wage employment for rural households</li>
+        <li><strong>PM Awas Yojana</strong> – Housing for the poor</li>
+        <li><strong>PM Jan Dhan Yojana</strong> – Financial inclusion — bank accounts for all</li>
+        <li><strong>Public Distribution System (PDS)</strong> – Subsidised food grains for BPL families</li>
+        <li><strong>PM Kisan Samman Nidhi</strong> – Direct income support to farmers</li>
+      </ul>
+
+      <h3>📚 4.3 Illiteracy</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Illiteracy</strong> means inability to read and write. India's literacy rate as per Census 2011 is <strong>74.04%</strong> (males 82.14%, females 65.46%). About 300 million Indians are illiterate — the largest illiterate population in the world.
+      </div>
+      <h4>Causes of Illiteracy</h4>
+      <ul class="nice">
+        <li>Poverty — poor families cannot afford books, uniforms, or keep children out of work</li>
+        <li>Child labour — children work instead of going to school</li>
+        <li>Gender discrimination — girls are kept home, married early</li>
+        <li>Lack of schools in rural/tribal areas</li>
+        <li>Poor quality of teaching and infrastructure</li>
+        <li>Dropout rates — many students leave school early</li>
+      </ul>
+      <h4>Key Initiatives</h4>
+      <ul class="nice">
+        <li><strong>Right to Education Act (2009)</strong> – Free and compulsory education for children 6–14 years</li>
+        <li><strong>Sarva Shiksha Abhiyan</strong> – Universal elementary education campaign</li>
+        <li><strong>Mid-Day Meal Scheme</strong> – Encourages attendance with free meals</li>
+        <li><strong>National Literacy Mission (Saakshar Bharat)</strong> – Adult literacy programs</li>
+      </ul>
+
+      <h3>💼 4.4 Unemployment</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Unemployment</strong> means a situation where people who are willing and able to work cannot find work. India's unemployment rate fluctuates between 6–8% officially, but real unemployment (including disguised and underemployment) is much higher.
+      </div>
+      <div class="cards">
+        <div class="card" style="background:#fff0f3; border:2px solid #fca5a5;">
+          <h5 style="color:#9f1239;">🌾 Disguised Unemployment</h5>
+          <p>More people working on a job than required. Removing some would not reduce output. Common in Indian agriculture.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #fca5a5;">
+          <h5 style="color:#9f1239;">🔄 Seasonal Unemployment</h5>
+          <p>Occurs only in certain seasons. Farmers unemployed in off-season. Construction workers idle during monsoon.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #fca5a5;">
+          <h5 style="color:#9f1239;">🎓 Educated Unemployment</h5>
+          <p>Graduates and postgraduates unable to find suitable work. India produces 6+ million graduates annually; jobs don't match supply.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #fca5a5;">
+          <h5 style="color:#9f1239;">🏙️ Urban Unemployment</h5>
+          <p>In cities, structural mismatch between skills people have and skills industries need. Also cyclical due to economic slowdowns.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4.5 -->
+    <div class="topic u4" id="u4-crime">
+      <h3>🏠 4.5 Housing, Child Labour & Migration</h3>
+
+      <h4>Housing Problem</h4>
+      <p>India faces a <strong>housing shortage of about 18.78 million units</strong> (mostly for urban poor). Rapid urbanisation has led to growth of slums. About 65 million Indians live in slums — Dharavi in Mumbai is Asia's largest slum. Problems include overcrowding, lack of sanitation, poor ventilation, and tenure insecurity.</p>
+
+      <h4>Child Labour</h4>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Child Labour</strong> is when children under 14 years of age are engaged in work that deprives them of childhood, education, and physical/mental development. India has about <strong>10.1 million child labourers</strong> (Census 2011), though the number is declining.
+      </div>
+      <ul class="nice">
+        <li>Causes: Poverty, lack of education, social norms, demand for cheap labour</li>
+        <li>Found in: carpet weaving, brick kilns, restaurants, agriculture, domestic work, match factories</li>
+        <li>Law: Child Labour (Prohibition and Regulation) Act, 1986 (amended 2016) — prohibits work for under-14s in all occupations, under-18s in hazardous industries</li>
+        <li>Government initiative: <strong>Pencil Portal</strong> — tracks child labour cases</li>
+      </ul>
+
+      <h4>Migration</h4>
+      <p><strong>Migration</strong> is the movement of people from one place to another for work, better living, education, or safety. India sees massive <strong>rural-to-urban migration</strong>.</p>
+      <div class="callout callout-key">
+        <span class="callout-title">🔑 Types of Migration</span>
+        <strong>Internal Migration</strong> — within India (rural to urban, state to state). <strong>International Migration</strong> — Indians moving abroad (Indian diaspora: 30+ million). <strong>Forced Migration</strong> — due to conflicts, disasters (Project Affected People).
+      </div>
+      <p><strong>Effects of Migration:</strong> Positive — remittances, reduced rural poverty, urbanisation. Negative — brain drain, family separation, overcrowding in cities, loss of social support.</p>
+
+      <h3>⚠️ 4.6 Occupational Diseases</h3>
+      <p>Workers in hazardous industries suffer from diseases caused by their work environment. These are called <strong>occupational diseases</strong>.</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Industry/Occupation</th><th>Occupational Disease</th><th>Cause</th></tr></thead>
+          <tbody>
+            <tr><td>Mining, stone cutting</td><td>Silicosis</td><td>Inhaling fine silica dust</td></tr>
+            <tr><td>Cotton textile mills</td><td>Byssinosis (Brown Lung)</td><td>Inhaling cotton dust</td></tr>
+            <tr><td>Pesticide sprayers</td><td>Organophosphate poisoning</td><td>Chemical exposure</td></tr>
+            <tr><td>Lead battery factories</td><td>Lead poisoning</td><td>Lead exposure</td></tr>
+            <tr><td>Computer workers</td><td>Carpal Tunnel Syndrome, Eye Strain</td><td>Repetitive strain, screen exposure</td></tr>
+            <tr><td>Coal mining</td><td>Black Lung (Pneumoconiosis)</td><td>Coal dust inhalation</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>💣 4.7 Insurgency & Terrorism</h3>
+      <h4>Insurgency</h4>
+      <p><strong>Insurgency</strong> is an armed rebellion against a government by a group that seeks political change. In India, major insurgency movements include:</p>
+      <ul class="nice">
+        <li><strong>Naxalism / Maoism</strong> – Armed movement in central-eastern India (Chhattisgarh, Jharkhand, Odisha) based on communist ideology; fight for tribal land rights</li>
+        <li><strong>Northeastern Insurgency</strong> – Groups like ULFA (Assam), NSCN (Nagaland) demanding autonomy or independence</li>
+        <li><strong>Kashmiri Militancy</strong> – Separatist movement in Jammu & Kashmir; some groups backed by foreign actors</li>
+      </ul>
+
+      <h4>Terrorism</h4>
+      <p><strong>Terrorism</strong> is the use of violence and intimidation against civilians to achieve political, religious, or ideological goals. India faces both domestic and cross-border terrorism. Key laws: <strong>UAPA (Unlawful Activities Prevention Act)</strong>, <strong>NIA Act (National Investigation Agency)</strong>.</p>
+
+      <h3>⚖️ 4.8 Crime</h3>
+      <p><strong>Crime</strong> is any act that violates a law and is punishable by the state. India faces serious crime challenges:</p>
+      <div class="cards">
+        <div class="card" style="background:#fff0f3; border:2px solid #fda4af;">
+          <h5 style="color:#9f1239;">👶 Crimes Against Children</h5>
+          <p>Child trafficking, child sexual abuse, child labour. POCSO Act (2012) specifically protects children from sexual offences.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #fda4af;">
+          <h5 style="color:#9f1239;">👩 Crimes Against Women</h5>
+          <p>Rape, domestic violence, dowry death, acid attacks, harassment. National Crime Records Bureau (NCRB) data shows rising crime against women.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #fda4af;">
+          <h5 style="color:#9f1239;">💻 Cybercrime</h5>
+          <p>Online fraud, hacking, identity theft, cyberbullying. Fastest growing crime category in India. IT Act, 2000 governs this.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #fda4af;">
+          <h5 style="color:#9f1239;">💰 White Collar Crime</h5>
+          <p>Committed by educated, high-status individuals in professional settings — corruption, tax evasion, money laundering, bank fraud.</p>
+        </div>
+      </div>
+
+      <h3 id="u4-family">👴 4.9 Social Destitution, Beggary & Aged Population</h3>
+      <h4>Social Destitution & Beggary</h4>
+      <p><strong>Destitution</strong> refers to extreme poverty — lacking even the most basic necessities. <strong>Beggars</strong> are people who rely on public charity for survival. India has about <strong>4 lakh beggars</strong> (Census 2011). Causes include mental illness, disability, poverty, loss of family support, and addiction.</p>
+
+      <h4>Aged Population</h4>
+      <p>India's elderly (60+) population is growing rapidly — currently about <strong>138 million</strong>, expected to reach 300 million by 2050. Problems faced by elderly Indians:</p>
+      <ul class="nice">
+        <li>Neglect by families — nuclear family trend means less care for parents</li>
+        <li>Lack of pension for those in informal sector</li>
+        <li>Rising healthcare costs</li>
+        <li>Loneliness and mental health issues</li>
+        <li>Elder abuse — physical, emotional, financial</li>
+      </ul>
+      <p>Key law: <strong>Maintenance and Welfare of Parents and Senior Citizens Act, 2007</strong> — legally obligates children to support parents.</p>
+
+      <h3>👦 4.10 Juvenile Delinquency</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Juvenile Delinquency</strong> refers to antisocial or criminal behaviour by individuals under 18 years of age. Examples include theft, vandalism, substance abuse, truancy, and violence. These are handled under the <strong>Juvenile Justice (Care and Protection of Children) Act, 2015</strong>.
+      </div>
+      <h4>Causes of Juvenile Delinquency</h4>
+      <ul class="nice">
+        <li>Broken or dysfunctional family</li>
+        <li>Poverty and lack of resources</li>
+        <li>Bad peer influence</li>
+        <li>Substance abuse (drugs, alcohol)</li>
+        <li>Lack of education and constructive activity</li>
+        <li>Social media influence and exposure to violence</li>
+        <li>Child abuse or neglect history</li>
+      </ul>
+
+      <h3>👨‍👩‍👧 4.11 Problems in Family Life</h3>
+      <p>The Indian family is under transformation and stress. Major problems include:</p>
+      <div class="cards">
+        <div class="card" style="background:#fff0f3; border:2px solid #f9a8d4;">
+          <h5 style="color:#9f1239;">💔 Domestic Violence</h5>
+          <p>Physical, emotional, sexual, or economic abuse within the home. Protected by Domestic Violence Act, 2005. Women are primary victims.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #f9a8d4;">
+          <h5 style="color:#9f1239;">💍 Dowry Issues</h5>
+          <p>Illegal demanding of gifts/money from bride's family. Leads to domestic violence, female foeticide. Dowry Prohibition Act, 1961.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #f9a8d4;">
+          <h5 style="color:#9f1239;">📋 Divorce & Single Parents</h5>
+          <p>Rising divorce rates (especially in cities) creates financial and emotional burden, especially on women raising children alone.</p>
+        </div>
+        <div class="card" style="background:#fff0f3; border:2px solid #f9a8d4;">
+          <h5 style="color:#9f1239;">👴 Generation Gap</h5>
+          <p>Differences in values, lifestyle, and expectations between parents (traditional) and children (modern) cause family conflict and communication breakdown.</p>
+        </div>
+      </div>
+
+      <h4>Project Affected People (PAPs)</h4>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Project Affected People (PAPs)</strong> are individuals or communities displaced due to large development projects — dams, highways, industries, mines, SEZs. They lose their land, homes, and livelihoods. India's big dams and projects have displaced over <strong>50 million people</strong> since independence, mostly tribals and poor farmers.
+      </div>
+      <p>Key law: <strong>Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act, 2013</strong> — ensures PAPs receive proper compensation and rehabilitation.</p>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     UNIT V: HUMAN BEHAVIOUR
+══════════════════════════════════════════════════════════ -->
+<div class="wrapper">
+<section id="unit5" class="unit u5">
+  <div class="unit-header u5-hdr" data-unit="V">
+    <span class="unit-label">Unit V · 6 Hours</span>
+    <h2>Introduction to Human Behaviour</h2>
+  </div>
+  <div class="unit-body">
+
+    <!-- 5.1 -->
+    <div class="topic u5" id="u5-over">
+      <h3>🧠 5.1 Overview of Human Behaviour</h3>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Definition</span>
+        <strong>Human behaviour</strong> refers to everything that humans do — the actions they take, the thoughts they have, the feelings they experience, and how they interact with others and their environment. It includes visible actions (talking, working, fighting) as well as invisible ones (thinking, feeling, deciding).
+      </div>
+      <p>Think of human behaviour as the output of a very complex machine (the human mind + body). The input is the environment, biology, upbringing, and experiences. The machine processes these, and the output is behaviour — what we say, do, and feel.</p>
+
+      <blockquote>"Behaviour is the mirror in which everyone shows their image." — Johann Wolfgang von Goethe</blockquote>
+
+      <h4>What does Human Behaviour include?</h4>
+      <div class="cards">
+        <div class="card" style="background:#edfff4; border:2px solid #86efac;">
+          <h5 style="color:#166534;">🎬 Actions / Overt Behaviour</h5>
+          <p>What you can directly observe — walking, speaking, eating, working, smiling, crying. These are external, visible behaviours.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #86efac;">
+          <h5 style="color:#166534;">💭 Mental / Covert Behaviour</h5>
+          <p>What happens inside the mind — thinking, imagining, dreaming, feeling emotions, making decisions. Not directly observable but can be inferred.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #86efac;">
+          <h5 style="color:#166534;">🤝 Social Behaviour</h5>
+          <p>How you interact with others — cooperation, competition, leadership, aggression, helping. Shaped by cultural norms and social roles.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #86efac;">
+          <h5 style="color:#166534;">🧬 Biological Behaviour</h5>
+          <p>Behaviours driven by biological needs — eating, sleeping, reproducing, fighting or fleeing danger. Instinctive and partly genetic.</p>
+        </div>
+      </div>
+
+      <h4>Nature of Human Behaviour — Key Characteristics</h4>
+      <ol class="nice">
+        <li><strong>Purposeful</strong> – Most human behaviour is goal-directed. People act to achieve something — food, money, love, status, safety</li>
+        <li><strong>Motivated</strong> – Behaviour is driven by needs, desires, and goals (see Maslow's Hierarchy below)</li>
+        <li><strong>Learned</strong> – Much of our behaviour is learned through experience, observation, and conditioning. This is called <strong>socialisation</strong></li>
+        <li><strong>Variable</strong> – Human behaviour varies greatly between individuals, cultures, and situations. No two people behave exactly alike</li>
+        <li><strong>Adaptive</strong> – Humans change their behaviour to fit their environment — wear warm clothes in winter, speak formally in interviews</li>
+        <li><strong>Complex</strong> – Behaviour is influenced by multiple factors simultaneously (biology, mind, society, culture)</li>
+        <li><strong>Dynamic</strong> – Behaviour changes over time — a child's behaviour differs from a teenager's and an adult's</li>
+        <li><strong>Influenced by emotions</strong> – Emotions (fear, joy, anger, sadness) powerfully shape what we do</li>
+      </ol>
+
+      <h4>Perspectives on Human Behaviour</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Perspective</th><th>Main Idea</th><th>Key Thinker</th></tr></thead>
+          <tbody>
+            <tr><td>🔬 Biological</td><td>Behaviour shaped by genes, brain, hormones, nervous system</td><td>Darwin, Wilson</td></tr>
+            <tr><td>💭 Psychodynamic</td><td>Unconscious drives and childhood experiences shape behaviour</td><td>Sigmund Freud</td></tr>
+            <tr><td>🎓 Behavioural</td><td>Behaviour is learned through conditioning and reinforcement</td><td>B.F. Skinner, Pavlov</td></tr>
+            <tr><td>🧩 Cognitive</td><td>Thinking patterns, beliefs, and information processing determine behaviour</td><td>Jean Piaget, Aaron Beck</td></tr>
+            <tr><td>🌍 Sociocultural</td><td>Society, culture, norms, and social roles shape behaviour</td><td>Vygotsky, Mead</td></tr>
+            <tr><td>🌱 Humanistic</td><td>Humans have free will and strive for self-actualisation</td><td>Maslow, Carl Rogers</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 5.2 Importance -->
+    <div class="topic u5" id="u5-imp">
+      <h3>🎯 5.2 Importance of Studying Human Behaviour</h3>
+      <p>Understanding human behaviour is not just academic — it is essential for almost every professional and personal aspect of life. Here's why it matters:</p>
+
+      <h4>For Professionals and Organizations</h4>
+      <ul class="nice">
+        <li><strong>Engineering & Technology</strong> – Engineers who understand human behaviour design better user-friendly products, safer workplaces, and more efficient systems (human factors engineering)</li>
+        <li><strong>Management</strong> – Understanding employee motivation, leadership styles, team dynamics, and organisational culture helps managers lead effectively</li>
+        <li><strong>Healthcare</strong> – Doctors and nurses who understand patient behaviour can improve compliance, reduce stress, and provide better care</li>
+        <li><strong>Education</strong> – Teachers who understand learning behaviour can teach more effectively and support diverse students</li>
+        <li><strong>Social Work</strong> – Understanding the behaviour of marginalised groups helps in better policy design and support programs</li>
+        <li><strong>Law enforcement</strong> – Police and legal professionals use knowledge of criminal behaviour for investigation and rehabilitation</li>
+        <li><strong>Marketing</strong> – Consumer behaviour knowledge helps design products and campaigns that people actually want</li>
+      </ul>
+
+      <h4>For Society and Personal Life</h4>
+      <ul class="nice">
+        <li>Helps understand why conflicts happen and how to resolve them peacefully</li>
+        <li>Helps identify and address social problems like addiction, violence, and delinquency</li>
+        <li>Promotes empathy — understanding why others behave as they do</li>
+        <li>Improves self-awareness — understanding our own motivations and biases</li>
+        <li>Helps in building better relationships — at home, work, and in community</li>
+        <li>Essential for mental health — understanding behaviour helps in therapy and counselling</li>
+      </ul>
+
+      <div class="callout callout-fact">
+        <span class="callout-title">💡 Application in Engineering Context</span>
+        Engineers must understand human behaviour for <strong>ergonomics</strong> (designing tools and machines that fit how humans naturally work), <strong>safety management</strong> (predicting risky behaviour to prevent accidents), <strong>project management</strong> (handling team dynamics, motivation, conflict), and <strong>community development</strong> (understanding how communities will respond to new infrastructure).
+      </div>
+    </div>
+
+    <!-- 5.3 Determinants -->
+    <div class="topic u5" id="u5-det">
+      <h3>🔩 5.3 Determinants of Human Behaviour</h3>
+      <p>Human behaviour is not random — it is shaped by many forces. These forces are called <strong>determinants</strong>. They can be grouped into three broad categories:</p>
+
+      <h4>1. Biological / Hereditary Factors</h4>
+      <div class="callout callout-def">
+        <span class="callout-title">📖 Nature vs Nurture</span>
+        The long-standing debate: is our behaviour due to <strong>nature</strong> (genes, biology) or <strong>nurture</strong> (environment, upbringing)? Modern science says <strong>BOTH</strong> interact to shape us (called <strong>gene-environment interaction</strong>).
+      </div>
+      <div class="cards">
+        <div class="card" style="background:#edfff4; border:2px solid #6ee7b7;">
+          <h5 style="color:#166534;">🧬 Genetics</h5>
+          <p>Genes influence intelligence, personality traits, temperament, risk of mental illness, and certain behavioural tendencies. E.g., identical twins raised apart still show similar personality traits.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #6ee7b7;">
+          <h5 style="color:#166534;">🧠 Brain & Nervous System</h5>
+          <p>Different brain regions control different behaviours. Prefrontal cortex = reasoning and decision making. Amygdala = fear and emotion. Damage to these areas changes behaviour dramatically.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #6ee7b7;">
+          <h5 style="color:#166534;">⚗️ Hormones</h5>
+          <p>Chemical messengers that affect mood and behaviour. Testosterone linked to aggression. Serotonin linked to happiness. Cortisol is the stress hormone. Hormonal imbalances cause depression, anxiety, aggression.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #6ee7b7;">
+          <h5 style="color:#166534;">💪 Physical Health & Instincts</h5>
+          <p>Physical well-being affects behaviour — pain, hunger, illness alter mood and actions. Basic instincts (survival, reproduction) drive fundamental behaviours.</p>
+        </div>
+      </div>
+
+      <h4>2. Psychological Factors</h4>
+
+      <div class="callout callout-key">
+        <span class="callout-title">🔑 Maslow's Hierarchy of Needs</span>
+        Abraham Maslow proposed that human behaviour is motivated by a pyramid of needs — from basic physical needs at the bottom to self-actualisation at the top. People first satisfy lower needs before pursuing higher ones.
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Level</th><th>Need</th><th>Examples</th></tr></thead>
+          <tbody>
+            <tr><td>5 (Top) 🌟</td><td>Self-Actualisation</td><td>Creativity, achieving full potential, purpose</td></tr>
+            <tr><td>4 🏆</td><td>Esteem Needs</td><td>Respect, recognition, confidence, achievement</td></tr>
+            <tr><td>3 ❤️</td><td>Love & Belonging</td><td>Friendship, family, intimacy, sense of belonging</td></tr>
+            <tr><td>2 🛡️</td><td>Safety Needs</td><td>Security, employment, health, property, stability</td></tr>
+            <tr><td>1 (Bottom) 🍕</td><td>Physiological Needs</td><td>Food, water, warmth, sleep, shelter</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Other psychological factors that determine behaviour:</p>
+      <ul class="nice">
+        <li><strong>Perception</strong> – How we interpret the world around us. Two people see the same event differently based on their past experiences and beliefs</li>
+        <li><strong>Attitude</strong> – Positive or negative evaluation of people, objects, or ideas. Attitudes influence behaviour (though not always directly)</li>
+        <li><strong>Motivation</strong> – The driving force that pushes us to act. Intrinsic motivation (internal desire) vs extrinsic motivation (external rewards)</li>
+        <li><strong>Personality</strong> – Consistent patterns of thinking, feeling, and behaving that make each person unique. Introverts vs extroverts behave very differently</li>
+        <li><strong>Emotions</strong> – Fear, anger, joy, sadness, surprise, disgust — these "primary emotions" powerfully influence decisions and actions</li>
+        <li><strong>Learning and memory</strong> – Past experiences stored in memory shape how we react to new situations</li>
+        <li><strong>Intelligence</strong> – Problem-solving ability influences how people handle challenges and make decisions</li>
+        <li><strong>Mental health</strong> – Depression, anxiety, schizophrenia, and other disorders profoundly alter behaviour</li>
+      </ul>
+
+      <h4>3. Environmental / Social Factors</h4>
+      <div class="cards">
+        <div class="card" style="background:#edfff4; border:2px solid #4ade80;">
+          <h5 style="color:#166534;">👨‍👩‍👧 Family</h5>
+          <p>The first and most powerful socialising agent. Parenting style (authoritative, authoritarian, permissive, neglectful) shapes personality, values, and social skills for life.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #4ade80;">
+          <h5 style="color:#166534;">🏫 Education</h5>
+          <p>Schools teach not just knowledge but social norms, discipline, cooperation, and values. The "hidden curriculum" shapes behaviour beyond what is formally taught.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #4ade80;">
+          <h5 style="color:#166534;">👯 Peer Group</h5>
+          <p>Friends and same-age groups are especially powerful during adolescence. Peer pressure can lead to both positive (academic excellence) and negative (substance abuse) behaviour.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #4ade80;">
+          <h5 style="color:#166534;">🎭 Culture & Society</h5>
+          <p>Cultural norms, values, and social roles prescribe what behaviour is acceptable. Indian culture values collective family decisions; Western culture values individual autonomy.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #4ade80;">
+          <h5 style="color:#166534;">📺 Media</h5>
+          <p>Television, internet, social media, news, and advertising influence attitudes, role models, and expectations. Social media especially shapes youth behaviour today.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #4ade80;">
+          <h5 style="color:#166534;">💰 Economic Conditions</h5>
+          <p>Poverty, unemployment, and financial stress cause anxiety, aggression, and desperation. Wealth gives access to opportunities that shape behaviour and aspirations.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #4ade80;">
+          <h5 style="color:#166534;">🌍 Physical Environment</h5>
+          <p>Climate, geography, urban vs rural setting, noise, crowding — all affect mood and behaviour. Extreme heat increases aggression; peaceful natural settings reduce stress.</p>
+        </div>
+        <div class="card" style="background:#edfff4; border:2px solid #4ade80;">
+          <h5 style="color:#166534;">🏛️ Political & Legal System</h5>
+          <p>Laws, governance, and political stability (or instability) shape social behaviour. Rule of law encourages prosocial behaviour; weak institutions encourage corruption.</p>
+        </div>
+      </div>
+
+      <h4>Summary: A Holistic Model of Behaviour Determinants</h4>
+      <div class="callout callout-fact">
+        <span class="callout-title">🌟 Big Picture</span>
+        Human behaviour is like an equation:<br>
+        <strong>Behaviour = f (Biology + Psychology + Environment + Culture + Situation)</strong><br><br>
+        No single factor explains everything. The same person may behave differently at home vs office, in anger vs happiness, in childhood vs adulthood. This <strong>interactionist perspective</strong> is what modern psychology and sociology both support.
+      </div>
+
+      <h4>Theories of Learning & Behaviour (Quick Overview)</h4>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Theory</th><th>Who?</th><th>Key Idea</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Classical Conditioning</td><td>Ivan Pavlov</td><td>Pairing a stimulus with a response creates a learned reaction</td><td>Dog salivates at bell sound (paired with food)</td></tr>
+            <tr><td>Operant Conditioning</td><td>B.F. Skinner</td><td>Behaviour is shaped by rewards (reinforcement) and punishments</td><td>Child studies hard for gold star (reward)</td></tr>
+            <tr><td>Social Learning</td><td>Albert Bandura</td><td>We learn by observing and imitating others (models)</td><td>Child becomes aggressive after watching violent TV</td></tr>
+            <tr><td>Cognitive Development</td><td>Jean Piaget</td><td>Thinking develops in stages; how we think shapes behaviour</td><td>Young children are egocentric; teens can think abstractly</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Individual Differences in Behaviour</h4>
+      <p>Even with the same environment and upbringing, no two people behave identically. Individual differences arise from:</p>
+      <ul class="nice">
+        <li><strong>Personality type</strong> – Big Five personality traits: Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism (OCEAN)</li>
+        <li><strong>Intelligence (IQ)</strong> – Multiple intelligences: logical, linguistic, musical, spatial, bodily-kinesthetic, interpersonal, intrapersonal (Howard Gardner)</li>
+        <li><strong>Emotional Intelligence (EQ)</strong> – Ability to understand and manage one's own emotions and empathise with others. Often more predictive of success than IQ</li>
+        <li><strong>Locus of Control</strong> – Internals believe they control outcomes; externals believe fate/luck controls outcomes. Internals tend to be more proactive</li>
+        <li><strong>Self-concept and self-esteem</strong> – How you see yourself and how good you feel about yourself fundamentally affects behaviour and achievement</li>
+      </ul>
+    </div>
+
+    <!-- Final Summary -->
+    <div class="topic u5">
+      <h3>📋 5.4 Quick Review — All Units at a Glance</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Unit</th><th>Key Concepts</th><th>Key Terms to Remember</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--u1); font-weight:800;">Unit I<br>Demography</td>
+              <td>India's population characteristics, growth phases, age-sex-religion-language composition, occupations, NPP 2000</td>
+              <td>Demographic dividend, sex ratio, TFR, birth rate, death rate, NPP 2000, Demographic Transition</td>
+            </tr>
+            <tr>
+              <td style="color:var(--u2); font-weight:800;">Unit II<br>Society & Culture</td>
+              <td>Types of society, culture definition, features of culture, cultural diversity, Indian vs Western culture</td>
+              <td>Enculturation, cultural relativism, ethnocentrism, material/non-material culture, Westernisation, M.N. Srinivas</td>
+            </tr>
+            <tr>
+              <td style="color:var(--u3); font-weight:800;">Unit III<br>Stratification</td>
+              <td>Caste and class systems, Varna, untouchability, SCs/STs/OBCs, constitutional provisions, reservation</td>
+              <td>Endogamy, social mobility, Mandal Commission, Ambedkar, Article 17, SCSP, reservation policy</td>
+            </tr>
+            <tr>
+              <td style="color:var(--u4); font-weight:800;">Unit IV<br>Social Problems</td>
+              <td>Poverty, illiteracy, unemployment, housing, child labour, migration, terrorism, crime, juvenile delinquency, family problems</td>
+              <td>BPL, MGNREGA, RTE Act, disguised unemployment, PAPs, POCSO, domestic violence, Naxalism</td>
+            </tr>
+            <tr>
+              <td style="color:var(--u5); font-weight:800;">Unit V<br>Human Behaviour</td>
+              <td>Meaning of behaviour, importance, determinants (biological, psychological, environmental), Maslow's hierarchy, learning theories</td>
+              <td>Nature vs nurture, Maslow, Pavlov, Skinner, Bandura, OCEAN personality, EQ, locus of control, socialisation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-def" style="margin-top:32px;">
+        <span class="callout-title">🎓 For Your Exam</span>
+        Focus especially on: <strong>definitions</strong> (every key term has a proper definition), <strong>causes and effects</strong> (especially for Unit IV problems), <strong>constitutional articles</strong> (Unit III), and <strong>Maslow's hierarchy + Determinants of behaviour</strong> (Unit V). Many questions are "explain with examples" type — always give a real Indian example!
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p style="font-size:1.1rem; font-weight:700; margin-bottom:8px;">AECC401A · Society, Culture &amp; Human Behaviour</p>
+  <p>Comprehensive Study Notes · All 5 Units · 30 Hours of Content</p>
+  <p style="margin-top:16px; opacity:0.6; font-size:0.82rem;">These notes are prepared for educational purposes. Students are encouraged to supplement with textbooks and class discussions.</p>
+</footer>
+
+</body>
+</html>
