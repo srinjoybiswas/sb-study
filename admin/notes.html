@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes — Admin</title>
+  <link rel="icon" href="../assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/notes.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="app-shell admin-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Admin Panel</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Overview</div>
+        <a href="admin-dashboard.html"><span class="nav-ico">📊</span> Dashboard</a>
+        <a href="activity.html"><span class="nav-ico">🕒</span> Activity</a>
+        <div class="nav-section">Manage</div>
+        <a href="students.html"><span class="nav-ico">👥</span> Students</a>
+        <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
+        <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
+        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
+        <div class="nav-section">System</div>
+        <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
+        <a href="admin-profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-admin-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">Notes <span class="admin-badge">ADMIN</span><small>Upload and manage study material</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-admin-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page notes-page">
+        <div class="page-head flex-between">
+          <div><h1>Notes</h1><p>Files are stored in Google Drive; only metadata is public.</p></div>
+          <button class="btn btn-primary" id="add-note-btn">+ Upload Note</button>
+        </div>
+        <div class="toolbar">
+          <div class="search-box"><span class="s-ico">🔍</span><input class="form-control" type="search" id="note-search" placeholder="Search notes…"></div>
+        </div>
+        <div id="notes-table"></div>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="note-modal">
+    <div class="modal modal-lg">
+      <div class="modal-header"><h3 id="note-modal-title">Upload Note</h3><button class="btn btn-ghost btn-sm" id="note-modal-close">✕</button></div>
+      <form id="note-form">
+        <div class="modal-body">
+          <div class="form-group"><label for="note-title">Title</label><input class="form-control" type="text" id="note-title" name="title" required></div>
+          <div class="form-group"><label for="note-desc">Description</label><textarea class="form-control" id="note-desc" name="description" rows="2"></textarea></div>
+          <div class="form-row">
+            <div class="form-group"><label for="note-department">Department</label><select class="form-control" id="note-department" name="departmentId" required><option value="">Select department</option></select></div>
+            <div class="form-group"><label for="note-semester">Semester</label><input class="form-control" type="text" id="note-semester" name="semester" placeholder="e.g. 3"></div>
+          </div>
+          <div class="form-group"><label for="note-subject">Subject</label><input class="form-control" type="text" id="note-subject" name="subject" placeholder="e.g. Data Structures"></div>
+          <div class="form-group"><label for="note-file">File</label><input class="form-control" type="file" id="note-file" name="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg"><div class="form-hint" id="note-file-hint">PDF, DOC, PPT or image.</div></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" id="note-cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/admin-auth.js"></script>
+  <script src="../js/admin/notes.js"></script>
+  <script>document.getElementById('note-cancel').onclick = () => UI.closeModal('note-modal');</script>
+</body>
+</html>

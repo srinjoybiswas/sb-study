@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tests — Admin</title>
+  <link rel="icon" href="../assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="app-shell admin-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Admin Panel</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Overview</div>
+        <a href="admin-dashboard.html"><span class="nav-ico">📊</span> Dashboard</a>
+        <a href="activity.html"><span class="nav-ico">🕒</span> Activity</a>
+        <div class="nav-section">Manage</div>
+        <a href="students.html"><span class="nav-ico">👥</span> Students</a>
+        <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
+        <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
+        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
+        <div class="nav-section">System</div>
+        <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
+        <a href="admin-profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-admin-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">Tests <span class="admin-badge">ADMIN</span><small>Create and manage tests</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-admin-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="page-head flex-between">
+          <div><h1>Tests</h1><p>Optional, required and critical tests.</p></div>
+          <a class="btn btn-primary" href="test-builder.html">+ Create Test</a>
+        </div>
+        <div class="toolbar">
+          <div class="search-box"><span class="s-ico">🔍</span><input class="form-control" type="search" id="test-search" placeholder="Search tests…"></div>
+        </div>
+        <div id="tests-table"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/admin-auth.js"></script>
+  <script src="../js/admin/tests.js"></script>
+</body>
+</html>

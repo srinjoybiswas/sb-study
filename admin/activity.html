@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity &amp; Logs — Admin</title>
+  <link rel="icon" href="../assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="app-shell admin-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Admin Panel</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Overview</div>
+        <a href="admin-dashboard.html"><span class="nav-ico">📊</span> Dashboard</a>
+        <a href="activity.html"><span class="nav-ico">🕒</span> Activity</a>
+        <div class="nav-section">Manage</div>
+        <a href="students.html"><span class="nav-ico">👥</span> Students</a>
+        <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
+        <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
+        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
+        <div class="nav-section">System</div>
+        <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
+        <a href="admin-profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-admin-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">Activity &amp; Logs <span class="admin-badge">ADMIN</span><small>Live presence, activity, security and audit</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-admin-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="page-head"><h1>Activity &amp; Logs</h1><p>Presence is approximate (heartbeat within 2 minutes = online).</p></div>
+
+        <div class="card mb-24">
+          <div class="card-header"><h2 class="card-title">🟢 Live Student Activity</h2></div>
+          <div id="live-table"></div>
+        </div>
+
+        <div class="card mb-24">
+          <div class="card-header"><h2 class="card-title">🕒 Activity Logs</h2></div>
+          <div id="activity-logs"></div>
+        </div>
+
+        <div class="card mb-24">
+          <div class="card-header"><h2 class="card-title">🛡 Security Logs</h2></div>
+          <div id="security-logs"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2 class="card-title">📋 Audit Logs</h2></div>
+          <div id="audit-logs"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/admin-auth.js"></script>
+  <script src="../js/admin/activity.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Admin</title>
+  <link rel="icon" href="../assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="app-shell admin-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Admin Panel</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Overview</div>
+        <a href="admin-dashboard.html"><span class="nav-ico">📊</span> Dashboard</a>
+        <a href="activity.html"><span class="nav-ico">🕒</span> Activity</a>
+        <div class="nav-section">Manage</div>
+        <a href="students.html"><span class="nav-ico">👥</span> Students</a>
+        <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
+        <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
+        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
+        <div class="nav-section">System</div>
+        <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
+        <a href="admin-profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-admin-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">Settings <span class="admin-badge">ADMIN</span><small>Portal configuration</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-admin-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="page-head flex-between">
+          <div><h1>Settings</h1><p>Control portal behaviour and security thresholds.</p></div>
+          <button class="btn btn-outline" id="backup-btn">💾 Create Backup</button>
+        </div>
+
+        <div class="card">
+          <form id="settings-form">
+            <div class="settings-grid">
+              <div class="form-group"><label for="s-name">Website Name</label><input class="form-control" type="text" id="s-name" name="websiteName"></div>
+              <div class="form-group"><label for="s-status">Website Status</label><select class="form-control" id="s-status" name="websiteStatus"><option value="ON">ON</option><option value="OFF">OFF</option></select></div>
+              <div class="form-group"><label for="s-maint">Maintenance Mode</label><select class="form-control" id="s-maint" name="maintenanceMode"><option value="OFF">OFF</option><option value="ON">ON</option></select></div>
+              <div class="form-group"><label for="s-mod">Modification Mode</label><select class="form-control" id="s-mod" name="modificationMode"><option value="OFF">OFF</option><option value="ON">ON</option></select></div>
+              <div class="form-group"><label for="s-reg">Registration Enabled</label><select class="form-control" id="s-reg" name="registrationEnabled"><option value="ON">ON</option><option value="OFF">OFF</option></select></div>
+              <div class="form-group"><label for="s-pass">Default Passing %</label><input class="form-control" type="number" id="s-pass" name="defaultPassingPercent" min="1" max="100"></div>
+              <div class="form-group"><label for="s-time">Default Time per Question (s)</label><input class="form-control" type="number" id="s-time" name="defaultTimePerQuestion" min="10"></div>
+              <div class="form-group"><label for="s-attempts">Max Login Attempts</label><input class="form-control" type="number" id="s-attempts" name="maxLoginAttempts" min="1"></div>
+              <div class="form-group"><label for="s-session">Session Duration (minutes)</label><input class="form-control" type="number" id="s-session" name="sessionDurationMinutes" min="5"></div>
+              <div class="form-group"><label for="s-copy">Copy Violation Threshold</label><input class="form-control" type="number" id="s-copy" name="copyViolationThreshold" min="1"></div>
+              <div class="form-group"><label for="s-block">Temporary Block Duration (min)</label><input class="form-control" type="number" id="s-block" name="tempBlockDurationMinutes" min="1"></div>
+              <div class="form-group"><label for="s-notif">Notification Settings</label><select class="form-control" id="s-notif" name="notificationEnabled"><option value="ON">ON</option><option value="OFF">OFF</option></select></div>
+            </div>
+            <button class="btn btn-primary mt-16" type="submit">Save Settings</button>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/admin-auth.js"></script>
+  <script src="../js/admin/settings.js"></script>
+</body>
+</html>

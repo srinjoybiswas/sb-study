@@ -1,0 +1,102 @@
+/* ============================================================
+   SB NOTES PORTAL — notes.css
+   Notes browser, filters, secure viewer chrome.
+   ============================================================ */
+
+.notes-filters { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 20px; }
+.notes-filters .filter-item { display: flex; flex-direction: column; gap: 4px; min-width: 150px; }
+.notes-filters .filter-item label { font-size: 12px; font-weight: 600; color: var(--muted); }
+
+.notes-toolbar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 18px; }
+.notes-toolbar .search-box { position: relative; flex: 1; min-width: 220px; }
+.notes-toolbar .search-box input { padding-left: 38px; }
+.notes-toolbar .search-box .s-ico { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+
+.note-type-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 6px; background: rgba(79,70,229,.12); color: var(--primary); }
+.note-type-chip.pdf { background: rgba(220,38,38,.12); color: var(--danger); }
+.note-type-chip.doc { background: rgba(37,99,235,.12); color: #2563eb; }
+.note-type-chip.ppt { background: rgba(245,158,11,.15); color: #b45309; }
+.note-type-chip.img { background: rgba(22,163,74,.12); color: var(--success); }
+
+/* Secure viewer chrome */
+.secure-viewer { position: relative; width: 100%; height: 100%; }
+.secure-viewer .viewer-toolbar { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #111827; color: #e5e7eb; font-size: 13px; }
+.secure-viewer .viewer-toolbar .vt-actions { margin-left: auto; display: flex; gap: 8px; }
+.secure-viewer .viewer-frame-wrap { position: relative; height: calc(100% - 46px); background: #374151; }
+.secure-viewer .viewer-frame-wrap iframe { width: 100%; height: 100%; border: none; background: #fff; }
+.secure-viewer .viewer-frame-wrap img { width: 100%; height: 100%; object-fit: contain; background: #1f2937; }
+
+.viewer-warning { background: rgba(220,38,38,.12); border: 1px solid rgba(220,38,38,.35); color: #991b1b; border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; margin-bottom: 14px; }
+[data-theme="dark"] .viewer-warning { color: #fca5a5; }
+
+.strike-indicator { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+.strike-indicator .strike { width: 12px; height: 12px; border-radius: 50%; background: var(--border); }
+.strike-indicator .strike.active { background: var(--danger); }
+
+/* Note detail modal */
+.note-detail-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
+.note-detail-meta .ndm { background: var(--background); border-radius: var(--radius-sm); padding: 10px 12px; }
+.note-detail-meta .ndm .lbl { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: .04em; }
+.note-detail-meta .ndm .val { font-size: 14px; font-weight: 600; margin-top: 2px; }
+
+/* ============================================================
+   FULL-WIDTH NOTES LAYOUT
+   The notes page must use the entire main content area: the
+   filter bar, the note grid and the secure viewer all stretch
+   edge-to-edge with comfortable reading space.
+   ============================================================ */
+
+/* Let the page grow to the full available width (no artificial cap). */
+.page.notes-page { width: 100%; max-width: none; }
+
+/* Filter bar: full width, search grows to fill remaining space. */
+.notes-filters { width: 100%; }
+.notes-filters .filter-item { flex: 0 0 auto; }
+.notes-filters .filter-item.grow { flex: 1 1 260px; min-width: 200px; }
+
+/* Note grid: fill the row, larger comfortable cards, more columns on wide screens. */
+.note-grid {
+  width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.note-card { padding: 20px; }
+.note-card h3 { font-size: 16px; }
+.note-card .note-desc { font-size: 13.5px; line-height: 1.6; }
+
+/* On very wide desktops allow a denser, still-readable grid. */
+@media (min-width: 1600px) {
+  .note-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
+}
+
+/* ---------- Secure fullscreen viewer (self-contained) ----------
+   These rules live here so notes.html renders the viewer correctly
+   even without test.css. They mirror the viewer chrome in test.css. */
+.viewer-overlay {
+  position: fixed; inset: 0; background: #0b1220; z-index: 8000;
+  display: none; flex-direction: column;
+}
+.viewer-overlay.open { display: flex; }
+.viewer-bar {
+  display: flex; align-items: center; gap: 14px; padding: 12px 20px;
+  background: #111827; color: #f9fafb; flex-shrink: 0;
+}
+.viewer-bar .v-title { font-weight: 600; font-size: 15px; }
+.viewer-bar .v-actions { margin-left: auto; display: flex; gap: 10px; }
+.viewer-body { flex: 1; position: relative; overflow: hidden; background: #1f2937; min-height: 0; }
+.viewer-body iframe { width: 100%; height: 100%; border: none; background: #fff; display: block; }
+.viewer-body img { width: 100%; height: 100%; object-fit: contain; background: #1f2937; display: block; }
+.viewer-body .viewer-fallback { color: #e5e7eb; padding: 40px; text-align: center; }
+
+/* Reading comfort: on large screens keep the document centred and
+   generously sized rather than stretched to an unreadable line length. */
+@media (min-width: 1200px) {
+  .viewer-body iframe { max-width: 1400px; margin: 0 auto; }
+}
+
+/* Mobile: viewer bar wraps, close button stays reachable. */
+@media (max-width: 600px) {
+  .viewer-bar { padding: 10px 12px; gap: 8px; }
+  .viewer-bar .v-title { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .viewer-bar .v-actions .btn { padding: 6px 10px; font-size: 12px; }
+}

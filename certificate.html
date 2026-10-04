@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificates — SB Notes Portal</title>
+  <link rel="icon" href="assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/test.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Student Portal</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Main</div>
+        <a href="dashboard.html"><span class="nav-ico">🏠</span> Dashboard</a>
+        <a href="notes.html?scope=mine"><span class="nav-ico">📚</span> My Notes</a>
+        <a href="notes.html?scope=other"><span class="nav-ico">🌐</span> Other Notes</a>
+        <a href="test.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="result.html"><span class="nav-ico">📊</span> Results</a>
+        <a href="certificate.html"><span class="nav-ico">🏆</span> Certificates</a>
+        <div class="nav-section">Account</div>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
+        <a href="profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">Certificates<small>Your achievements</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-user-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="page-head no-print"><h1>Certificates</h1><p>Earned by passing tests. Each has a public verification ID.</p></div>
+        <div id="certificate-wrap"></div>
+        <div class="grid grid-2" id="certs-list"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/certificates.js"></script>
+</body>
+</html>

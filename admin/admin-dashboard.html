@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — SB Notes Portal</title>
+  <link rel="icon" href="../assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="app-shell admin-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Admin Panel</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Overview</div>
+        <a href="admin-dashboard.html"><span class="nav-ico">📊</span> Dashboard</a>
+        <a href="activity.html"><span class="nav-ico">🕒</span> Activity</a>
+        <div class="nav-section">Manage</div>
+        <a href="students.html"><span class="nav-ico">👥</span> Students</a>
+        <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
+        <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
+        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
+        <div class="nav-section">System</div>
+        <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
+        <a href="admin-profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-admin-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">Admin Dashboard <span class="admin-badge">ADMIN</span><small>System overview</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-admin-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="page-head flex-between">
+          <div><h1>Dashboard</h1><p>Live overview of the portal.</p></div>
+          <button class="btn btn-warning btn-sm" id="maintenance-toggle" data-mode="OFF">Toggle Maintenance</button>
+        </div>
+
+        <div class="stat-grid" id="admin-stat-grid"></div>
+
+        <div class="grid grid-2 mb-24">
+          <div class="chart-box">
+            <h3 class="card-title mb-16">Registrations (14 days)</h3>
+            <canvas id="chart-registrations" style="width:100%;height:180px"></canvas>
+          </div>
+          <div class="chart-box">
+            <h3 class="card-title mb-16">Test Attempts (14 days)</h3>
+            <canvas id="chart-attempts" style="width:100%;height:180px"></canvas>
+          </div>
+        </div>
+
+        <div class="grid grid-2 mb-24">
+          <div class="chart-box">
+            <h3 class="card-title mb-16">Department Distribution</h3>
+            <canvas id="chart-departments" style="width:100%;height:200px"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-header"><h2 class="card-title">👀 Currently Viewing Notes</h2></div>
+            <div id="currently-viewing"></div>
+          </div>
+        </div>
+
+        <div class="card mb-24">
+          <div class="card-header"><h2 class="card-title">🛡 Security Overview (Today)</h2></div>
+          <div class="sec-grid" id="security-grid"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2 class="card-title">🟢 Live Student Activity</h2><span class="text-xs text-muted">Presence is approximate (heartbeat-based)</span></div>
+          <div id="live-activity"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/admin-auth.js"></script>
+  <script src="../js/admin/admin-dashboard.js"></script>
+</body>
+</html>

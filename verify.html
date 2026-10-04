@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Certificate — SB Notes Portal</title>
+  <link rel="icon" href="assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <nav class="landing-nav">
+    <div class="brand"><span class="logo-mark">SB</span> SB Notes Portal</div>
+    <div class="flex gap-12">
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+      <a class="btn btn-outline btn-sm" href="index.html">Home</a>
+    </div>
+  </nav>
+
+  <main style="max-width:640px;margin:40px auto;padding:0 20px">
+    <div class="card">
+      <h1 style="font-size:22px">🔎 Certificate Verification</h1>
+      <p class="text-muted text-sm mt-8">Enter a Certificate ID or Verification ID to confirm its authenticity.</p>
+      <form id="verify-form" class="mt-16">
+        <div class="form-group">
+          <label for="certId">Certificate ID</label>
+          <input class="form-control" type="text" id="certId" name="certId" placeholder="e.g. SBN-2026-000123" required>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">Verify</button>
+      </form>
+      <div id="verify-result" class="mt-24"></div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    Theme.init();
+    document.querySelectorAll('[data-theme-toggle]').forEach(b => b.onclick = () => Theme.toggle());
+
+    async function verify(id) {
+      const el = document.getElementById('verify-result');
+      el.innerHTML = UI.skeleton(4);
+      try {
+        const c = await API.request('verifyCertificate', { id: id }, {});
+        el.innerHTML =
+          '<div class="result-hero ' + (c.valid ? 'pass' : 'fail') + '">' +
+          '<h2>' + (c.valid ? '✅ Valid Certificate' : '⚠️ Not Active') + '</h2></div>' +
+          '<div class="info-list mt-16">' +
+          '<div class="info-item"><div class="info-label">Student</div><div class="info-value">' + UI.escapeHtml(c.studentName) + '</div></div>' +
+          '<div class="info-item"><div class="info-label">Test</div><div class="info-value">' + UI.escapeHtml(c.testTitle) + '</div></div>' +
+          '<div class="info-item"><div class="info-label">Score</div><div class="info-value">' + UI.escapeHtml(c.score) + ' (' + UI.escapeHtml(c.percentage) + '%)</div></div>' +
+          '<div class="info-item"><div class="info-label">Certificate ID</div><div class="info-value">' + UI.escapeHtml(c.certificateId) + '</div></div>' +
+          '<div class="info-item"><div class="info-label">Issued On</div><div class="info-value">' + UI.formatDate(c.issuedAt) + '</div></div>' +
+          '</div>';
+      } catch (err) {
+        el.innerHTML = UI.emptyState('❌', 'Not found', err.message);
+      }
+    }
+
+    document.getElementById('verify-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = e.target.certId.value.trim();
+      if (id) verify(id);
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id) { document.getElementById('certId').value = id; verify(id); }
+  </script>
+</body>
+</html>

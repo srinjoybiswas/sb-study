@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Profile — SB Notes Portal</title>
+  <link rel="icon" href="../assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="app-shell admin-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Admin Panel</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Overview</div>
+        <a href="admin-dashboard.html"><span class="nav-ico">📊</span> Dashboard</a>
+        <a href="activity.html"><span class="nav-ico">🕒</span> Activity</a>
+        <div class="nav-section">Manage</div>
+        <a href="students.html"><span class="nav-ico">👥</span> Students</a>
+        <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
+        <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
+        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
+        <div class="nav-section">System</div>
+        <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
+        <a href="admin-profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-admin-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">Admin Profile <span class="admin-badge">ADMIN</span><small>Account &amp; security</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-admin-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="page-head"><h1>Admin Profile</h1><p>Manage your administrator account.</p></div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h2 class="card-title">Account</h2></div>
+            <div class="info-list">
+              <div class="info-item"><div class="info-label">Name</div><div class="info-value" data-admin-name>—</div></div>
+              <div class="info-item"><div class="info-label">Email</div><div class="info-value" id="admin-email">—</div></div>
+              <div class="info-item"><div class="info-label">Role</div><div class="info-value" id="admin-role">—</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2 class="card-title">Change Password</h2></div>
+            <div class="security-banner mb-16"><span>🔐</span><span>You must change the default password after your first login.</span></div>
+            <form id="admin-password-form">
+              <div class="form-group"><label for="cur-pass">Current Password</label><input class="form-control" type="password" id="cur-pass" name="currentPassword" required></div>
+              <div class="form-group"><label for="new-pass">New Password</label><input class="form-control" type="password" id="new-pass" name="newPassword" required></div>
+              <div class="form-group"><label for="conf-pass">Confirm New Password</label><input class="form-control" type="password" id="conf-pass" name="confirmPassword" required></div>
+              <button class="btn btn-primary" type="submit">Update Password</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/admin-auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const admin = Auth.getAdmin();
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v || '—'; };
+      set('admin-email', admin.email);
+      set('admin-role', admin.role);
+      if (new URLSearchParams(location.search).get('forceChange')) {
+        UI.toast('Please change your default password to continue.', 'warning', 6000);
+      }
+    });
+  </script>
+</body>
+</html>

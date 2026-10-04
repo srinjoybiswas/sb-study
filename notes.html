@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes — SB Notes Portal</title>
+  <link rel="icon" href="assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/notes.css">
+  <link rel="stylesheet" href="css/test.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Student Portal</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Main</div>
+        <a href="dashboard.html"><span class="nav-ico">🏠</span> Dashboard</a>
+        <a href="notes.html?scope=mine"><span class="nav-ico">📚</span> My Notes</a>
+        <a href="notes.html?scope=other"><span class="nav-ico">🌐</span> Other Notes</a>
+        <a href="test.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="result.html"><span class="nav-ico">📊</span> Results</a>
+        <a href="certificate.html"><span class="nav-ico">🏆</span> Certificates</a>
+        <div class="nav-section">Account</div>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
+        <a href="profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">Notes Library<small>Browse and study securely</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-user-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page notes-page">
+        <div class="page-head"><h1>Notes Library</h1><p>View-only, watermarked and protected.</p></div>
+
+        <div class="security-banner mb-16">
+          <span>🔒</span>
+          <span>Notes are view-only. Right-click, copy, print and selection are disabled as a deterrent. Screenshots and OS-level capture cannot be fully prevented.</span>
+        </div>
+
+        <div class="notes-filters">
+          <div class="filter-item">
+            <label for="filter-scope">Scope</label>
+            <select class="form-control" id="filter-scope">
+              <option value="">All Notes</option>
+              <option value="mine">My Department</option>
+              <option value="other">Other Departments</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <label for="filter-department">Department</label>
+            <select class="form-control" id="filter-department"><option value="ALL">All Departments</option></select>
+          </div>
+          <div class="filter-item">
+            <label for="filter-semester">Semester</label>
+            <select class="form-control" id="filter-semester">
+              <option value="ALL">All Semesters</option>
+              <option value="1">Semester 1</option><option value="2">Semester 2</option>
+              <option value="3">Semester 3</option><option value="4">Semester 4</option>
+              <option value="5">Semester 5</option><option value="6">Semester 6</option>
+              <option value="7">Semester 7</option><option value="8">Semester 8</option>
+            </select>
+          </div>
+          <div class="filter-item grow">
+            <label for="filter-search">Search</label>
+            <input class="form-control" type="search" id="filter-search" placeholder="Search by title, subject…">
+          </div>
+        </div>
+
+        <div class="note-grid" id="notes-grid"></div>
+        <div class="pagination" id="notes-pagination"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Secure fullscreen viewer -->
+  <div class="viewer-overlay" id="viewer-overlay">
+    <div class="viewer-bar">
+      <span class="v-title" id="viewer-title">Note</span>
+      <div class="v-actions">
+        <button class="btn btn-danger btn-sm" id="viewer-close">✕ Close</button>
+      </div>
+    </div>
+    <div class="viewer-body" id="viewer-body"></div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/security.js"></script>
+  <script src="js/notes.js"></script>
+</body>
+</html>

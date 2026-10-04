@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — SB Notes Portal</title>
+  <link rel="icon" href="assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="side-brand"><span class="logo-mark">SB</span><div>SB Notes<small>Student Portal</small></div></div>
+      <nav class="side-nav">
+        <div class="nav-section">Main</div>
+        <a href="dashboard.html"><span class="nav-ico">🏠</span> Dashboard</a>
+        <a href="notes.html?scope=mine"><span class="nav-ico">📚</span> My Notes</a>
+        <a href="notes.html?scope=other"><span class="nav-ico">🌐</span> Other Notes</a>
+        <a href="test.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="result.html"><span class="nav-ico">📊</span> Results</a>
+        <a href="certificate.html"><span class="nav-ico">🏆</span> Certificates</a>
+        <div class="nav-section">Account</div>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
+        <a href="profile.html"><span class="nav-ico">👤</span> Profile</a>
+        <a href="#" data-logout><span class="nav-ico">🚪</span> Logout</a>
+      </nav>
+    </aside>
+    <div class="sidebar-overlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Menu">☰</button>
+        <div class="welcome">My Profile<small>Manage your account details</small></div>
+        <div class="top-actions">
+          <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
+          <div class="avatar" data-user-avatar>?</div>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="card mb-24">
+          <div class="profile-header">
+            <div class="avatar-lg" id="p-avatar">?</div>
+            <div>
+              <h1 id="p-name" style="font-size:22px">—</h1>
+              <p class="text-muted" id="p-email">—</p>
+              <span class="badge" id="p-status-badge">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header"><h2 class="card-title">Account Details</h2></div>
+            <div class="info-list">
+              <div class="info-item"><div class="info-label">Student ID</div><div class="info-value" id="p-id">—</div></div>
+              <div class="info-item"><div class="info-label">Mobile</div><div class="info-value" id="p-mobile">—</div></div>
+              <div class="info-item"><div class="info-label">College</div><div class="info-value" id="p-college">—</div></div>
+              <div class="info-item"><div class="info-label">Department</div><div class="info-value" id="p-department">—</div></div>
+              <div class="info-item"><div class="info-label">Registered On</div><div class="info-value" id="p-registered">—</div></div>
+              <div class="info-item"><div class="info-label">Last Login</div><div class="info-value" id="p-lastlogin">—</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2 class="card-title">Edit Profile</h2></div>
+            <form id="profile-form" novalidate>
+              <div class="form-group">
+                <label for="edit-name">Full Name</label>
+                <input class="form-control" type="text" id="edit-name" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="edit-email">Email (not editable)</label>
+                <input class="form-control" type="email" id="edit-email" value="" disabled>
+              </div>
+              <div class="form-group">
+                <label for="edit-mobile">Mobile</label>
+                <input class="form-control" type="tel" id="edit-mobile" name="mobile" maxlength="10" required>
+              </div>
+              <div class="form-group">
+                <label for="edit-college">College</label>
+                <input class="form-control" type="text" id="edit-college" name="college" required>
+              </div>
+              <div class="form-group">
+                <label for="edit-department">Department</label>
+                <select class="form-control" id="edit-department" name="departmentId" required></select>
+              </div>
+              <button class="btn btn-primary" type="submit">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

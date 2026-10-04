@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — SB Notes Portal</title>
+  <link rel="icon" href="assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="auth-wrap">
+    <aside class="auth-side">
+      <h1>Join SB Notes Portal</h1>
+      <p>Create your student account in a minute.</p>
+      <div class="feature-list">
+        <div>✅ Free student registration</div>
+        <div>📚 Instant access to department notes</div>
+        <div>📝 Take tests and track progress</div>
+        <div>🏆 Earn certificates</div>
+      </div>
+    </aside>
+    <main class="auth-main">
+      <div class="auth-card">
+        <div class="brand"><span class="logo-mark">SB</span><strong>SB Notes Portal</strong></div>
+        <h2>Create your account</h2>
+        <p class="sub">All fields are required.</p>
+        <form id="register-form" novalidate>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input class="form-control" type="text" id="name" name="name" placeholder="Your full name" required>
+            <div class="form-error" data-err="name"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input class="form-control" type="email" id="email" name="email" placeholder="you@example.com" required>
+              <div class="form-error" data-err="email"></div>
+            </div>
+            <div class="form-group">
+              <label for="mobile">Mobile</label>
+              <input class="form-control" type="tel" id="mobile" name="mobile" placeholder="10-digit number" maxlength="10" required>
+              <div class="form-error" data-err="mobile"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="college">College</label>
+            <input class="form-control" type="text" id="college" name="college" placeholder="Your college name" required>
+            <div class="form-error" data-err="college"></div>
+          </div>
+          <div class="form-group">
+            <label for="departmentId">Department</label>
+            <select class="form-control" id="departmentId" name="departmentId" required>
+              <option value="">Loading departments…</option>
+            </select>
+            <div class="form-error" data-err="departmentId"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input class="form-control" type="password" id="password" name="password" placeholder="Min 8 characters" required>
+              <div class="form-error" data-err="password"></div>
+            </div>
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input class="form-control" type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat password" required>
+              <div class="form-error" data-err="confirmPassword"></div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Create Account</button>
+        </form>
+        <p class="text-center mt-16 text-sm">Already registered? <a href="login.html">Log in</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    Theme.init();
+    const deptSel = document.getElementById('departmentId');
+    API.get('getDepartments', {}).then(depts => {
+      deptSel.innerHTML = '<option value="">Select department</option>' + depts.map(d =>
+        '<option value="' + UI.escapeHtml(d.departmentId) + '">' + UI.escapeHtml(d.name) + '</option>').join('');
+    }).catch(() => { deptSel.innerHTML = '<option value="">Could not load departments</option>'; });
+
+    function setErr(name, msg) {
+      const el = document.querySelector('[data-err="' + name + '"]');
+      if (el) el.textContent = msg || '';
+    }
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const btn = f.querySelector('button[type="submit"]');
+      ['name','email','mobile','college','departmentId','password','confirmPassword'].forEach(n => setErr(n, ''));
+      const p = {
+        name: f.name.value.trim(), email: f.email.value.trim(), mobile: f.mobile.value.trim(),
+        college: f.college.value.trim(), departmentId: f.departmentId.value,
+        password: f.password.value, confirmPassword: f.confirmPassword.value
+      };
+      let ok = true;
+      if (p.name.length < 3) { setErr('name', 'Enter your full name.'); ok = false; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email)) { setErr('email', 'Enter a valid email.'); ok = false; }
+      if (!/^[6-9]\d{9}$/.test(p.mobile)) { setErr('mobile', 'Enter a valid 10-digit mobile.'); ok = false; }
+      if (!p.college) { setErr('college', 'Enter your college.'); ok = false; }
+      if (!p.departmentId) { setErr('departmentId', 'Select a department.'); ok = false; }
+      if (p.password.length < 8) { setErr('password', 'Min 8 characters.'); ok = false; }
+      if (p.password !== p.confirmPassword) { setErr('confirmPassword', 'Passwords do not match.'); ok = false; }
+      if (!ok) return;
+
+      UI.setLoading(btn, true, 'Creating account…');
+      try {
+        await API.request('register', p, {});
+        UI.toast('Registration successful! Redirecting to login…', 'success');
+        setTimeout(() => window.location.href = 'login.html', 1200);
+      } catch (err) {
+        UI.toast(err.message || 'Registration failed.', 'error');
+      } finally {
+        UI.setLoading(btn, false);
+      }
+    });
+  </script>
+</body>
+</html>

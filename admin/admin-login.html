@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — SB Notes Portal</title>
+  <link rel="icon" href="../assets/logo/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="auth-wrap">
+    <aside class="auth-side" style="background:linear-gradient(135deg,#111827,#4f46e5)">
+      <h1>Admin Panel</h1>
+      <p>SB Notes Portal administration</p>
+      <div class="feature-list">
+        <div>👥 Manage students &amp; departments</div>
+        <div>📚 Upload and organize notes</div>
+        <div>📝 Build tests and questions</div>
+        <div>🛡 Monitor security &amp; activity</div>
+      </div>
+    </aside>
+    <main class="auth-main">
+      <div class="auth-card">
+        <div class="brand"><span class="logo-mark">SB</span><strong>Admin Access</strong></div>
+        <h2>Administrator Login</h2>
+        <p class="sub">Restricted area. Authorized personnel only.</p>
+        <form id="admin-login-form" novalidate>
+          <div class="form-group">
+            <label for="email">Admin Email</label>
+            <input class="form-control" type="email" id="email" name="email" placeholder="admin@example.com" autocomplete="username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input class="form-control" type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Sign In</button>
+        </form>
+        <p class="text-center mt-16 text-sm"><a href="../login.html">← Student login</a></p>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin/admin-auth.js"></script>
+</body>
+</html>
