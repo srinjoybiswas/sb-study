@@ -11,27 +11,71 @@
   <link rel="stylesheet" href="css/test.css">
   <link rel="stylesheet" href="css/responsive.css">
   <style>
-    /* Mobile Notice Banner Styling */
-    .mobile-notice {
+    /* Inline Mobile Viewer Engine Styles */
+    .viewer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 99999;
       display: none;
-      background-color: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeeba;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      font-size: 14px;
-      align-items: center;
-      gap: 10px;
+      flex-direction: column;
     }
 
+    .viewer-overlay.active {
+      display: flex !important;
+    }
+
+    .viewer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      background: #1e293b;
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .v-title {
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 70%;
+    }
+
+    .viewer-body {
+      flex: 1;
+      width: 100%;
+      height: calc(100vh - 50px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background: #f8fafc;
+      position: relative;
+    }
+
+    .viewer-body iframe,
+    .viewer-body object,
+    .viewer-body embed {
+      width: 100% !important;
+      height: 100% !important;
+      border: none;
+      display: block;
+    }
+
+    /* Mobile specific adjustments to ensure full screen reading without app redirects */
     @media (max-width: 768px) {
-      .mobile-notice {
-        display: flex;
+      .viewer-bar {
+        padding: 8px 12px;
       }
-      /* Fallback CSS: strictly hide the viewer on mobile screens */
-      #viewer-overlay {
-        display: none !important;
+      .v-title {
+        font-size: 13px;
+      }
+      .viewer-body {
+        height: calc(100vh - 44px);
       }
     }
   </style>
@@ -69,16 +113,9 @@
       <main class="page notes-page">
         <div class="page-head"><h1>Notes Library</h1><p>View-only, watermarked and protected.</p></div>
 
-        <!-- Security Banner -->
         <div class="security-banner mb-16">
           <span>🔒</span>
           <span>Notes are view-only. Right-click, copy, print and selection are disabled as a deterrent. Screenshots and OS-level capture cannot be fully prevented.</span>
-        </div>
-
-        <!-- Mobile Notice Banner (Visible only on mobile devices) -->
-        <div class="mobile-notice" id="mobile-notice">
-          <span>📱</span>
-          <span><strong>Desktop Access Required:</strong> For security and optimal display, viewing full notes is disabled on mobile devices. Please log in on a desktop computer.</span>
         </div>
 
         <div class="notes-filters">
@@ -133,31 +170,76 @@
   <script src="js/security.js"></script>
   <script src="js/notes.js"></script>
 
-  <!-- Mobile Restriction Guard -->
+  <!-- Mobile Inline Document Viewer Engine -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const isMobile = () => window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-      // Prevent viewer modal from opening if triggered on mobile
       const viewerOverlay = document.getElementById("viewer-overlay");
-      if (viewerOverlay) {
-        const observer = new MutationObserver(() => {
-          if (isMobile() && viewerOverlay.classList.contains("active")) {
-            viewerOverlay.classList.remove("active");
-            alert("Viewing notes is disabled on mobile devices. Please switch to a desktop or laptop.");
-          }
+      const viewerClose = document.getElementById("viewer-close");
+      const viewerBody = document.getElementById("viewer-body");
+
+      // Close handler
+      if (viewerClose) {
+        viewerClose.addEventListener("click", () => {
+          if (viewerOverlay) viewerOverlay.classList.remove("active");
+          if (viewerBody) viewerBody.innerHTML = "";
+          document.body.style.overflow = "";
         });
-        observer.observe(viewerOverlay, { attributes: true, attributeFilter: ["class", "style"] });
       }
 
-      // Intercept click events on dynamically loaded "View Note" buttons
-      document.addEventListener("click", (e) => {
-        if (isMobile() && e.target.closest(".btn-view, [data-action='view']")) {
-          e.preventDefault();
-          e.stopPropagation();
-          alert("Note viewing is restricted to desktop screens.");
+      // Universal method to force inline web reading on mobile devices
+      window.openMobileSecureNote = function(fileUrl, title) {
+        if (!viewerOverlay || !viewerBody) return;
+
+        const titleEl = document.getElementById("viewer-title");
+        if (titleEl) titleEl.textContent = title || "Note";
+
+        viewerBody.innerHTML = '<div style="color:#666; padding:20px; text-align:center;">Loading note securely...</div>';
+        viewerOverlay.classList.add("active");
+        document.body.style.overflow = "hidden";
+
+        // Convert relative URLs to absolute URLs
+        let targetUrl = fileUrl;
+        if (fileUrl && !fileUrl.startsWith("http")) {
+          targetUrl = window.location.origin + (fileUrl.startsWith("/") ? "" : "/") + fileUrl;
         }
-      }, true);
+
+        const isMobile = window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        setTimeout(() => {
+          if (isMobile) {
+            // Embeds PDF content into a web iframe rendering engine to prevent prompt to download PDF app
+            viewerBody.innerHTML = `
+              <iframe 
+                src="https://docs.google.com/gview?url=${encodeURIComponent(targetUrl)}&embedded=true" 
+                style="width: 100%; height: 100%; border: none; background: #ffffff;" 
+                title="${title || 'Note Viewer'}">
+              </iframe>
+            `;
+          } else {
+            // Desktop fallback rendering
+            viewerBody.innerHTML = `
+              <iframe 
+                src="${targetUrl}#toolbar=0&navpanes=0" 
+                style="width: 100%; height: 100%; border: none; background: #ffffff;" 
+                title="${title || 'Note Viewer'}">
+              </iframe>
+            `;
+          }
+        }, 150);
+      };
+
+      // Event delegation listener to automatically intercept card clicks across all dynamic buttons
+      document.addEventListener("click", (e) => {
+        const viewBtn = e.target.closest("[data-note-url], .btn-view");
+        if (viewBtn) {
+          const url = viewBtn.getAttribute("data-note-url") || viewBtn.dataset.url;
+          const title = viewBtn.getAttribute("data-note-title") || viewBtn.dataset.title || "Note";
+          if (url) {
+            e.preventDefault();
+            window.openMobileSecureNote(url, title);
+          }
+        }
+      });
     });
   </script>
 </body>
