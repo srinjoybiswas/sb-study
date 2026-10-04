@@ -10,15 +10,19 @@
   <link rel="stylesheet" href="css/notes.css">
   <link rel="stylesheet" href="css/test.css">
   <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- PDF.js Library for Universal Mobile & Desktop Inline PDF Rendering -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
   <style>
-    /* Inline Mobile Viewer Engine Styles */
+    /* Fullscreen Modal Viewer Styling */
     .viewer-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(15, 23, 42, 0.95);
       z-index: 99999;
       display: none;
       flex-direction: column;
@@ -35,7 +39,8 @@
       padding: 10px 16px;
       background: #1e293b;
       color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      z-index: 10;
     }
 
     .v-title {
@@ -44,38 +49,50 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 70%;
+      max-width: 75%;
     }
 
     .viewer-body {
       flex: 1;
       width: 100%;
-      height: calc(100vh - 50px);
+      height: calc(100vh - 52px);
       overflow-y: auto;
+      overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
-      background: #f8fafc;
-      position: relative;
+      background: #334155;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+      box-sizing: border-box;
     }
 
-    .viewer-body iframe,
-    .viewer-body object,
-    .viewer-body embed {
-      width: 100% !important;
-      height: 100% !important;
-      border: none;
-      display: block;
+    /* Styles for PDF canvas pages rendered by PDF.js */
+    .pdf-page-canvas {
+      max-width: 100% !important;
+      height: auto !important;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      background: #ffffff;
     }
 
-    /* Mobile specific adjustments to ensure full screen reading without app redirects */
+    .pdf-loading-status {
+      color: #f8fafc;
+      font-size: 14px;
+      padding: 24px;
+      text-align: center;
+    }
+
     @media (max-width: 768px) {
       .viewer-bar {
         padding: 8px 12px;
       }
       .v-title {
-        font-size: 13px;
+        font-size: 14px;
       }
       .viewer-body {
-        height: calc(100vh - 44px);
+        padding: 8px 4px;
       }
     }
   </style>
@@ -170,14 +187,20 @@
   <script src="js/security.js"></script>
   <script src="js/notes.js"></script>
 
-  <!-- Mobile Inline Document Viewer Engine -->
+  <!-- Mobile PDF Engine via Canvas Rendering -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      // Set PDF.js worker URL
+      if (window.pdfjsLib) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      }
+
       const viewerOverlay = document.getElementById("viewer-overlay");
       const viewerClose = document.getElementById("viewer-close");
       const viewerBody = document.getElementById("viewer-body");
+      const viewerTitle = document.getElementById("viewer-title");
 
-      // Close handler
+      // Close modal action
       if (viewerClose) {
         viewerClose.addEventListener("click", () => {
           if (viewerOverlay) viewerOverlay.classList.remove("active");
@@ -186,49 +209,67 @@
         });
       }
 
-      // Universal method to force inline web reading on mobile devices
-      window.openMobileSecureNote = function(fileUrl, title) {
+      // Universal PDF renderer that renders pages on HTML5 canvas elements
+      window.openSecureNote = async function(fileUrl, title) {
         if (!viewerOverlay || !viewerBody) return;
 
-        const titleEl = document.getElementById("viewer-title");
-        if (titleEl) titleEl.textContent = title || "Note";
-
-        viewerBody.innerHTML = '<div style="color:#666; padding:20px; text-align:center;">Loading note securely...</div>';
+        if (viewerTitle) viewerTitle.textContent = title || "Note";
+        viewerBody.innerHTML = '<div class="pdf-loading-status">⏳ Loading document pages...</div>';
         viewerOverlay.classList.add("active");
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = "hidden"; // Lock background scroll
 
-        // Convert relative URLs to absolute URLs
+        // Ensure absolute path resolution
         let targetUrl = fileUrl;
         if (fileUrl && !fileUrl.startsWith("http")) {
           targetUrl = window.location.origin + (fileUrl.startsWith("/") ? "" : "/") + fileUrl;
         }
 
-        const isMobile = window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        try {
+          // Load document with PDF.js
+          const loadingTask = pdfjsLib.getDocument(targetUrl);
+          const pdf = await loadingTask.promise;
+          
+          viewerBody.innerHTML = ""; // Clear loading message
 
-        setTimeout(() => {
-          if (isMobile) {
-            // Embeds PDF content into a web iframe rendering engine to prevent prompt to download PDF app
-            viewerBody.innerHTML = `
-              <iframe 
-                src="https://docs.google.com/gview?url=${encodeURIComponent(targetUrl)}&embedded=true" 
-                style="width: 100%; height: 100%; border: none; background: #ffffff;" 
-                title="${title || 'Note Viewer'}">
-              </iframe>
-            `;
-          } else {
-            // Desktop fallback rendering
-            viewerBody.innerHTML = `
-              <iframe 
-                src="${targetUrl}#toolbar=0&navpanes=0" 
-                style="width: 100%; height: 100%; border: none; background: #ffffff;" 
-                title="${title || 'Note Viewer'}">
-              </iframe>
-            `;
+          // Render each page sequentially into canvas
+          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+            const page = await pdf.getPage(pageNum);
+            
+            // Calculate scale based on device viewport width
+            const containerWidth = viewerBody.clientWidth - 24 || window.innerWidth - 24;
+            const unscaledViewport = page.getViewport({ scale: 1.0 });
+            const scale = containerWidth / unscaledViewport.width;
+            const viewport = page.getViewport({ scale: Math.min(scale, 2.0) });
+
+            // Create canvas element for page
+            const canvas = document.createElement("canvas");
+            canvas.className = "pdf-page-canvas";
+            const context = canvas.getContext("2d");
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            viewerBody.appendChild(canvas);
+
+            // Render PDF page into canvas context
+            const renderContext = {
+              canvasContext: context,
+              viewport: viewport
+            };
+            await page.render(renderContext).promise;
           }
-        }, 150);
+        } catch (err) {
+          console.error("PDF.js render error, attempting iframe fallback:", err);
+          // Fallback to iframe if browser blocks CORS or worker fails
+          viewerBody.innerHTML = `
+            <iframe 
+              src="${targetUrl}" 
+              style="width:100%; height:100%; border:none; background:#fff;" 
+              title="${title || 'Note Viewer'}">
+            </iframe>`;
+        }
       };
 
-      // Event delegation listener to automatically intercept card clicks across all dynamic buttons
+      // Click listener for dynamic note cards
       document.addEventListener("click", (e) => {
         const viewBtn = e.target.closest("[data-note-url], .btn-view");
         if (viewBtn) {
@@ -236,7 +277,7 @@
           const title = viewBtn.getAttribute("data-note-title") || viewBtn.dataset.title || "Note";
           if (url) {
             e.preventDefault();
-            window.openMobileSecureNote(url, title);
+            window.openSecureNote(url, title);
           }
         }
       });
