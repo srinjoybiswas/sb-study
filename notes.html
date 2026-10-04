@@ -15,7 +15,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 
   <style>
-    /* Security Rules: Disable Text Selection */
+    /* Security Rules: Prevent Copy & Selection */
     body, .viewer-overlay, .pdf-page-canvas {
       -webkit-user-select: none !important;
       -moz-user-select: none !important;
@@ -44,13 +44,36 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(15, 23, 42, 0.98);
+      background: #000000;
       z-index: 99999;
       display: none;
       flex-direction: column;
     }
 
     .viewer-overlay.active {
+      display: flex !important;
+    }
+
+    /* Blackout Curtain for Exit Fullscreen Protection */
+    .blackout-curtain {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000000;
+      z-index: 100000;
+      color: #ffffff;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .blackout-curtain.active {
       display: flex !important;
     }
 
@@ -72,7 +95,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 50%;
+      max-width: 45%;
     }
 
     .v-actions {
@@ -81,7 +104,7 @@
       gap: 8px;
     }
 
-    /* Zoom Controls */
+    /* Zoom Buttons */
     .zoom-btn {
       background: #334155;
       color: #ffffff;
@@ -104,7 +127,7 @@
       height: calc(100vh - 52px);
       overflow: auto;
       -webkit-overflow-scrolling: touch;
-      background: #334155;
+      background: #0f172a;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -116,12 +139,12 @@
       max-width: 100%;
       height: auto;
       margin-bottom: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       border-radius: 4px;
       background: #ffffff;
       transition: transform 0.2s ease;
       transform-origin: top center;
-      pointer-events: none; /* Prevents image dragging/context saving */
+      pointer-events: none;
     }
 
     .pdf-loading-status {
@@ -131,7 +154,6 @@
       text-align: center;
     }
 
-    /* Strictly block viewer on small mobile screens */
     @media (max-width: 768px) {
       .mobile-block-banner {
         display: flex;
@@ -175,13 +197,11 @@
       <main class="page notes-page">
         <div class="page-head"><h1>Notes Library</h1><p>View-only, watermarked and protected.</p></div>
 
-        <!-- Security Banner -->
         <div class="security-banner mb-16">
           <span>🔒</span>
           <span>Notes are view-only. Right-click, copy, print and selection are disabled as a deterrent. Screenshots and OS-level capture cannot be fully prevented.</span>
         </div>
 
-        <!-- Mobile Notice Banner -->
         <div class="mobile-block-banner" id="mobile-block-banner">
           <span>📱</span>
           <span><strong>Desktop Required:</strong> Viewing notes is disabled on mobile phones for layout and security protection. Please open from a desktop browser.</span>
@@ -222,18 +242,23 @@
     </div>
   </div>
 
-  <!-- Secure Fullscreen Viewer with Zoom Actions -->
+  <!-- Secure Fullscreen Viewer -->
   <div class="viewer-overlay" id="viewer-overlay">
     <div class="viewer-bar">
       <span class="v-title" id="viewer-title">Note</span>
       <div class="v-actions">
         <button class="zoom-btn" id="zoom-in-btn" title="Zoom In">🔍 +</button>
         <button class="zoom-btn" id="zoom-out-btn" title="Zoom Out">🔍 -</button>
-        <button class="zoom-btn" id="zoom-reset-btn" title="Reset Zoom">Reset</button>
+        <button class="zoom-btn" id="zoom-reset-btn" title="Reset">Reset</button>
         <button class="btn btn-danger btn-sm" id="viewer-close">✕ Exit Fullscreen</button>
       </div>
     </div>
     <div class="viewer-body" id="viewer-body"></div>
+  </div>
+
+  <!-- Security Blackout Screen on Exiting Fullscreen -->
+  <div class="blackout-curtain" id="blackout-curtain">
+    🔒 Security Action: Fullscreen session ended. Note closed for security protection.
   </div>
 
   <script src="js/config.js"></script>
@@ -242,17 +267,16 @@
   <script src="js/security.js"></script>
   <script src="js/notes.js"></script>
 
-  <!-- Anti-Copy, Right-Click & Fullscreen Engine -->
+  <!-- Anti-Copy, Zoom & Blackout Fullscreen Engine -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. DISABLE RIGHT-CLICK & COPY KEYBOARD SHORTCUTS
+      // 1. DISABLE RIGHT CLICK, COPY & KEYBOARD SHORTCUTS
       document.addEventListener("contextmenu", (e) => e.preventDefault());
       document.addEventListener("copy", (e) => e.preventDefault());
       document.addEventListener("cut", (e) => e.preventDefault());
       document.addEventListener("selectstart", (e) => e.preventDefault());
 
       document.addEventListener("keydown", (e) => {
-        // Block Ctrl+C, Ctrl+U, Ctrl+S, Ctrl+P, F12
         if (
           (e.ctrlKey || e.metaKey) && 
           ["c", "u", "s", "p", "a"].includes(e.key.toLowerCase())
@@ -269,14 +293,17 @@
       const viewerClose = document.getElementById("viewer-close");
       const viewerBody = document.getElementById("viewer-body");
       const viewerTitle = document.getElementById("viewer-title");
+      const blackoutCurtain = document.getElementById("blackout-curtain");
 
       let currentScale = 1.0;
       let loadedPdf = null;
+      let isViewingNote = false;
 
       const isMobile = () => window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-      // Close Viewer & Exit Fullscreen
+      // Close Viewer Safely
       function closeSecureViewer() {
+        isViewingNote = false;
         if (document.fullscreenElement) {
           document.exitFullscreen().catch(() => {});
         }
@@ -290,16 +317,23 @@
         viewerClose.addEventListener("click", closeSecureViewer);
       }
 
-      // Automatically close note viewer if user exits Fullscreen mode
+      // 2. TURN SCREEN BLACK WHEN EXITING FULLSCREEN
       document.addEventListener("fullscreenchange", () => {
-        if (!document.fullscreenElement && viewerOverlay.classList.contains("active")) {
+        if (!document.fullscreenElement && isViewingNote) {
+          // Immediately trigger blackout curtain
+          if (blackoutCurtain) blackoutCurtain.classList.add("active");
           closeSecureViewer();
+          
+          // Hide blackout curtain after 2 seconds
+          setTimeout(() => {
+            if (blackoutCurtain) blackoutCurtain.classList.remove("active");
+          }, 2000);
         }
       });
 
-      // Zoom Controls
-      document.getElementById("zoom-in-btn")?.addEventListener("click", () => adjustZoom(0.25));
-      document.getElementById("zoom-out-btn")?.addEventListener("click", () => adjustZoom(-0.25));
+      // 3. ZOOM IN / ZOOM OUT CONTROLS
+      document.getElementById("zoom-in-btn")?.addEventListener("click", () => adjustZoom(0.2));
+      document.getElementById("zoom-out-btn")?.addEventListener("click", () => adjustZoom(-0.2));
       document.getElementById("zoom-reset-btn")?.addEventListener("click", () => resetZoom());
 
       function adjustZoom(delta) {
@@ -321,26 +355,27 @@
         });
       }
 
-      // Open PDF Functionality with mandatory Fullscreen
+      // 4. OPEN NOTE WITH FULLSCREEN ENFORCEMENT
       window.openSecureNote = async function(fileUrl, title) {
         if (isMobile()) {
-          alert("Note viewing is blocked on mobile devices. Please access the portal using a desktop computer.");
+          alert("Note viewing is blocked on mobile devices. Please use a desktop computer.");
           return;
         }
 
         if (!viewerOverlay || !viewerBody) return;
 
-        // Force browser to enter Fullscreen mode for reading
+        // Force browser fullscreen mode
         try {
           if (!document.fullscreenElement) {
             await viewerOverlay.requestFullscreen();
           }
         } catch (err) {
-          console.warn("Fullscreen request failed or was bypassed:", err);
+          console.warn("Fullscreen mode launch error:", err);
         }
 
+        isViewingNote = true;
         if (viewerTitle) viewerTitle.textContent = title || "Note";
-        viewerBody.innerHTML = '<div class="pdf-loading-status">⏳ Loading document pages...</div>';
+        viewerBody.innerHTML = '<div class="pdf-loading-status">⏳ Loading secure document...</div>';
         viewerOverlay.classList.add("active");
         document.body.style.overflow = "hidden";
         currentScale = 1.0;
@@ -373,12 +408,12 @@
             await page.render({ canvasContext: context, viewport: viewport }).promise;
           }
         } catch (err) {
-          console.error("PDF.js render error:", err);
+          console.error("PDF rendering error:", err);
           viewerBody.innerHTML = `<iframe src="${targetUrl}" style="width:100%; height:100%; border:none; background:#fff;" title="${title}"></iframe>`;
         }
       };
 
-      // Intercept clicks on View Note triggers
+      // Trigger listener for dynamic note cards
       document.addEventListener("click", (e) => {
         const viewBtn = e.target.closest("[data-note-url], .btn-view");
         if (viewBtn) {
