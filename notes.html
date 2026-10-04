@@ -11,51 +11,28 @@
   <link rel="stylesheet" href="css/test.css">
   <link rel="stylesheet" href="css/responsive.css">
   <style>
-    /* Mobile block overlay for note viewer */
-    .mobile-block-overlay {
+    /* Mobile Notice Banner Styling */
+    .mobile-notice {
       display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.96);
-      z-index: 3000;
-      flex-direction: column;
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 14px;
       align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 30px 24px;
-      color: #e2e8f0;
+      gap: 10px;
     }
-    .mobile-block-overlay.active {
-      display: flex;
-    }
-    .mobile-block-overlay .icon {
-      font-size: 3.5rem;
-      margin-bottom: 18px;
-    }
-    .mobile-block-overlay h2 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      color: #ffffff;
-    }
-    .mobile-block-overlay p {
-      font-size: 0.95rem;
-      line-height: 1.6;
-      color: #94a3b8;
-      max-width: 340px;
-      margin-bottom: 24px;
-    }
-    .mobile-block-overlay button {
-      padding: 12px 28px;
-      border-radius: 12px;
-      border: none;
-      background: #2563eb;
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .mobile-block-overlay button:active {
-      opacity: 0.85;
+
+    @media (max-width: 768px) {
+      .mobile-notice {
+        display: flex;
+      }
+      /* Fallback CSS: strictly hide the viewer on mobile screens */
+      #viewer-overlay {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -92,9 +69,16 @@
       <main class="page notes-page">
         <div class="page-head"><h1>Notes Library</h1><p>View-only, watermarked and protected.</p></div>
 
+        <!-- Security Banner -->
         <div class="security-banner mb-16">
           <span>🔒</span>
           <span>Notes are view-only. Right-click, copy, print and selection are disabled as a deterrent. Screenshots and OS-level capture cannot be fully prevented.</span>
+        </div>
+
+        <!-- Mobile Notice Banner (Visible only on mobile devices) -->
+        <div class="mobile-notice" id="mobile-notice">
+          <span>📱</span>
+          <span><strong>Desktop Access Required:</strong> For security and optimal display, viewing full notes is disabled on mobile devices. Please log in on a desktop computer.</span>
         </div>
 
         <div class="notes-filters">
@@ -143,97 +127,38 @@
     <div class="viewer-body" id="viewer-body"></div>
   </div>
 
-  <!-- Mobile block overlay (shown when trying to read notes on mobile) -->
-  <div class="mobile-block-overlay" id="mobileBlockOverlay">
-    <div class="icon">📵</div>
-    <h2>Reading Disabled on Mobile</h2>
-    <p>For security and a better reading experience, notes can only be opened on a desktop or laptop device. Please switch to a larger screen to view this note.</p>
-    <button id="mobileBlockBack">Go Back</button>
-  </div>
-
-  <script>
-    // ---- Detect mobile device ----
-    function isMobileDevice() {
-      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent)
-        || window.matchMedia("(max-width: 768px)").matches;
-    }
-
-    // ---- Intercept viewer open attempts ----
-    // We hook into the existing viewer trigger. Since notes.js likely binds
-    // "open viewer" buttons, we'll intercept by patching a global function.
-    // But to be safe, we also add a capture-phase click listener on the grid.
-    document.addEventListener('click', function (e) {
-      const target = e.target.closest('[data-open-note], .open-viewer, .note-card button, .btn-open-note');
-      if (!target) return;
-      if (isMobileDevice()) {
-        e.preventDefault();
-        e.stopPropagation();
-        // Show block overlay
-        document.getElementById('mobileBlockOverlay').classList.add('active');
-        // Also make sure viewer overlay never opens
-        const viewer = document.getElementById('viewer-overlay');
-        if (viewer) viewer.classList.remove('active');
-      }
-    }, true); // capture phase
-
-    // ---- Mobile block back button ----
-    document.getElementById('mobileBlockBack').addEventListener('click', function () {
-      document.getElementById('mobileBlockOverlay').classList.remove('active');
-    });
-
-    // ---- Also guard programmatic open (in case notes.js calls a function) ----
-    // We override any potential openViewer function if it exists
-    window.addEventListener('load', function () {
-      if (typeof window.openNoteViewer === 'function') {
-        const originalOpen = window.openNoteViewer;
-        window.openNoteViewer = function (...args) {
-          if (isMobileDevice()) {
-            document.getElementById('mobileBlockOverlay').classList.add('active');
-            return;
-          }
-          return originalOpen.apply(this, args);
-        };
-      }
-      // Also patch common viewer function names
-      ['openViewer', 'showNote', 'viewNote', 'openNote'].forEach(fnName => {
-        if (typeof window[fnName] === 'function') {
-          const orig = window[fnName];
-          window[fnName] = function (...args) {
-            if (isMobileDevice()) {
-              document.getElementById('mobileBlockOverlay').classList.add('active');
-              return;
-            }
-            return orig.apply(this, args);
-          };
-        }
-      });
-    });
-
-    // ---- Extra: prevent viewer overlay from being opened via JS on mobile ----
-    const viewerOverlay = document.getElementById('viewer-overlay');
-    if (viewerOverlay) {
-      const observer = new MutationObserver(() => {
-        if (viewerOverlay.classList.contains('active') && isMobileDevice()) {
-          viewerOverlay.classList.remove('active');
-          document.getElementById('mobileBlockOverlay').classList.add('active');
-        }
-      });
-      observer.observe(viewerOverlay, { attributes: true, attributeFilter: ['class'] });
-    }
-
-    // ---- Also block if someone manually adds active class on load ----
-    window.addEventListener('DOMContentLoaded', function () {
-      if (viewerOverlay && viewerOverlay.classList.contains('active') && isMobileDevice()) {
-        viewerOverlay.classList.remove('active');
-        document.getElementById('mobileBlockOverlay').classList.add('active');
-      }
-    });
-  </script>
-
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/security.js"></script>
   <script src="js/notes.js"></script>
+
+  <!-- Mobile Restriction Guard -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const isMobile = () => window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      // Prevent viewer modal from opening if triggered on mobile
+      const viewerOverlay = document.getElementById("viewer-overlay");
+      if (viewerOverlay) {
+        const observer = new MutationObserver(() => {
+          if (isMobile() && viewerOverlay.classList.contains("active")) {
+            viewerOverlay.classList.remove("active");
+            alert("Viewing notes is disabled on mobile devices. Please switch to a desktop or laptop.");
+          }
+        });
+        observer.observe(viewerOverlay, { attributes: true, attributeFilter: ["class", "style"] });
+      }
+
+      // Intercept click events on dynamically loaded "View Note" buttons
+      document.addEventListener("click", (e) => {
+        if (isMobile() && e.target.closest(".btn-view, [data-action='view']")) {
+          e.preventDefault();
+          e.stopPropagation();
+          alert("Note viewing is restricted to desktop screens.");
+        }
+      }, true);
+    });
+  </script>
 </body>
 </html>
