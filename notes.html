@@ -2,13 +2,13 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Notes — SB Notes Portal</title>
   <link rel="icon" href="assets/logo/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/notes.css">
-  <link rel="stylesheet" href="css/test.css">
+  <link rel="stylesheet" href="css/results.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -20,17 +20,15 @@
         <a href="dashboard.html"><span class="nav-ico">🏠</span> Dashboard</a>
         <a href="notes.html?scope=mine"><span class="nav-ico">📚</span> My Notes</a>
         <a href="notes.html?scope=other"><span class="nav-ico">🌐</span> Other Notes</a>
-        <a href="test.html"><span class="nav-ico">📝</span> Tests</a>
-        <a href="result.html"><span class="nav-ico">📊</span> Results</a>
+        <a href="results.html"><span class="nav-ico">📊</span> My Results</a>
         <a href="certificate.html"><span class="nav-ico">🏆</span> Certificates</a>
         <div class="nav-section">Account</div>
-        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications <span class="nav-badge" data-notif-count style="display:none">0</span></a>
         <a href="profile.html"><span class="nav-ico">👤</span> Profile</a>
         <a href="#" data-logout><span class="nav-ico">🚪</span> Logout</a>
       </nav>
     </aside>
     <div class="sidebar-overlay"></div>
-
 
     <div class="main-area">
       <header class="topbar">
@@ -42,16 +40,13 @@
         </div>
       </header>
 
-
       <main class="page notes-page">
-        <div class="page-head"><h1>Notes Library</h1><p>View-only, watermarked and protected.</p></div>
-
+        <div class="page-head"><h1>Notes Library</h1><p>Secure, watermarked, view-only — time spent studying is tracked automatically.</p></div>
 
         <div class="security-banner mb-16">
           <span>🔒</span>
-          <span>Notes are view-only. Right-click, copy, print and selection are disabled as a deterrent. Screenshots and OS-level capture cannot be fully prevented.</span>
+          <span>Notes open in a protected fullscreen viewer with your name watermarked on every page. Copy, right-click, print and selection are disabled. Screenshots and OS-level capture cannot be fully blocked by a browser — attempts are recorded.</span>
         </div>
-
 
         <div class="notes-filters">
           <div class="filter-item">
@@ -67,6 +62,14 @@
             <select class="form-control" id="filter-department"><option value="ALL">All Departments</option></select>
           </div>
           <div class="filter-item">
+            <label for="filter-subject">Subject</label>
+            <select class="form-control" id="filter-subject"><option value="ALL">All Subjects</option></select>
+          </div>
+          <div class="filter-item">
+            <label for="filter-module">Module</label>
+            <select class="form-control" id="filter-module"><option value="ALL">All Modules</option></select>
+          </div>
+          <div class="filter-item">
             <label for="filter-semester">Semester</label>
             <select class="form-control" id="filter-semester">
               <option value="ALL">All Semesters</option>
@@ -78,10 +81,9 @@
           </div>
           <div class="filter-item grow">
             <label for="filter-search">Search</label>
-            <input class="form-control" type="search" id="filter-search" placeholder="Search by title, subject…">
+            <input class="form-control" type="search" id="filter-search" placeholder="Search by title, subject, chapter…">
           </div>
         </div>
-
 
         <div class="note-grid" id="notes-grid"></div>
         <div class="pagination" id="notes-pagination"></div>
@@ -89,238 +91,28 @@
     </div>
   </div>
 
-
   <!-- Secure fullscreen viewer -->
   <div class="viewer-overlay" id="viewer-overlay">
     <div class="viewer-bar">
       <span class="v-title" id="viewer-title">Note</span>
+      <span class="study-timer" id="study-timer">⏱ <span id="study-timer-value">00:00</span></span>
       <div class="v-actions">
-        <button class="btn btn-danger btn-sm" id="viewer-close">✕ Close</button>
+        <div class="v-group">
+          <button class="btn btn-outline btn-sm" id="zoom-out" title="Zoom out">➖</button>
+          <span class="text-xs" id="zoom-label" style="color:#e5e7eb;min-width:42px;text-align:center">100%</span>
+          <button class="btn btn-outline btn-sm" id="zoom-in" title="Zoom in">➕</button>
+          <button class="btn btn-outline btn-sm" id="zoom-reset" title="Reset zoom">↺</button>
+        </div>
+        <button class="btn btn-danger btn-sm" id="viewer-close">✕ End session</button>
       </div>
     </div>
     <div class="viewer-body" id="viewer-body"></div>
   </div>
-
 
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/security.js"></script>
   <script src="js/notes.js"></script>
-
-  <!-- Viewer guard: mobile block, fullscreen-only reading, 8-attempt/5-min lock, no copy/right-click/inspect -->
-  <script>
-/* SB Notes – viewer-guard.js
- * 1. Blocks phones/tablets (even in "Desktop site" mode)
- * 2. Forces fullscreen read-only viewing of notes
- * 3. Blur on fullscreen exit; 8 exits => 5 minute lock (persists on reload)
- * 4. Blocks right-click, copy, cut, select, drag, print, save, view-source, DevTools keys
- * Load it AFTER js/notes.js (or before, both work).
- */
-(function () {
-  'use strict';
-
-  var MAX_ATTEMPTS = 8;
-  var LOCK_MS = 5 * 60 * 1000;
-  var K_LOCK = 'sb_fs_lock_until';
-  var K_ATT = 'sb_fs_attempts';
-  var html = document.documentElement;
-
-  /* ---------- styles ---------- */
-  var st = document.createElement('style');
-  st.textContent =
-    'html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}' +
-    'input,textarea{-webkit-user-select:text;user-select:text}' +
-    '.viewer-body img{-webkit-user-drag:none;pointer-events:none}' +
-    '@media print{html{display:none!important}}' +
-    '.sb-blocked .app-shell,.sb-blocked .viewer-overlay{display:none!important}' +
-    '.sb-warn #viewer-body,.sb-hide #viewer-body,.sb-devtools .app-shell,.sb-devtools .viewer-overlay{filter:blur(28px);pointer-events:none}' +
-    '.sb-locked .app-shell,.sb-locked .viewer-overlay{filter:blur(40px);pointer-events:none}' +
-    '.sb-msg{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;' +
-    'flex-direction:column;gap:14px;text-align:center;padding:24px;font-family:system-ui,sans-serif;color:#fff;' +
-    'background:rgba(15,23,42,.55)}' +
-    '.sb-msg.show{display:flex}' +
-    '.sb-msg h2{margin:0;font-size:1.5rem}.sb-msg p{margin:0;max-width:420px;line-height:1.5}' +
-    '.sb-msg button{padding:10px 20px;border:0;border-radius:8px;background:#4f46e5;color:#fff;font-size:1rem;cursor:pointer}' +
-    '#sb-block{background:#0f172a}#sb-lock{background:rgba(15,23,42,.7)}';
-  document.head.appendChild(st);
-
-  function mkMsg(id, inner) {
-    var d = document.createElement('div');
-    d.className = 'sb-msg'; d.id = id; d.innerHTML = inner;
-    document.body.appendChild(d);
-    return d;
-  }
-  var blockEl = mkMsg('sb-block',
-    '<div style="font-size:3rem">💻</div><h2>Laptop / Desktop only</h2>' +
-    '<p>Notes can only be viewed on a laptop or desktop computer. Please open this portal on a laptop.</p>');
-  var warnEl = mkMsg('sb-warn',
-    '<div style="font-size:3rem">⚠️</div><h2>Fullscreen required</h2>' +
-    '<p id="sb-warn-text"></p><button type="button" id="sb-reenter">Return to fullscreen</button>');
-  var lockEl = mkMsg('sb-lock',
-    '<div style="font-size:3rem">🔒</div><h2>Notes locked</h2>' +
-    '<p>You exited fullscreen too many times. Notes are locked for</p>' +
-    '<h2 id="sb-count">05:00</h2>');
-  var devEl = mkMsg('sb-dev',
-    '<div style="font-size:3rem">🛠️</div><h2>Developer tools detected</h2><p>Close developer tools to continue.</p>');
-
-  /* ---------- 1. mobile block (works in desktop-site mode) ---------- */
-  function isMobile() {
-    var ua = navigator.userAgent || '';
-    var uaMobile = /Android|iPhone|iPad|iPod|Mobile|Windows Phone|Opera Mini|CriOS|FxiOS/i.test(ua);
-    var uadMobile = !!(navigator.userAgentData && navigator.userAgentData.mobile === true);
-    var iPadDesktop = /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;     // iPadOS "desktop" UA
-    var coarseOnly = matchMedia('(pointer:coarse)').matches && !matchMedia('(any-pointer:fine)').matches;
-    var smallTouch = Math.min(screen.width, screen.height) < 768 && navigator.maxTouchPoints > 0;
-    return uaMobile || uadMobile || iPadDesktop || coarseOnly || smallTouch;
-  }
-  function checkDevice() {
-    var m = isMobile();
-    window.SB_BLOCKED = m;
-    html.classList.toggle('sb-blocked', m);
-    blockEl.classList.toggle('show', m);
-    if (m) { exitFS(); }
-  }
-  checkDevice();
-  window.addEventListener('resize', checkDevice);
-  window.addEventListener('orientationchange', checkDevice);
-
-  /* ---------- helpers ---------- */
-  var overlay = document.getElementById('viewer-overlay');
-  var closeBtn = document.getElementById('viewer-close');
-  var intentionalClose = false;
-
-  function fsEl() { return document.fullscreenElement || document.webkitFullscreenElement; }
-  function enterFS() {
-    if (window.SB_BLOCKED || isLocked() || !overlay) return;
-    var f = overlay.requestFullscreen || overlay.webkitRequestFullscreen;
-    if (f) { try { var p = f.call(overlay); if (p && p.catch) p.catch(function () {}); } catch (e) {} }
-  }
-  function exitFS() {
-    if (!fsEl()) return;
-    intentionalClose = true;
-    var f = document.exitFullscreen || document.webkitExitFullscreen;
-    try { var p = f.call(document); if (p && p.catch) p.catch(function () {}); } catch (e) {}
-    setTimeout(function () { intentionalClose = false; }, 400);
-  }
-  function viewerOpen() {
-    if (!overlay) return false;
-    var cs = getComputedStyle(overlay);
-    if (cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0') return false;
-    return overlay.offsetWidth > 0 && overlay.offsetHeight > 0;
-  }
-  function store(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function attempts() { return parseInt(load(K_ATT) || '0', 10); }
-
-  /* ---------- 3. fullscreen enforcement + 5 min lock ---------- */
-  function isLocked() { return parseInt(load(K_LOCK) || '0', 10) > Date.now(); }
-
-  var lockTimer = null;
-  function applyLock() {
-    html.classList.add('sb-locked');
-    warnEl.classList.remove('show'); html.classList.remove('sb-warn');
-    lockEl.classList.add('show');
-    if (closeBtn) { intentionalClose = true; closeBtn.click(); }
-    exitFS();
-    clearInterval(lockTimer);
-    function tick() {
-      var left = parseInt(load(K_LOCK) || '0', 10) - Date.now();
-      if (left <= 0) {
-        clearInterval(lockTimer);
-        store(K_ATT, '0'); try { localStorage.removeItem(K_LOCK); } catch (e) {}
-        html.classList.remove('sb-locked'); lockEl.classList.remove('show');
-        return;
-      }
-      var s = Math.ceil(left / 1000);
-      document.getElementById('sb-count').textContent =
-        String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
-    }
-    tick(); lockTimer = setInterval(tick, 500);
-  }
-  function startLock() { store(K_LOCK, String(Date.now() + LOCK_MS)); applyLock(); }
-
-  function showWarn() {
-    var left = MAX_ATTEMPTS - attempts();
-    document.getElementById('sb-warn-text').textContent =
-      'Notes must be read in fullscreen. You have ' + left + ' attempt' + (left === 1 ? '' : 's') +
-      ' left before notes lock for 5 minutes.';
-    html.classList.add('sb-warn'); warnEl.classList.add('show');
-  }
-  function hideWarn() { html.classList.remove('sb-warn'); warnEl.classList.remove('show'); }
-
-  document.getElementById('sb-reenter').addEventListener('click', enterFS);
-
-  function onFSChange() {
-    if (fsEl()) { hideWarn(); return; }
-    if (intentionalClose || !viewerOpen() || window.SB_BLOCKED) return;
-    var n = attempts() + 1; store(K_ATT, String(n));
-    if (n >= MAX_ATTEMPTS) startLock(); else showWarn();
-  }
-  document.addEventListener('fullscreenchange', onFSChange);
-  document.addEventListener('webkitfullscreenchange', onFSChange);
-
-  if (closeBtn) closeBtn.addEventListener('click', function () {
-    intentionalClose = true; hideWarn(); exitFS();
-    setTimeout(function () { intentionalClose = false; }, 400);
-  }, true);
-
-  // open/close detection, so notes.js doesn't need to change
-  var wasOpen = false;
-  function syncViewer() {
-    var open = viewerOpen();
-    if (open && !wasOpen) { intentionalClose = false; enterFS(); }
-    if (!open && wasOpen) { hideWarn(); exitFS(); }
-    wasOpen = open;
-  }
-  if (overlay) {
-    new MutationObserver(syncViewer).observe(overlay, { attributes: true, attributeFilter: ['class', 'style', 'hidden'] });
-    setInterval(syncViewer, 700);
-  }
-  if (isLocked()) applyLock();
-
-  // blur while tab/window is not focused
-  function focusBlur() { html.classList.toggle('sb-hide', document.hidden || !document.hasFocus()); }
-  document.addEventListener('visibilitychange', focusBlur);
-  window.addEventListener('blur', focusBlur);
-  window.addEventListener('focus', focusBlur);
-
-  /* ---------- 4. copy / right-click / inspect deterrents ---------- */
-  function stop(e) { e.preventDefault(); e.stopPropagation(); return false; }
-  ['contextmenu', 'copy', 'cut', 'dragstart', 'selectstart'].forEach(function (ev) {
-    document.addEventListener(ev, function (e) {
-      var t = e.target;
-      if (t && /^(INPUT|TEXTAREA)$/.test(t.tagName) && ev !== 'contextmenu') return;
-      return stop(e);
-    }, true);
-  });
-
-  document.addEventListener('keydown', function (e) {
-    var k = (e.key || '').toLowerCase(), c = e.ctrlKey || e.metaKey;
-    var bad =
-      e.key === 'F12' ||
-      (c && e.shiftKey && ['i', 'j', 'c', 'k'].indexOf(k) > -1) ||
-      (e.metaKey && e.altKey && ['i', 'j', 'c', 'u'].indexOf(k) > -1) ||
-      (c && ['u', 's', 'p', 'c', 'x', 'a'].indexOf(k) > -1 && !/^(input|textarea)$/i.test(e.target.tagName));
-    if (bad) return stop(e);
-  }, true);
-
-  document.addEventListener('keyup', function (e) {
-    if (e.key === 'PrintScreen') {
-      try { navigator.clipboard.writeText(' '); } catch (x) {}
-      html.classList.add('sb-hide'); setTimeout(focusBlur, 1500);
-    }
-  });
-
-  // basic DevTools (docked) detection
-  setInterval(function () {
-    var open = (window.outerWidth - window.innerWidth > 160) || (window.outerHeight - window.innerHeight > 160);
-    if (window.SB_BLOCKED) open = false;
-    html.classList.toggle('sb-devtools', open);
-    devEl.classList.toggle('show', open);
-  }, 1000);
-})();
-
-  </script>
 </body>
 </html>

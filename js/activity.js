@@ -1,7 +1,10 @@
 /* ============================================================
    SB NOTES PORTAL — activity.js
-   Student-facing activity/results history helpers.
+   Student-facing weekly results + study history helpers.
    (Admin live activity lives in js/admin/activity.js.)
+
+   The old test-attempt history was replaced by weekly study
+   results (see results.js for the main student Results page).
    ============================================================ */
 
 const Activity = (function () {
@@ -9,81 +12,72 @@ const Activity = (function () {
     const el = document.getElementById('results-list');
     if (el) el.innerHTML = UI.skeleton(3).repeat(2).replace(/skeleton-line/g, 'skeleton-card');
     try {
-      const results = await API.get('getResults', {});
+      const results = await API.get('getWeeklyResults', {});
       renderResults(results);
     } catch (err) {
-      if (el) el.innerHTML = UI.emptyState('⚠️', 'Could not load results', err.message);
+      if (el) el.innerHTML = UI.emptyState('\u26a0\ufe0f', 'Could not load results', err.message);
     }
   }
 
   function renderResults(results) {
     const el = document.getElementById('results-list');
     if (!el) return;
-    if (!results.length) { el.innerHTML = UI.emptyState('📊', 'No results yet', 'Take a test to see your results here.'); return; }
-    el.innerHTML = results.map(r => {
-      const pass = r.result === 'PASSED';
-      return '<div class="test-card">' +
-        '<div class="test-head"><h3>' + UI.escapeHtml(r.testTitle) + '</h3>' +
-        '<span class="badge badge-' + (pass ? 'success' : 'danger') + '">' + UI.escapeHtml(r.result) + '</span></div>' +
-        '<div class="test-stats"><span>🎯 ' + r.obtainedMarks + '/' + r.totalMarks + '</span>' +
-        '<span>📊 ' + r.percentage + '%</span><span>✅ ' + r.correctCount + '</span>' +
-        '<span>❌ ' + r.wrongCount + '</span><span>⭕ ' + r.unansweredCount + '</span></div>' +
-        '<div class="text-xs text-muted">' + UI.formatDateTime(r.submittedAt) + '</div>' +
-        '<a class="btn btn-outline btn-sm" href="result.html?attemptId=' + encodeURIComponent(r.attemptId) + '">View Details</a>' +
-        '</div>';
-    }).join('');
+    if (!results.length) { el.innerHTML = UI.emptyState('\ud83d\udcca', 'No results yet', 'Study your notes to earn a weekly score.'); return; }
+    el.innerHTML = results.map(r =>
+      '<div class="result-card card">' +
+      '<div class="rc-head"><div><div class="rc-week">' + UI.escapeHtml(r.weekStart || '') + ' \u2013 ' + UI.escapeHtml(r.weekEnd || '') + '</div>' +
+      '<strong>' + UI.escapeHtml(r.studentName || '') + '</strong></div>' +
+      '<div class="rc-score">' + (parseInt(r.score, 10) || 0) + '<span class="text-sm text-muted">/100</span></div></div>' +
+      '<div class="result-stats">' +
+      '<div class="result-stat"><div class="rs-val">' + (parseInt(r.totalMinutes, 10) || 0) + '</div><div class="rs-label">Minutes</div></div>' +
+      '<div class="result-stat"><div class="rs-val">' + (parseInt(r.notesStudied, 10) || 0) + '</div><div class="rs-label">Notes studied</div></div>' +
+      '<div class="result-stat"><div class="rs-val">' + (parseInt(r.daysStudied, 10) || 0) + '</div><div class="rs-label">Active days</div></div>' +
+      '</div>' +
+      '<a class="btn btn-outline btn-sm mt-12" href="results.html?id=' + encodeURIComponent(r.resultId) + '">View Details</a>' +
+      '</div>'
+    ).join('');
   }
 
-  async function loadResultDetail(attemptId) {
+  async function loadResultDetail(resultId) {
     const el = document.getElementById('result-detail');
     if (el) el.innerHTML = UI.skeleton(4);
     try {
-      const res = await API.get('getResultDetail', { attemptId: attemptId });
+      const res = await API.get('getWeeklyResultDetail', { resultId: resultId });
       renderResultDetail(res);
     } catch (err) {
-      if (el) el.innerHTML = UI.emptyState('⚠️', 'Could not load result', err.message);
+      if (el) el.innerHTML = UI.emptyState('\u26a0\ufe0f', 'Could not load result', err.message);
     }
   }
 
   function renderResultDetail(res) {
     const el = document.getElementById('result-detail');
     if (!el) return;
-    const a = res.attempt;
-    const pass = a.result === 'PASSED';
+    const r = res.result;
+    const breakdown = res.breakdown || [];
     el.innerHTML =
-      '<div class="result-hero ' + (pass ? 'pass' : 'fail') + '">' +
-      '<div class="score-ring" style="--pct:' + a.percentage + '%"><div class="inner">' + a.percentage + '%</div></div>' +
-      '<h2>' + (pass ? '🎉 PASSED' : '😔 FAILED') + '</h2>' +
-      '<p class="text-muted">' + UI.escapeHtml(res.test.title) + ' · Passing: ' + res.test.passingPercent + '%</p>' +
-      '</div>' +
+      '<div class="score-hero"><div class="score-ring" style="--pct:' + (parseInt(r.score, 10) || 0) + '%">' +
+      '<div class="inner">' + (parseInt(r.score, 10) || 0) + '</div></div>' +
+      '<h2>Weekly Study Score</h2><p class="text-muted">' + UI.escapeHtml(r.weekStart || '') + ' \u2013 ' + UI.escapeHtml(r.weekEnd || '') + '</p></div>' +
       '<div class="result-stats mb-24">' +
-      '<div class="result-stat"><div class="rs-val">' + a.obtainedMarks + '/' + a.totalMarks + '</div><div class="rs-label">Score</div></div>' +
-      '<div class="result-stat"><div class="rs-val" style="color:var(--success)">' + a.correctCount + '</div><div class="rs-label">Correct</div></div>' +
-      '<div class="result-stat"><div class="rs-val" style="color:var(--danger)">' + a.wrongCount + '</div><div class="rs-label">Wrong</div></div>' +
-      '<div class="result-stat"><div class="rs-val" style="color:var(--muted)">' + a.unansweredCount + '</div><div class="rs-label">Unanswered</div></div>' +
+      '<div class="result-stat"><div class="rs-val">' + (parseInt(r.totalMinutes, 10) || 0) + '</div><div class="rs-label">Minutes studied</div></div>' +
+      '<div class="result-stat"><div class="rs-val">' + (parseInt(r.notesStudied, 10) || 0) + '</div><div class="rs-label">Notes studied</div></div>' +
+      '<div class="result-stat"><div class="rs-val">' + (parseInt(r.sessionsCount, 10) || 0) + '</div><div class="rs-label">Study sessions</div></div>' +
+      '<div class="result-stat"><div class="rs-val">' + (parseInt(r.daysStudied, 10) || 0) + '</div><div class="rs-label">Active days</div></div>' +
       '</div>' +
-      (pass ? '<div class="text-center mb-24"><a class="btn btn-primary" href="certificate.html?id=' + encodeURIComponent(a.attemptId) + '">View Certificate</a></div>' : '') +
-      '<h3 class="mb-16">Answer Review</h3>' +
-      res.review.map((q, i) => {
-        const cls = !q.selectedOption ? 'unanswered' : q.isCorrect ? 'correct' : 'wrong';
-        return '<div class="review-item ' + cls + '">' +
-          '<strong>Q' + (i + 1) + '. ' + UI.escapeHtml(q.questionText) + '</strong>' +
-          ['A', 'B', 'C', 'D'].map(k => {
-            if (!q.options[k]) return '';
-            let c = '';
-            if (k === q.correctAnswer) c = 'correct-ans';
-            else if (k === q.selectedOption) c = 'chosen-wrong';
-            return '<div class="rev-opt ' + c + '">' + k + '. ' + UI.escapeHtml(q.options[k]) +
-              (k === q.correctAnswer ? ' ✓' : '') + (k === q.selectedOption && !q.isCorrect ? ' ✗' : '') + '</div>';
-          }).join('') +
-          '</div>';
-      }).join('');
+      '<h3 class="mb-12">Study breakdown</h3>' +
+      (breakdown.length
+        ? '<div class="table-wrap"><table class="data-table"><thead><tr><th>Note</th><th>Subject</th><th>Module</th><th>Time</th></tr></thead><tbody>' +
+          breakdown.map(b => '<tr><td>' + UI.escapeHtml(b.title || '') + '</td><td>' + UI.escapeHtml(b.subject || '\u2014') + '</td>' +
+            '<td>' + UI.escapeHtml(b.module || '\u2014') + '</td><td>' + (parseInt(b.minutes, 10) || 0) + ' min</td></tr>').join('') +
+          '</tbody></table></div>'
+        : UI.emptyState('\ud83d\udcda', 'No study recorded', 'You did not open any notes during this week.')) +
+      (r.docUrl ? '<div class="text-center mt-24"><a class="btn btn-primary" href="' + UI.escapeHtml(r.docUrl) + '" target="_blank" rel="noopener">\u2b07 Download report</a></div>' : '');
   }
 
   function init() {
     const params = new URLSearchParams(window.location.search);
-    const attemptId = params.get('attemptId');
-    if (document.getElementById('result-detail') && attemptId) loadResultDetail(attemptId);
+    const resultId = params.get('id') || params.get('resultId');
+    if (document.getElementById('result-detail') && resultId) loadResultDetail(resultId);
     else if (document.getElementById('results-list')) loadResults();
   }
 

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Results — SB Notes Portal</title>
+  <title>My Results — SB Notes Portal</title>
   <link rel="icon" href="assets/logo/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
-  <link rel="stylesheet" href="css/test.css">
+  <link rel="stylesheet" href="css/results.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -19,11 +19,10 @@
         <a href="dashboard.html"><span class="nav-ico">🏠</span> Dashboard</a>
         <a href="notes.html?scope=mine"><span class="nav-ico">📚</span> My Notes</a>
         <a href="notes.html?scope=other"><span class="nav-ico">🌐</span> Other Notes</a>
-        <a href="test.html"><span class="nav-ico">📝</span> Tests</a>
-        <a href="result.html"><span class="nav-ico">📊</span> Results</a>
+        <a href="results.html"><span class="nav-ico">📊</span> My Results</a>
         <a href="certificate.html"><span class="nav-ico">🏆</span> Certificates</a>
         <div class="nav-section">Account</div>
-        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications <span class="nav-badge" data-notif-count style="display:none">0</span></a>
         <a href="profile.html"><span class="nav-ico">👤</span> Profile</a>
         <a href="#" data-logout><span class="nav-ico">🚪</span> Logout</a>
       </nav>
@@ -33,7 +32,7 @@
     <div class="main-area">
       <header class="topbar">
         <button class="menu-btn" aria-label="Menu">☰</button>
-        <div class="welcome">Results<small>Your test performance</small></div>
+        <div class="welcome">My Results<small>Weekly study scores</small></div>
         <div class="top-actions">
           <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
           <div class="avatar" data-user-avatar>?</div>
@@ -41,9 +40,20 @@
       </header>
 
       <main class="page">
-        <div class="page-head"><h1>Results</h1><p>Detailed breakdown of your test attempts.</p></div>
-        <div id="result-detail"></div>
-        <div class="grid grid-2" id="results-list"></div>
+        <div class="page-head"><h1>My Results</h1><p>Every week your study activity is scored automatically out of 100.</p></div>
+
+        <!-- Single result view -->
+        <div id="result-detail" class="hidden"></div>
+
+        <!-- Live study summary + weekly history -->
+        <div id="results-list-view">
+          <div class="card mb-24">
+            <div class="card-header"><h2 class="card-title">📖 Study summary</h2></div>
+            <div class="result-stats" id="study-summary"></div>
+          </div>
+          <h2 class="mb-12">Weekly results</h2>
+          <div class="grid grid-2" id="weekly-list"></div>
+        </div>
       </main>
     </div>
   </div>
@@ -51,6 +61,6 @@
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/activity.js"></script>
+  <script src="js/results.js"></script>
 </body>
 </html>

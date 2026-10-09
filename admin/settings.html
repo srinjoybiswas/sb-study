@@ -22,7 +22,8 @@
         <a href="students.html"><span class="nav-ico">👥</span> Students</a>
         <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
         <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
-        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="results.html"><span class="nav-ico">📊</span> Results &amp; Certificates</a>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
         <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
         <div class="nav-section">System</div>
         <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
@@ -45,7 +46,16 @@
       <main class="page">
         <div class="page-head flex-between">
           <div><h1>Settings</h1><p>Control portal behaviour and security thresholds.</p></div>
-          <button class="btn btn-outline" id="backup-btn">💾 Create Backup</button>
+          <div class="flex gap-8">
+            <button class="btn btn-outline" id="diagnostics-btn">🩺 Run Diagnostics</button>
+            <button class="btn btn-outline" id="repair-btn">🔧 Repair Schema</button>
+            <button class="btn btn-outline" id="backup-btn">💾 Create Backup</button>
+          </div>
+        </div>
+
+        <div class="card hidden" id="diagnostics-card">
+          <div class="card-header"><h2 class="card-title">Diagnostics</h2><button class="btn btn-ghost btn-sm" id="diagnostics-close">✕</button></div>
+          <div id="diagnostics-body"></div>
         </div>
 
         <div class="card">

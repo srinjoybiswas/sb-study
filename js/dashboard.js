@@ -1,6 +1,7 @@
 /* ============================================================
    SB NOTES PORTAL — dashboard.js
-   Student dashboard: stats, notes, tests, announcements, activity.
+   Student dashboard: study stats, notes, weekly result,
+   announcements and recent activity.
    ============================================================ */
 
 const Dashboard = (function () {
@@ -13,7 +14,6 @@ const Dashboard = (function () {
       data = await API.get('getStudentDashboard', {});
       render();
       Heartbeat.start('dashboard');
-      checkCriticalTest(data.criticalTest);
     } catch (err) {
       handleError(err);
     }
@@ -32,9 +32,9 @@ const Dashboard = (function () {
 
   function render() {
     renderStats(data.stats);
+    renderStudy(data.study, data.latestWeekly);
     renderNotes('my-notes', data.myNotes, 'No notes in your department yet.');
     renderNotes('other-notes', data.otherNotes, 'No notes from other departments.');
-    renderTests(data.availableTests);
     renderAnnouncements(data.announcements);
     renderActivity(data.recentActivity);
     renderNotifications(data.notifications, data.unreadCount);
@@ -43,12 +43,13 @@ const Dashboard = (function () {
   function renderStats(s) {
     const el = document.getElementById('stat-grid');
     if (!el) return;
+    const score = (s.latestScore === null || s.latestScore === undefined) ? '\u2014' : s.latestScore;
     const cards = [
-      { ico: '📚', cls: 'primary', val: s.notesAvailable, label: 'Notes Available' },
-      { ico: '📝', cls: 'secondary', val: s.testsAvailable, label: 'Tests Available' },
-      { ico: '✅', cls: 'success', val: s.testsCompleted, label: 'Tests Completed' },
-      { ico: '📊', cls: 'warning', val: s.averageScore + '%', label: 'Average Score' },
-      { ico: '🏆', cls: 'danger', val: s.certificatesEarned, label: 'Certificates Earned' }
+      { ico: '\ud83d\udcda', cls: 'primary', val: s.notesAvailable, label: 'Notes Available' },
+      { ico: '\u23f1', cls: 'secondary', val: s.studyMinutes, label: 'Minutes Studied' },
+      { ico: '\ud83d\udd25', cls: 'warning', val: s.studyMinutesWeek, label: 'Minutes This Week' },
+      { ico: '\ud83d\udcca', cls: 'success', val: score, label: 'Latest Weekly Score' },
+      { ico: '\ud83c\udfc6', cls: 'danger', val: s.certificatesEarned, label: 'Certificates Earned' }
     ];
     el.innerHTML = cards.map(c =>
       '<div class="stat-card"><div class="stat-ico ' + c.cls + '">' + c.ico + '</div>' +
@@ -56,50 +57,55 @@ const Dashboard = (function () {
     ).join('');
   }
 
+  /** Weekly result + study breakdown (replaces the old Available Tests widget). */
+  function renderStudy(study, weekly) {
+    const el = document.getElementById('study-widget');
+    if (!el) return;
+    const latest = (weekly && weekly.length) ? weekly[0] : null;
+    let html = '';
+    if (latest) {
+      const score = parseInt(latest.score, 10) || 0;
+      html += '<div class="score-hero"><div class="score-ring" style="--pct:' + score + '%"><div class="inner">' + score + '</div></div>' +
+        '<strong>' + UI.escapeHtml(latest.weekStart) + ' \u2013 ' + UI.escapeHtml(latest.weekEnd) + '</strong>' +
+        '<p class="text-muted text-sm mb-0">Score out of 100</p></div>';
+    } else {
+      html += UI.emptyState('\ud83d\udcca', 'No weekly result yet', 'Your first result is generated at the end of the week.');
+    }
+    if (study && study.bySubject && study.bySubject.length) {
+      html += '<h4 class="mb-8 mt-16">Time by subject</h4>' + study.bySubject.map(s =>
+        '<div class="activity-item"><span class="act-dot"></span><span>' + UI.escapeHtml(s.subject) + '</span>' +
+        '<span class="act-time">' + s.minutes + ' min</span></div>').join('');
+    }
+    html += '<div class="text-center mt-16"><a class="btn btn-outline btn-sm" href="results.html">View all results</a></div>';
+    el.innerHTML = html;
+  }
+
   function renderNotes(id, notes, emptyMsg) {
     const el = document.getElementById(id);
     if (!el) return;
-    if (!notes || !notes.length) { el.innerHTML = UI.emptyState('📄', 'No notes', emptyMsg); return; }
+    if (!notes || !notes.length) { el.innerHTML = UI.emptyState('\ud83d\udcc4', 'No notes', emptyMsg); return; }
     el.innerHTML = notes.map(n =>
       '<div class="note-card">' +
-      '<div class="note-top"><div class="note-ico">📄</div>' +
+      '<div class="note-top"><div class="note-ico">\ud83d\udcc4</div>' +
       '<span class="note-type-chip ' + (n.fileType || 'pdf') + '">' + UI.escapeHtml(n.fileType || 'pdf') + '</span></div>' +
       '<h3>' + UI.escapeHtml(n.title) + '</h3>' +
-      '<div class="note-meta"><span>🏛 ' + UI.escapeHtml(n.departmentName || '') + '</span>' +
-      '<span>📅 Sem ' + UI.escapeHtml(n.semester || '—') + '</span></div>' +
+      '<div class="note-meta"><span>\ud83c\udfdb ' + UI.escapeHtml(n.departmentName || '') + '</span>' +
+      (n.subject ? '<span>\ud83d\udcd8 ' + UI.escapeHtml(n.subject) + '</span>' : '') + '</div>' +
       '<p class="note-desc">' + UI.escapeHtml(n.description || '') + '</p>' +
       '<a class="btn btn-primary btn-sm" href="notes.html?noteId=' + encodeURIComponent(n.noteId) + '">Open Note</a>' +
       '</div>'
     ).join('');
   }
 
-  function renderTests(tests) {
-    const el = document.getElementById('available-tests');
-    if (!el) return;
-    if (!tests || !tests.length) { el.innerHTML = UI.emptyState('📝', 'No tests available', 'Check back later for new tests.'); return; }
-    el.innerHTML = tests.map(t => {
-      const prio = t.priority === 'CRITICAL' ? 'danger' : t.priority === 'REQUIRED' ? 'warning' : 'primary';
-      return '<div class="test-card">' +
-        '<div class="test-head"><h3>' + UI.escapeHtml(t.title) + '</h3>' +
-        '<span class="badge badge-' + prio + '">' + UI.escapeHtml(t.priority) + '</span></div>' +
-        '<div class="test-stats"><span>❓ ' + t.questionCount + ' questions</span>' +
-        '<span>🎯 ' + t.totalMarks + ' marks</span><span>⏱ ' + Math.round(t.totalTime / 60) + ' min</span></div>' +
-        (t.attempted ? '<span class="badge badge-success">Attempted · Best ' + t.bestScore + '%</span>' : '') +
-        '<a class="btn btn-primary btn-sm" href="test.html?testId=' + encodeURIComponent(t.testId) + '">' +
-        (t.attempted ? 'Retake Test' : 'Start Test') + '</a></div>';
-    }).join('');
-  }
-
   function renderAnnouncements(list) {
     const el = document.getElementById('announcements');
     if (!el) return;
-    if (!list || !list.length) { el.innerHTML = UI.emptyState('📢', 'No announcements', 'You are all caught up.'); return; }
+    if (!list || !list.length) { el.innerHTML = UI.emptyState('\ud83d\udce2', 'No announcements', 'You are all caught up.'); return; }
     el.innerHTML = list.map(a =>
       '<div class="announcement ' + UI.escapeHtml(a.priority) + '">' +
       '<h4>' + UI.escapeHtml(a.title) + '</h4><p>' + UI.escapeHtml(a.message) + '</p>' +
       '<div class="ann-date">' + UI.formatDate(a.createdAt) + '</div></div>'
     ).join('');
-    // Emergency announcements as modal.
     const emergency = list.filter(a => a.priority === 'EMERGENCY');
     if (emergency.length) showEmergencyModal(emergency[0]);
   }
@@ -108,7 +114,7 @@ const Dashboard = (function () {
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay open';
     overlay.innerHTML = '<div class="modal" role="alertdialog" aria-modal="true">' +
-      '<div class="modal-header"><h3>🚨 Emergency Announcement</h3></div>' +
+      '<div class="modal-header"><h3>\ud83d\udea8 Emergency Announcement</h3></div>' +
       '<div class="modal-body"><h4>' + UI.escapeHtml(a.title) + '</h4><p class="mt-8">' + UI.escapeHtml(a.message) + '</p></div>' +
       '<div class="modal-footer"><button class="btn btn-primary" data-close>Acknowledge</button></div></div>';
     document.body.appendChild(overlay);
@@ -118,10 +124,10 @@ const Dashboard = (function () {
   function renderActivity(list) {
     const el = document.getElementById('recent-activity');
     if (!el) return;
-    if (!list || !list.length) { el.innerHTML = UI.emptyState('🕒', 'No recent activity', 'Your actions will appear here.'); return; }
+    if (!list || !list.length) { el.innerHTML = UI.emptyState('\ud83d\udd52', 'No recent activity', 'Your actions will appear here.'); return; }
     el.innerHTML = '<div class="activity-feed">' + list.map(a =>
       '<div class="activity-item"><span class="act-dot"></span>' +
-      '<span>' + UI.escapeHtml(a.action || 'Activity') + (a.page ? ' · ' + UI.escapeHtml(a.page) : '') + '</span>' +
+      '<span>' + UI.escapeHtml(a.action || 'Activity') + (a.page ? ' \u00b7 ' + UI.escapeHtml(a.page) : '') + '</span>' +
       '<span class="act-time">' + UI.timeAgo(a.timestamp) + '</span></div>'
     ).join('') + '</div>';
   }
@@ -131,24 +137,12 @@ const Dashboard = (function () {
     if (badge) { badge.textContent = unread || 0; badge.style.display = unread ? 'flex' : 'none'; }
     const el = document.getElementById('notif-list');
     if (!el) return;
-    if (!list || !list.length) { el.innerHTML = UI.emptyState('🔔', 'No notifications', 'You have no notifications yet.'); return; }
+    if (!list || !list.length) { el.innerHTML = UI.emptyState('\ud83d\udd14', 'No notifications', 'You have no notifications yet.'); return; }
     el.innerHTML = list.map(n =>
       '<div class="activity-item"><span class="act-dot"></span>' +
       '<span><strong>' + UI.escapeHtml(n.title) + '</strong><br><span class="text-muted text-sm">' + UI.escapeHtml(n.message) + '</span></span>' +
       '<span class="act-time">' + UI.timeAgo(n.createdAt) + '</span></div>'
     ).join('');
-  }
-
-  function checkCriticalTest(critical) {
-    if (!critical) return;
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay open';
-    overlay.innerHTML = '<div class="modal" role="alertdialog" aria-modal="true">' +
-      '<div class="modal-header"><h3>⚠️ Critical Test Required</h3></div>' +
-      '<div class="modal-body"><p>You must complete the critical test <strong>' + UI.escapeHtml(critical.title) +
-      '</strong> before you can access the dashboard.</p></div>' +
-      '<div class="modal-footer"><a class="btn btn-danger" href="test.html?testId=' + encodeURIComponent(critical.testId) + '">Take Test Now</a></div></div>';
-    document.body.appendChild(overlay);
   }
 
   return { load };

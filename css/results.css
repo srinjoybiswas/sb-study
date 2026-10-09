@@ -1,0 +1,113 @@
+/* ============================================================
+   SB NOTES PORTAL — results.css
+   Weekly results, monthly certificates, study score widgets and
+   the secure note viewer chrome (watermark / zoom / timer).
+   ============================================================ */
+
+/* ---------------- Score cards ---------------- */
+.score-hero {
+  text-align: center; padding: 30px; border-radius: var(--radius); margin-bottom: 22px;
+  background: linear-gradient(135deg, rgba(79,70,229,.12), rgba(124,58,237,.04));
+  border: 1px solid rgba(79,70,229,.28);
+}
+.score-hero .score-ring {
+  width: 140px; height: 140px; border-radius: 50%; margin: 0 auto 14px;
+  display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 800;
+  background: conic-gradient(var(--primary) var(--pct, 0%), var(--border) 0);
+}
+.score-hero .score-ring .inner {
+  width: 108px; height: 108px; border-radius: 50%; background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+}
+.result-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 14px; }
+.result-stat { text-align: center; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.result-stat .rs-val { font-size: 22px; font-weight: 800; }
+.result-stat .rs-label { font-size: 12px; color: var(--muted); }
+
+.result-card { padding: 18px; }
+.result-card .rc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.result-card .rc-week { font-size: 12px; color: var(--muted); }
+.result-card .rc-score { font-size: 30px; font-weight: 800; color: var(--primary); }
+
+/* ---------------- Certificate ---------------- */
+.certificate {
+  background: #fff; color: #111827; border: 12px solid var(--primary); border-radius: 8px;
+  padding: 48px; max-width: 900px; margin: 0 auto; position: relative; text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+.certificate .cert-inner { border: 2px solid var(--secondary); border-radius: 4px; padding: 40px; position: relative; }
+.certificate .cert-logo { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 800; margin: 0 auto 16px; }
+.certificate h1 { font-size: 30px; letter-spacing: .04em; color: var(--primary); }
+.certificate .cert-sub { color: var(--muted); margin-bottom: 24px; }
+.certificate .cert-name { font-size: 34px; font-weight: 800; margin: 18px 0; border-bottom: 2px solid var(--border); display: inline-block; padding: 0 30px 8px; }
+.certificate .cert-body { font-size: 16px; color: #374151; margin: 18px 0; }
+.certificate .cert-meta { display: flex; justify-content: space-between; margin-top: 40px; gap: 20px; flex-wrap: wrap; text-align: left; }
+.certificate .cert-meta .cm-item { font-size: 13px; }
+.certificate .cert-meta .cm-item strong { display: block; font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: .05em; }
+.certificate .cert-sign { border-top: 1px solid #9ca3af; padding-top: 6px; min-width: 160px; text-align: center; font-size: 13px; }
+.certificate .qr-box { width: 110px; height: 110px; background: #f3f4f6; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--muted); text-align: center; padding: 6px; }
+
+/* ---------------- Secure viewer ---------------- */
+.viewer-overlay {
+  position: fixed; inset: 0; background: #0b1220; z-index: 8000;
+  display: none; flex-direction: column;
+}
+.viewer-overlay.open { display: flex; }
+.viewer-bar {
+  display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+  background: #111827; color: #f9fafb; flex-shrink: 0; flex-wrap: wrap;
+}
+.viewer-bar .v-title { font-weight: 600; font-size: 15px; }
+.viewer-bar .v-actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.viewer-bar .v-group { display: flex; gap: 6px; align-items: center; }
+.viewer-bar .study-timer {
+  display: flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums;
+  font-weight: 700; background: rgba(255,255,255,.1); padding: 6px 12px; border-radius: 8px; font-size: 14px;
+}
+.viewer-bar .study-timer.blurred { color: #fca5a5; }
+.viewer-body { flex: 1; position: relative; overflow: auto; background: #1f2937; min-height: 0; }
+.viewer-zoom { transform-origin: top center; transition: transform .12s ease; width: 100%; height: 100%; }
+.viewer-body iframe { width: 100%; height: 100%; min-height: 78vh; border: none; background: #fff; display: block; }
+.viewer-body img { width: 100%; height: 100%; min-height: 78vh; object-fit: contain; background: #1f2937; display: block; }
+.viewer-body .viewer-fallback { color: #e5e7eb; padding: 40px; text-align: center; }
+
+/* Watermark: tiled SB logo + per-student trace text. Never scales with zoom. */
+.watermark-layer {
+  position: absolute; inset: 0; pointer-events: none; z-index: 9000; overflow: hidden;
+  user-select: none; -webkit-user-select: none;
+}
+.watermark-layer .wm-logo,
+.watermark-layer .wm-text {
+  position: absolute; font-family: Arial, Helvetica, sans-serif; white-space: nowrap;
+  transform: rotate(-26deg); pointer-events: none;
+}
+.watermark-layer .wm-logo { font-size: 46px; font-weight: 800; letter-spacing: 3px; color: rgba(79,70,229,.16); }
+.watermark-layer .wm-text { font-size: 13px; color: rgba(17,24,39,.20); }
+
+/* Warning overlay for screenshot / blur attempts */
+.viewer-warning-overlay {
+  position: absolute; inset: 0; z-index: 9500; background: rgba(11,18,32,.86);
+  display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #f9fafb;
+}
+.viewer-warning-overlay .vw-card { max-width: 420px; background: #111827; border: 1px solid rgba(220,38,38,.4); border-radius: var(--radius); padding: 26px; }
+.viewer-warning-overlay h3 { color: #fca5a5; margin-bottom: 10px; }
+
+@media (max-width: 600px) {
+  .viewer-bar { padding: 8px 10px; gap: 8px; }
+  .viewer-bar .v-title { font-size: 13px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .viewer-bar .btn { padding: 5px 9px; font-size: 12px; }
+  .watermark-layer .wm-logo { font-size: 30px; }
+  .watermark-layer .wm-text { font-size: 10px; }
+}
+
+/* ---------------- Admin notifications ---------------- */
+.notif-target-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.notif-preview { background: var(--background); border: 1px dashed var(--border); border-radius: var(--radius-sm); padding: 14px; margin-top: 12px; }
+.notif-preview .np-title { font-weight: 700; }
+.notif-preview .np-msg { font-size: 13px; color: var(--muted); white-space: pre-wrap; }
+
+/* Print: only the certificate */
+@media print {
+  .sidebar, .topbar, .no-print, .viewer-overlay, .watermark-layer { display: none !important; }
+  .certificate { box-shadow: none; border-width: 8px; }
+}

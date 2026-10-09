@@ -70,8 +70,8 @@
 }
 
 /* ---------- Secure fullscreen viewer (self-contained) ----------
-   These rules live here so notes.html renders the viewer correctly
-   even without test.css. They mirror the viewer chrome in test.css. */
+   These rules live here so notes.html renders the viewer correctly.
+   The viewer chrome (watermark, zoom, study timer) lives here. */
 .viewer-overlay {
   position: fixed; inset: 0; background: #0b1220; z-index: 8000;
   display: none; flex-direction: column;

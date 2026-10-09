@@ -39,7 +39,7 @@ const Notifications = (function () {
 
   function typeColor(type) {
     const map = {
-      NEW_NOTE: 'var(--primary)', UPDATED_NOTE: 'var(--secondary)', TEST: 'var(--warning)',
+      NEW_NOTE: 'var(--primary)', UPDATED_NOTE: 'var(--secondary)',
       RESULT: 'var(--success)', CERTIFICATE: 'var(--success)', ANNOUNCEMENT: 'var(--warning)',
       ACCOUNT: 'var(--danger)', SYSTEM: 'var(--muted)'
     };

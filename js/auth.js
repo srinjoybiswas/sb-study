@@ -4,7 +4,6 @@
    ============================================================ */
 
 /* ------------------------- UI helpers ------------------------- */
-console.log("SB Notes NEW auth.js loaded");
 const UI = (function () {
   function ensureToastContainer() {
     let c = document.getElementById('toast-container');

@@ -40,10 +40,7 @@
 .status-pill.blocked .p-dot { background: var(--danger); }
 
 /* Question builder */
-.question-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
-.question-item .q-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.question-item .q-num { width: 30px; height: 30px; border-radius: 50%; background: rgba(79,70,229,.12); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
-.question-item .q-actions { margin-left: auto; display: flex; gap: 6px; }
+.result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
 .option-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .option-row .opt-key { width: 28px; height: 28px; border-radius: 8px; background: var(--background); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; }
 .option-row.correct .opt-key { background: var(--success); color: #fff; border-color: var(--success); }

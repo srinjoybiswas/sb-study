@@ -23,7 +23,8 @@
         <a href="students.html"><span class="nav-ico">👥</span> Students</a>
         <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
         <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
-        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="results.html"><span class="nav-ico">📊</span> Results &amp; Certificates</a>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
         <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
         <div class="nav-section">System</div>
         <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
@@ -36,7 +37,7 @@
     <div class="main-area">
       <header class="topbar">
         <button class="menu-btn" aria-label="Menu">☰</button>
-        <div class="welcome">Notes <span class="admin-badge">ADMIN</span><small>Upload and manage study material</small></div>
+        <div class="welcome">Notes <span class="admin-badge">ADMIN</span><small>Add study material from Google Drive</small></div>
         <div class="top-actions">
           <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
           <div class="avatar" data-admin-avatar>?</div>
@@ -45,8 +46,8 @@
 
       <main class="page notes-page">
         <div class="page-head flex-between">
-          <div><h1>Notes</h1><p>Files are stored in Google Drive; only metadata is public.</p></div>
-          <button class="btn btn-primary" id="add-note-btn">+ Upload Note</button>
+          <div><h1>Notes</h1><p>Notes are hosted on Google Drive — the portal stores the link and the structured metadata.</p></div>
+          <button class="btn btn-primary" id="add-note-btn">+ Add Notes</button>
         </div>
         <div class="toolbar">
           <div class="search-box"><span class="s-ico">🔍</span><input class="form-control" type="search" id="note-search" placeholder="Search notes…"></div>
@@ -58,21 +59,35 @@
 
   <div class="modal-overlay" id="note-modal">
     <div class="modal modal-lg">
-      <div class="modal-header"><h3 id="note-modal-title">Upload Note</h3><button class="btn btn-ghost btn-sm" id="note-modal-close">✕</button></div>
+      <div class="modal-header"><h3 id="note-modal-title">Add Notes</h3><button class="btn btn-ghost btn-sm" id="note-modal-close">✕</button></div>
       <form id="note-form">
         <div class="modal-body">
-          <div class="form-group"><label for="note-title">Title</label><input class="form-control" type="text" id="note-title" name="title" required></div>
-          <div class="form-group"><label for="note-desc">Description</label><textarea class="form-control" id="note-desc" name="description" rows="2"></textarea></div>
           <div class="form-row">
+            <div class="form-group"><label for="note-subject">Subject</label><input class="form-control" type="text" id="note-subject" name="subject" list="subject-options" placeholder="e.g. Java Programming" required>
+              <datalist id="subject-options"></datalist>
+              <div class="form-hint">Type a new subject or pick an existing one.</div>
+            </div>
             <div class="form-group"><label for="note-department">Department</label><select class="form-control" id="note-department" name="departmentId" required><option value="">Select department</option></select></div>
-            <div class="form-group"><label for="note-semester">Semester</label><input class="form-control" type="text" id="note-semester" name="semester" placeholder="e.g. 3"></div>
           </div>
-          <div class="form-group"><label for="note-subject">Subject</label><input class="form-control" type="text" id="note-subject" name="subject" placeholder="e.g. Data Structures"></div>
-          <div class="form-group"><label for="note-file">File</label><input class="form-control" type="file" id="note-file" name="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg"><div class="form-hint" id="note-file-hint">PDF, DOC, PPT or image.</div></div>
+          <div class="form-row">
+            <div class="form-group"><label for="note-module">Module</label><select class="form-control" id="note-module" name="module" required><option value="">Select module</option></select></div>
+            <div class="form-group"><label for="note-chapter">Chapter</label><select class="form-control" id="note-chapter" name="chapter"><option value="">Select chapter</option></select></div>
+          </div>
+          <div class="form-group"><label for="note-title">Title</label><input class="form-control" type="text" id="note-title" name="title" placeholder="e.g. Java — OOP Concepts" required></div>
+          <div class="form-group"><label for="note-desc">Description</label><textarea class="form-control" id="note-desc" name="description" rows="2" placeholder="Short summary of what these notes cover"></textarea></div>
+          <div class="form-row">
+            <div class="form-group"><label for="note-semester">Semester (optional)</label><input class="form-control" type="text" id="note-semester" name="semester" placeholder="e.g. 3"></div>
+            <div class="form-group"><label for="note-filetype">File type</label><select class="form-control" id="note-filetype" name="fileType">
+              <option value="pdf">PDF</option><option value="doc">Document</option><option value="ppt">Presentation</option><option value="img">Image</option>
+            </select></div>
+          </div>
+          <div class="form-group"><label for="note-drive">Google Drive link</label><input class="form-control" type="url" id="note-drive" name="driveLink" placeholder="https://drive.google.com/file/d/…/view" required>
+            <div class="form-hint">Share the Drive file as “Anyone with the link can view” so students can read it in the secure viewer.</div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" id="note-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="submit" class="btn btn-primary">Save Notes</button>
         </div>
       </form>
     </div>
@@ -83,6 +98,5 @@
   <script src="../js/auth.js"></script>
   <script src="../js/admin/admin-auth.js"></script>
   <script src="../js/admin/notes.js"></script>
-  <script>document.getElementById('note-cancel').onclick = () => UI.closeModal('note-modal');</script>
 </body>
 </html>

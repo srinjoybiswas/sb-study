@@ -7,7 +7,7 @@
   <link rel="icon" href="assets/logo/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
-  <link rel="stylesheet" href="css/test.css">
+  <link rel="stylesheet" href="css/results.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -19,11 +19,10 @@
         <a href="dashboard.html"><span class="nav-ico">🏠</span> Dashboard</a>
         <a href="notes.html?scope=mine"><span class="nav-ico">📚</span> My Notes</a>
         <a href="notes.html?scope=other"><span class="nav-ico">🌐</span> Other Notes</a>
-        <a href="test.html"><span class="nav-ico">📝</span> Tests</a>
-        <a href="result.html"><span class="nav-ico">📊</span> Results</a>
+        <a href="results.html"><span class="nav-ico">📊</span> My Results</a>
         <a href="certificate.html"><span class="nav-ico">🏆</span> Certificates</a>
         <div class="nav-section">Account</div>
-        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications <span class="nav-badge" data-notif-count style="display:none">0</span></a>
         <a href="profile.html"><span class="nav-ico">👤</span> Profile</a>
         <a href="#" data-logout><span class="nav-ico">🚪</span> Logout</a>
       </nav>
@@ -33,7 +32,7 @@
     <div class="main-area">
       <header class="topbar">
         <button class="menu-btn" aria-label="Menu">☰</button>
-        <div class="welcome">Certificates<small>Your achievements</small></div>
+        <div class="welcome">Certificates<small>Your monthly achievements</small></div>
         <div class="top-actions">
           <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
           <div class="avatar" data-user-avatar>?</div>
@@ -41,7 +40,7 @@
       </header>
 
       <main class="page">
-        <div class="page-head no-print"><h1>Certificates</h1><p>Earned by passing tests. Each has a public verification ID.</p></div>
+        <div class="page-head no-print"><h1>Certificates</h1><p>Earned automatically each month from your study activity. Every certificate has a public verification ID.</p></div>
         <div id="certificate-wrap"></div>
         <div class="grid grid-2" id="certs-list"></div>
       </main>

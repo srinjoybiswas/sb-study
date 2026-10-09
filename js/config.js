@@ -5,10 +5,10 @@
    ============================================================ */
 
 const CONFIG = {
-  API_URL: "https://script.google.com/macros/s/AKfycby_WTg1oqphJiHL0h9nlXeADwj5ZEVcgBFh7efFV4RWsvGzMJ9TK15hcVpf1ZO0AXM/exec",
+  API_URL: "https://script.google.com/macros/s/AKfycbzfl-XVjShKDvQ1EahQDhc2DpwMfJA-LJKBq8UbI_MZ8uohUtyBmB1QCcreHQBqwf4pKw/exec",
   APP_NAME: "SB Notes Portal",
-  APP_TAGLINE: "Your Academic Notes, Tests & Learning Hub",
-  VERSION: "1.0.0",
+  APP_TAGLINE: "Your Academic Notes & Learning Hub",
+  VERSION: "8.0.0",
   HEARTBEAT_INTERVAL: 45000,   // ms (30-60s)
   SESSION_KEY: "sbn_token",
   ADMIN_SESSION_KEY: "sbn_admin_token",

@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tests — Admin</title>
+  <title>Results &amp; Certificates — Admin</title>
   <link rel="icon" href="../assets/logo/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/results.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
@@ -22,7 +23,8 @@
         <a href="students.html"><span class="nav-ico">👥</span> Students</a>
         <a href="departments.html"><span class="nav-ico">🏛</span> Departments</a>
         <a href="notes.html"><span class="nav-ico">📚</span> Notes</a>
-        <a href="tests.html"><span class="nav-ico">📝</span> Tests</a>
+        <a href="results.html"><span class="nav-ico">📊</span> Results &amp; Certificates</a>
+        <a href="notifications.html"><span class="nav-ico">🔔</span> Notifications</a>
         <a href="announcements.html"><span class="nav-ico">📢</span> Announcements</a>
         <div class="nav-section">System</div>
         <a href="settings.html"><span class="nav-ico">⚙️</span> Settings</a>
@@ -35,7 +37,7 @@
     <div class="main-area">
       <header class="topbar">
         <button class="menu-btn" aria-label="Menu">☰</button>
-        <div class="welcome">Tests <span class="admin-badge">ADMIN</span><small>Create and manage tests</small></div>
+        <div class="welcome">Results &amp; Certificates <span class="admin-badge">ADMIN</span><small>Automatic weekly scores and monthly certificates</small></div>
         <div class="top-actions">
           <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme"><span data-theme-icon>🌙</span></button>
           <div class="avatar" data-admin-avatar>?</div>
@@ -44,13 +46,24 @@
 
       <main class="page">
         <div class="page-head flex-between">
-          <div><h1>Tests</h1><p>Optional, required and critical tests.</p></div>
-          <a class="btn btn-primary" href="test-builder.html">+ Create Test</a>
+          <div><h1>Results &amp; Certificates</h1><p>Weekly results run automatically; you can also generate them on demand.</p></div>
+          <div class="flex gap-8">
+            <button class="btn btn-outline" id="install-triggers">🔁 Install Auto-Triggers</button>
+            <button class="btn btn-outline" id="gen-weekly">📊 Generate Weekly</button>
+            <button class="btn btn-primary" id="gen-monthly">🏆 Generate Monthly</button>
+          </div>
         </div>
-        <div class="toolbar">
-          <div class="search-box"><span class="s-ico">🔍</span><input class="form-control" type="search" id="test-search" placeholder="Search tests…"></div>
+
+        <div class="card mb-24" id="status-card">
+          <div class="card-header"><h2 class="card-title">Automation status</h2></div>
+          <div id="automation-status"></div>
         </div>
-        <div id="tests-table"></div>
+
+        <div class="tabs" id="result-tabs">
+          <button class="active" data-tab="weekly">Weekly Results</button>
+          <button data-tab="certificates">Certificates</button>
+        </div>
+        <div id="results-table"></div>
       </main>
     </div>
   </div>
@@ -59,6 +72,6 @@
   <script src="../js/api.js"></script>
   <script src="../js/auth.js"></script>
   <script src="../js/admin/admin-auth.js"></script>
-  <script src="../js/admin/tests.js"></script>
+  <script src="../js/admin/results.js"></script>
 </body>
 </html>

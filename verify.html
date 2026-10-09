@@ -44,13 +44,17 @@
       el.innerHTML = UI.skeleton(4);
       try {
         const c = await API.request('verifyCertificate', { id: id }, {});
+        if (!c || !c.certificateId) {
+          el.innerHTML = UI.emptyState('❌', 'Not found', 'No certificate matches that ID.');
+          return;
+        }
         el.innerHTML =
           '<div class="result-hero ' + (c.valid ? 'pass' : 'fail') + '">' +
           '<h2>' + (c.valid ? '✅ Valid Certificate' : '⚠️ Not Active') + '</h2></div>' +
           '<div class="info-list mt-16">' +
           '<div class="info-item"><div class="info-label">Student</div><div class="info-value">' + UI.escapeHtml(c.studentName) + '</div></div>' +
-          '<div class="info-item"><div class="info-label">Test</div><div class="info-value">' + UI.escapeHtml(c.testTitle) + '</div></div>' +
-          '<div class="info-item"><div class="info-label">Score</div><div class="info-value">' + UI.escapeHtml(c.score) + ' (' + UI.escapeHtml(c.percentage) + '%)</div></div>' +
+          '<div class="info-item"><div class="info-label">Period</div><div class="info-value">' + UI.escapeHtml(c.period || '') + '</div></div>' +
+          '<div class="info-item"><div class="info-label">Study Score</div><div class="info-value">' + UI.escapeHtml(c.score) + '/100</div></div>' +
           '<div class="info-item"><div class="info-label">Certificate ID</div><div class="info-value">' + UI.escapeHtml(c.certificateId) + '</div></div>' +
           '<div class="info-item"><div class="info-label">Issued On</div><div class="info-value">' + UI.formatDate(c.issuedAt) + '</div></div>' +
           '</div>';

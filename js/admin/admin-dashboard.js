@@ -32,12 +32,13 @@ const AdminDashboard = (function () {
       { ico: '🚫', cls: 'danger', val: s.blockedStudents, label: 'Blocked Students' },
       { ico: '🏛', cls: 'secondary', val: s.departments, label: 'Departments' },
       { ico: '📚', cls: 'primary', val: s.notes, label: 'Notes' },
-      { ico: '📝', cls: 'warning', val: s.tests, label: 'Tests' },
-      { ico: '📊', cls: 'success', val: s.testsCompleted, label: 'Tests Completed' },
+      { ico: '⏱', cls: 'secondary', val: s.studyMinutesToday, label: 'Study Minutes Today' },
+      { ico: '📘', cls: 'primary', val: s.studyMinutesTotal, label: 'Total Study Minutes' },
+      { ico: '📊', cls: 'warning', val: s.weeklyResults, label: 'Weekly Results' },
       { ico: '🏆', cls: 'warning', val: s.certificatesIssued, label: 'Certificates Issued' },
       { ico: '🟢', cls: 'success', val: s.onlineStudents, label: 'Online Now' },
       { ico: '⚪', cls: 'secondary', val: s.offlineStudents, label: 'Offline' },
-      { ico: '📈', cls: 'primary', val: s.averageTestScore + '%', label: 'Avg Test Score' },
+      { ico: '📈', cls: 'primary', val: s.averageStudyScore, label: 'Avg Weekly Score' },
       { ico: '🆕', cls: 'success', val: s.todayRegistrations, label: "Today's Registrations" },
       { ico: '🔑', cls: 'warning', val: s.todayLogins, label: "Today's Logins" }
     ];
@@ -76,7 +77,7 @@ const AdminDashboard = (function () {
 
   function renderCharts(charts) {
     drawBarChart('chart-registrations', charts.registrations);
-    drawBarChart('chart-attempts', charts.attempts);
+    drawBarChart('chart-study', charts.study);
     drawDonut('chart-departments', charts.departmentDistribution);
   }
 
