@@ -19,19 +19,10 @@
       user-select: none;
     }
 
-    /* ===== Added: cover for the iframe's pop-out button ===== */
-    #popout-blocker {
-      position: fixed;
-      display: none;
-      width: 80px;                 /* adjust if the icon is not fully covered */
-      height: 64px;
-      background: #1c1c1c;         /* match the preview's dark background */
-      z-index: 2147483647;
-      pointer-events: auto;
-    }
 
     /* ===== Added: mobile-only Previous / Next ===== */
     .viewer-pager { display: none; }
+    .viewer-overlay.no-pager .viewer-pager { display: none !important; }
 
     @media (max-width: 768px) {
       .viewer-pager {
@@ -158,8 +149,6 @@
     </div>
   </div>
 
-  <!-- Added: pop-out button cover (lives on top of everything) -->
-  <div id="popout-blocker"></div>
 
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
@@ -167,90 +156,5 @@
   <script src="js/security.js"></script>
   <script src="js/notes.js"></script>
 
-  <script>
-  /* ===== Added: viewer extras (right-click block, pop-out cover, Previous/Next) ===== */
-  (function () {
-    'use strict';
-
-    var overlay = document.getElementById('viewer-overlay');
-    var body    = document.getElementById('viewer-body');
-    var blocker = document.getElementById('popout-blocker');
-    var prev    = document.getElementById('page-prev');
-    var next    = document.getElementById('page-next');
-    var label   = document.getElementById('page-indicator');
-
-    /* 1. Block right-click / long-press menu */
-    document.addEventListener('contextmenu', function (e) {
-      e.preventDefault();
-      return false;
-    }, true);
-
-    /* 2. Cover the iframe's built-in pop-out button */
-    ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'contextmenu'].forEach(function (ev) {
-      blocker.addEventListener(ev, function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }, true);
-    });
-
-    // Distance from the iframe's right edge (leaves its scrollbar usable). Tweak if needed.
-    var RIGHT_OFFSET = 14;
-    var TOP_OFFSET   = 0;
-
-    function placeBlocker() {
-      var frame = overlay && overlay.querySelector('iframe');
-      if (!frame) { blocker.style.display = 'none'; return; }
-      var r = frame.getBoundingClientRect();
-      if (r.width < 10 || r.height < 10) { blocker.style.display = 'none'; return; }
-      blocker.style.display = 'block';
-      blocker.style.top  = (r.top + TOP_OFFSET) + 'px';
-      blocker.style.left = (r.right - RIGHT_OFFSET - blocker.offsetWidth) + 'px';
-    }
-    window.addEventListener('resize', placeBlocker);
-    window.addEventListener('scroll', placeBlocker, true);
-    setInterval(placeBlocker, 300); // keeps it aligned when the viewer opens, zooms or resizes
-    placeBlocker();
-
-    /* 3. Mobile Previous / Next */
-    var PAGE_SELECTOR = '#viewer-body canvas, #viewer-body img, #viewer-body .page';
-
-    function pages() {
-      return Array.prototype.slice.call(document.querySelectorAll(PAGE_SELECTOR));
-    }
-
-    function currentIndex() {
-      var list = pages();
-      if (!list.length) return 0;
-      var top = body.getBoundingClientRect().top;
-      var best = 0, bestDist = Infinity;
-      list.forEach(function (el, i) {
-        var d = Math.abs(el.getBoundingClientRect().top - top);
-        if (d < bestDist) { bestDist = d; best = i; }
-      });
-      return best;
-    }
-
-    function updatePager() {
-      var list = pages();
-      var i = currentIndex();
-      label.textContent = list.length ? (i + 1) + ' / ' + list.length : '0 / 0';
-      prev.disabled = i <= 0;
-      next.disabled = i >= list.length - 1;
-    }
-
-    function go(delta) {
-      var list = pages();
-      if (!list.length) return;
-      var i = Math.min(Math.max(currentIndex() + delta, 0), list.length - 1);
-      list[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    prev.addEventListener('click', function () { go(-1); });
-    next.addEventListener('click', function () { go(1); });
-    body.addEventListener('scroll', updatePager, { passive: true });
-    new MutationObserver(updatePager).observe(body, { childList: true, subtree: true });
-    updatePager();
-  })();
-  </script>
 </body>
 </html>

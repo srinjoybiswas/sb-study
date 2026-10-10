@@ -107,6 +107,7 @@ const Notes = (function () {
 
   function renderViewer(info) {
     const body = $('viewer-body');
+    const overlay = $('viewer-overlay');
     if (!body) return;
     body.innerHTML = '<div class="viewer-zoom" id="viewer-zoom"><div class="viewer-fallback">Preparing document\u2026</div></div>';
     Security.buildWatermark(body, info.watermark, 'SB NOTES');
@@ -121,7 +122,52 @@ const Notes = (function () {
       // Drive /preview renders inside the iframe; the raw link is never exposed.
       zoomWrap.innerHTML = '<iframe src="' + UI.escapeHtml(src) + '" title="Secure note viewer" ' +
         'allow="autoplay; fullscreen" referrerpolicy="no-referrer"></iframe>';
+      addPopoutBlocker(zoomWrap);
     }
+    // Previous / Next only works for image notes (see pager section).
+    if (overlay) overlay.classList.toggle('no-pager', !isImage);
+    updatePager();
+  }
+
+  /* ------------------------- Pop-out button cover ------------------------- */
+  // Google Drive's preview draws its own "open in new window" icon inside the
+  // cross-origin iframe, so it cannot be deleted. We cover it instead. The
+  // cover lives INSIDE the zoom wrapper so it scales with the preview.
+  function addPopoutBlocker(zoomWrap) {
+    zoomWrap.style.position = 'relative';
+    const b = document.createElement('div');
+    b.className = 'popout-blocker';
+    b.style.cssText =
+      'position:absolute;top:0;right:14px;width:80px;height:64px;' +  // tweak size/offset here
+      'background:#1c1c1c;z-index:5;pointer-events:auto;';
+    ['click', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'contextmenu'].forEach(ev =>
+      b.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); }, true));
+    zoomWrap.appendChild(b);
+  }
+
+  /* ------------------------- Mobile Previous / Next ------------------------- */
+
+  function pagerStep() {
+    const body = $('viewer-body');
+    return body ? Math.round(body.clientHeight * 0.9) : 0;
+  }
+
+  function pagerGo(dir) {
+    const body = $('viewer-body');
+    if (!body) return;
+    body.scrollBy({ top: dir * pagerStep(), behavior: 'smooth' });
+  }
+
+  function updatePager() {
+    const body = $('viewer-body');
+    const prev = $('page-prev'), next = $('page-next'), label = $('page-indicator');
+    if (!body || !prev || !next || !label) return;
+    const step = Math.max(1, pagerStep());
+    const total = Math.max(1, Math.ceil(body.scrollHeight / step));
+    const cur = Math.min(total, Math.floor(body.scrollTop / step) + 1);
+    label.textContent = cur + ' / ' + total;
+    prev.disabled = body.scrollTop <= 2;
+    next.disabled = body.scrollTop + body.clientHeight >= body.scrollHeight - 2;
   }
 
   /* ------------------------- Zoom ------------------------- */
@@ -220,12 +266,17 @@ const Notes = (function () {
       search.oninput = () => { clearTimeout(t); t = setTimeout(() => { state.search = search.value; state.page = 1; load(); }, 350); };
     }
 
-    // Zoom + close controls (bound before any await).
+    // Zoom + close + pager controls (bound before any await).
     const zi = $('zoom-in'), zo = $('zoom-out'), zr = $('zoom-reset'), zc = $('viewer-close');
     if (zi) zi.onclick = zoomIn;
     if (zo) zo.onclick = zoomOut;
     if (zr) zr.onclick = zoomReset;
     if (zc) zc.onclick = closeViewer;
+
+    const pp = $('page-prev'), pn = $('page-next'), vb = $('viewer-body');
+    if (pp) pp.onclick = () => pagerGo(-1);
+    if (pn) pn.onclick = () => pagerGo(1);
+    if (vb) vb.addEventListener('scroll', updatePager, { passive: true });
 
     API.get('getDepartments', {}).then(depts => {
       if (dept) dept.innerHTML = '<option value="ALL">All Departments</option>' + depts.map(d =>
@@ -242,6 +293,9 @@ const Notes = (function () {
   }
 
   function init() {
+    // Block right-click / long-press menu on the whole page.
+    document.addEventListener('contextmenu', e => { e.preventDefault(); return false; }, true);
+
     initFilters();
     const noteId = new URLSearchParams(window.location.search).get('noteId');
     load().then(() => { if (noteId) openViewer(noteId); });
